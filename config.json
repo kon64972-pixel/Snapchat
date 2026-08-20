@@ -1,0 +1,9 @@
+{
+    "admins": [
+        {
+            "username": "admin",
+            "password": "admin123",
+            "created": "2026-01-01T00:00:00"
+        }
+    ]
+}

